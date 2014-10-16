@@ -41,6 +41,15 @@ Country -> Language
 So we set up three different views for this kind of information (more below)
 
 ### Mappings
+<p color="#00FFFF">test red</p>
+
+<p color=#00FFFF>test red2</p>
+
+- [x] list syntax is required (any unordered or ordered list supported)
+- [x] this is a complete item
+- [ ] this is an incomplete item
+
+
 A mapping is the interesting part. It's about *which* informations are displayed *how* and *when*.
 
 The filtering can be based on the content and metadata! The *how* is simply an associated view, and the when is a controller which controls the delay until it's displayed next.
