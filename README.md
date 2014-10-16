@@ -16,13 +16,13 @@ Let's say you want to learn about the countries of our planet. Braindrill uses *
 Country: USA
 Capital: Washington
 Language: English
-tags: 'good country'
+tags: 'good country', 'home of the brave'
 
 Country: Germany
 Capital: Berlin
 Language: German
 
-There can be an arbitrary amount of entries, and they can contain text, images or math.
+There can be an arbitrary amount of entries, and they can contain text, images or math. you can also set tags
 
 There is also metadata, like
 - time of creation and all previous views
@@ -37,26 +37,18 @@ Then we can have several 'views' (cards) on that information. A common thing to 
 Country -> Capital
 Capital -> Country
 Country -> Language
+or: Capital -> Country, Language
 
-So we set up three different views for this kind of information (more below)
+These are all different views on this kind of information and are what get's actually reviewed in the end.
 
 ### Mappings
-<p color="#00FFFF">test red</p>
-
-<p color=#00FFFF>test red2</p>
-
-- [x] list syntax is required (any unordered or ordered list supported)
-- [x] this is a complete item
-- [ ] this is an incomplete item
-
-
 A mapping is the interesting part. It's about *which* informations are displayed *how* and *when*.
 
-The filtering can be based on the content and metadata! The *how* is simply an associated view, and the when is a controller which controls the delay until it's displayed next.
+The which part may be all informations from the example above, or just all that don't have math, or a specific one ...
 
-For the controller you can set a time, and how big the "window" is.
+controller just default
 
-Overcomplicated? 
+So the choice 
 
 ** Opinions
 Honestly I don't think the "theory" behind Anki and most of the other spaced repetition ideas is valid. Even if it would be true, the premises it's based on is hardly ever fulfilled. It's not about learning random words, it's about working knowledge or whatever. 
