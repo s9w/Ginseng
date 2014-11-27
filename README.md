@@ -1,17 +1,16 @@
-braindrill
+Ginseng
 ==========
 
-This is basically a Spaced repetition software, but pushed way further. Everyone knows Anki. Quick comparison
-
-This is 100% client-side web app, meaning it's truly portable everywhere. To make the data available everywhere, it's synced to your Dropbox. I would have preferred to read/write directly to the disk, but this is unfortunately still not allowed for browsers.
-
-- It uses a powerful template system for excessive customization
-- better math support (mathjax AND katex)
-- powerful way to control the showing time. Honestly I don't think the "theory" behind 
+Ginseng is basically a Spaced repetition software like Anki, but with all the things fixed I disliked/missed there. Quick comparison:
+- 100% in browser client-side Javascript
+- Data stored in JSON format. Sync currently over file in/export, Dropbox or MongoDB
+- proper Markdown and LaTeX (Katex and Mathjax) support
+- Repetition time can be freely chosen. Can be the classic spaced repetition way, or a fixed time intervals or anything you like
+- Informations can have arbitrary entries, tags, have rich metadata stored and reviews can be done on any selection based on that data. No fixed "deck" structure
 
 ## Quickstart / Introduction
 ### Informations
-Let's say you want to learn about the countries of our planet. Braindrill uses *informations' (Think Anki notes), which can have several entries (Fields).
+Let's say you want to learn about the countries of our planet. Ginseng uses *informations' (Think Anki notes), which can have several entries.
 
 Country: USA
 Capital: Washington
@@ -22,7 +21,6 @@ Country: Germany
 Capital: Berlin
 Language: German
 
-There can be an arbitrary amount of entries, and they can contain text, images or math. you can also set tags
 
 There is also metadata, like
 - time of creation and all previous views
@@ -37,7 +35,6 @@ Then we can have several 'views' (cards) on that information. A common thing to 
 Country -> Capital
 Capital -> Country
 Country -> Language
-or: Capital -> Country, Language
 
 These are all different views on this kind of information and are what get's actually reviewed in the end.
 
@@ -47,8 +44,3 @@ A mapping is the interesting part. It's about *which* informations are displayed
 The which part may be all informations from the example above, or just all that don't have math, or a specific one ...
 
 controller just default
-
-So the choice 
-
-** Opinions
-Honestly I don't think the "theory" behind Anki and most of the other spaced repetition ideas is valid. Even if it would be true, the premises it's based on is hardly ever fulfilled. It's not about learning random words, it's about working knowledge or whatever. 
