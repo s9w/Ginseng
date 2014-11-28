@@ -1,0 +1,47 @@
+
+table {
+    border-collapse: collapse;
+    cursor: default;
+}
+
+tbody tr:nth-child(even) {
+    background-color: rgba(230, 230, 230, 0.68);
+}
+
+tbody tr:hover {
+    background: yellow;
+}
+
+.nav-site li{
+    display:inline;
+}
+
+.nav-site li.active{
+    background-color: #ececec;
+}
+
+.nav-site p {
+    padding: 0 8px;
+    display:inline;
+    cursor: pointer;
+    /*text-decoration: none;*/
+}
+
+.nav-site p:hover {
+    border-bottom: 3px solid #cc7a6f;
+    color: #0a0a0a;
+}
+
+html {
+    font-family: "Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
+    font-family: proxima-nova,"Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
+    /*background-color: #f7f7f7;*/
+}
+
+#title{
+    color: #217234;
+    font-family: "titillium";
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+    font-size: 1.5rem;
+}

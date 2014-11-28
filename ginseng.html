@@ -1,0 +1,220 @@
+<!-- template.html -->
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Ginseng</title>
+    <script src="http://fb.me/react-with-addons-0.12.1.js"></script>
+    <script src="init_data.js"></script>
+    <script src="http://fb.me/JSXTransformer-0.12.1.js"></script>
+    <script src="https://cdn.firebase.com/js/client/2.0.4/firebase.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="content"></div>
+
+<script type="text/jsx">
+    var App = React.createClass({
+        getInitialState: function() {
+            return {
+                informations:[],
+                activeMode: "status",
+                selectedInfoId: -1
+            };
+        },
+        clickNav: function(mode) {
+            this.setState({activeMode: mode});
+        },
+        handleSelect: function(p) {
+            this.setState({selectedInfoId:p});
+        },
+        handleEdit: function(editedInfo) {
+            console.log("handleEdit, editedInfo: " + JSON.stringify(editedInfo));
+            var infos_old = this.state.informations;
+            infos_old[this.state.selectedInfoId] = editedInfo;
+            this.setState( {informations:infos_old} );
+        },
+        getDefaultInfo: function () {
+            return {
+                "data": [
+                    ["front", ""],
+                    ["back", ""]],
+                "tags": [],
+                "metadata": {
+                    "created": "jetzt todo"
+                }
+            };
+        },
+        render: function () {
+            if( this.state.selectedInfoId !== -1){
+                var selectedInfo = this.state.informations[this.state.selectedInfoId];
+            } else{
+                var selectedInfo = this.getDefaultInfo();
+            }
+//            console.log("selectedInfo: " + JSON.stringify(selectedInfo));
+            return (
+                <div className="app">
+                    <h1 id="title">Ginseng</h1>
+                    <div className="nav-main">
+                        <ul className="nav-site">
+                            <li className={this.state.activeMode=="status"?"active":"inactive"}><p onClick={this.clickNav.bind(this, "status")} >status</p></li>
+                            <li className={this.state.activeMode=="browse"?"active":"inactive"}><p onClick={this.clickNav.bind(this, "browse")}>browse</p></li>
+                            <li className={this.state.activeMode=="edit"?"active":"inactive"}><p onClick={this.clickNav.bind(this, "edit")}>edit/new</p></li>
+                        </ul></div>
+
+                    <Status show={this.state.activeMode=="status"} infoCount={this.state.informations.length} />
+                    <InfoBrowser infos={this.state.informations} onSelect={this.handleSelect} show={this.state.activeMode=="browse"} />
+                    <InfoEdit info={selectedInfo} show={this.state.activeMode=="edit"} onEdit={this.handleEdit} />
+            </div>);}
+    });
+
+    var Status = React.createClass({
+        render: function() {
+            if(this.props.show) { return (
+                <div className="Status">
+                    <p>{this.props.infoCount} Infos loaded</p>
+
+                </div>
+            ) } else{ return(
+                    <div className="Status"></div>
+            )} } });
+
+    var TableRow = React.createClass({
+        propogateClick: function() {
+//            console.log("debug " + JSON.stringify(this.props));
+            this.props.rowSelect(this.props.index);
+        },
+        render: function() {
+            for (first_key in this.props.data[0]) break;
+            first_value = this.props.data[0][first_key];
+            for (second_key in this.props.data[1]) break;
+            second_value = this.props.data[1][second_key];
+
+            return(
+            <tr onClick={this.propogateClick}>
+                <td>{first_value}</td><td>{second_value}</td>
+            </tr>
+            );}
+    });
+
+    var InfoBrowser = React.createClass({
+        getInitialState: function() {
+            return {
+                filterText: ''
+            };
+        },
+        handleChange: function() {
+            this.setState({filterText: this.refs.filterTextInput.getDOMNode().value});
+        },
+        handleRowSelect: function(selectedIndex){
+            this.props.onSelect(selectedIndex);
+        },
+        render: function() {
+            if(this.props.show) {
+                var infos_indexed = [];
+                for (var i in this.props.infos) {
+                    var n = this.props.infos[i];
+                    n["index"] = i;
+                    infos_indexed.push(n);
+                }
+
+                var sorted = infos_indexed.sort(function(a,b){
+                    for (first_a in a.data[0]) break;
+                    a_str = a.data[0][first_a];
+                    for (first_b in b.data[0]) break;
+                    b_str = b.data[0][first_b];
+                    return a_str.localeCompare(b_str)
+
+                });
+
+                var tableRows = [];
+                this_infoBrowser = this;
+                sorted.forEach(function (info) {
+                    for (first in info.data[0]) break;
+                    a_str = info.data[0][first];
+                    if( a_str.indexOf(this_infoBrowser.state.filterText) !== -1 ) {
+                        tableRows.push(
+                                <TableRow key={a_str} data={info.data} index={info.index} rowSelect={this_infoBrowser.handleRowSelect} />
+
+                        );
+                    }
+                });
+                return (
+                    <div className="InfoBrowser">
+                        <input type="text" placeholder="Filter first entry..." value={this.state.filterText} onChange={this.handleChange} ref="filterTextInput"/>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>First entry</th>
+                                    <th>Second entry</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {tableRows }
+                            </tbody>
+                        </table>
+                    </div>
+                );
+            } else{
+                return(<div></div>);
+            }
+        }
+    });
+
+
+    var InfoEdit = React.createClass({
+        handleInfoEdit: function(idx, e, ttt) {
+//            console.log("debug, e: " + JSON.stringify(e.target.value));
+            console.log("debug, e: " + idx + " und " + e.target.value);
+            var infoChanged = this.props.info;
+//            if(ttt === "key")
+//                new_entry = {this.props.info["data"][idx] };
+//
+//            else
+
+            infoChanged["data"][idx] = new_entry;
+            this.props.onEdit(infoChanged);
+
+//            console.log("changed! info_changed: " + JSON.stringify(this.state.myInfo));
+//            this.setState({myInfo: this.refs.});
+//            this.setState({filterText: this.refs.filterTextInput.getDOMNode().value});
+//            this.props.onEdit(info_changed);
+//            this.setState({filterText: this.refs.filterTextInput.getDOMNode().value});
+        },
+        render: function() {
+            if(this.props.show) {
+                console.log("forms render");
+                var this_InfoEdit = this;
+//                var entries = this.props.info.data.map(function(entry) {
+                var inputs = [];
+                for(idx in this.props.info.data){
+
+                    for (onlyKey in this.props.info.data[idx]) break;
+                    var onlyValue = this.props.info.data[idx][onlyKey];
+//                    console.log("onlyKey " + onlyKey);
+//                    console.log("onlyValue " + onlyValue);
+                    inputs.push( <input key={onlyKey} type="text" value={onlyKey} onChange={this_InfoEdit.handleInfoEdit.bind(this, idx, "key")}/> );
+                }
+
+                return (
+                    <div className="InfoEdit">
+                        <p>Edit</p>
+                        {inputs}
+
+                    </div>
+                );
+            } else{
+                return ( <div className="InfoEdit"></div> );
+            }
+        }
+    });
+
+
+    React.render(
+            <App />, document.getElementById('content')
+    );
+
+
+</script>
+</body>
+</html>
