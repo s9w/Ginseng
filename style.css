@@ -45,3 +45,11 @@ html {
     text-rendering: optimizeLegibility;
     font-size: 1.5rem;
 }
+
+.editEntryContainer{
+    display: flex;
+}
+
+.editEntryElement{
+    margin: 5px 10px;
+}

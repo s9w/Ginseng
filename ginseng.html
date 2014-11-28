@@ -18,6 +18,7 @@
         getInitialState: function() {
             return {
                 informations:[],
+                info_types:[],
                 activeMode: "status",
                 selectedInfoId: -1
             };
@@ -39,9 +40,8 @@
         },
         getDefaultInfo: function () {
             return {
-                "data": [
-                    ["front", ""],
-                    ["back", ""]],
+                "type": "front and back",
+                "data": ["", ""],
                 "tags": [],
                 "metadata": {
                     "created": "jetzt todo"
@@ -66,7 +66,7 @@
 
                     <Status      show={this.state.activeMode=="status"} clickLoad={this.loadDefault} infoCount={this.state.informations.length} />
                     <InfoBrowser show={this.state.activeMode=="browse"} infos={this.state.informations} onSelect={this.handleSelectInfo}  />
-                    <InfoEdit    show={this.state.activeMode=="edit"}   info={selectedInfo}  onEdit={this.handleEdit} />
+                    <InfoEdit    show={this.state.activeMode=="edit"}   info={selectedInfo} info_type={this.state.info_types[selectedInfo["type"]]}  onEdit={this.handleEdit} />
             </div>);}
     });
 
@@ -86,8 +86,8 @@
             this.props.onRowSelect(this.props.index);
         },
         render: function() {
-            var firstField_value = this.props.data[0][1];
-            var secondField_value = this.props.data[1][1];
+            var firstField_value = this.props.data[0];
+            var secondField_value = this.props.data[1];
             return(
                 <tr onClick={this.propogateClick}>
                     <td>{firstField_value}</td><td>{secondField_value}</td>
@@ -116,23 +116,25 @@
                     infos_indexed.push(info_indexed);
                 }
 
-                // sort infos based on value of first entry
+                // Sort infos based on value of first entry
                 var infos_sorted = infos_indexed.sort(function(a,b){
-                    var entry_a_first_value = a.data[0][1];
-                    var entry_b_first_value = b.data[0][1];
+                    var entry_a_first_value = a.data[0];
+                    var entry_b_first_value = b.data[0];
                     return entry_a_first_value.localeCompare(entry_b_first_value)
                 });
 
+                // Filter infos
                 var tableRows = [];
                 this_infoBrowser = this;
                 infos_sorted.forEach(function (info) {
-                    var firstField_value = info.data[0][1];
+                    var firstField_value = info.data[0];
                     if( firstField_value.indexOf(this_infoBrowser.state.filterText) !== -1 ) {
                         tableRows.push(
                             <TableRow key={firstField_value} data={info.data} index={info.index} onRowSelect={this_infoBrowser.handleRowSelect} />
                         );
                     }
                 });
+
                 return (
                     <div className="InfoBrowser">
                         <input type="text" placeholder="Filter first entry..." value={this.state.filterText} onChange={this.handleChange} ref="filterTextInput"/>
@@ -157,24 +159,27 @@
 
 
     var InfoEdit = React.createClass({
-        handleInfoEdit: function(idx, type, e) {
+        handleInfoEdit: function(idx, e) {
             var infoChanged = this.props.info;
-            infoChanged["data"][idx][type] = e.target.value;
+            infoChanged["data"][idx] = e.target.value;
             this.props.onEdit(infoChanged);
         },
         render: function() {
             if(this.props.show) {
                 var inputs = [];
                 for(idx in this.props.info.data){
-                    var entry_name = this.props.info.data[idx][0];
-                    var entry_value = this.props.info.data[idx][1];
-                    inputs.push( <div key={idx}>
-                        <textarea type="text" value={entry_name} onChange={this.handleInfoEdit.bind(this, idx, 0)}/>
-                        <textarea type="text" value={entry_value} onChange={this.handleInfoEdit.bind(this, idx, 1)}/>
+                    var entry_name = this.props.info_type["fieldNames"][idx];
+                    var entry_value = this.props.info.data[idx];
+                    inputs.push( <div key={idx} className="editEntryContainer">
+                        <div className="editEntryElement">{entry_name}</div>
+                        <textarea className="editEntryElement" type="text" value={entry_value} onChange={this.handleInfoEdit.bind(this, idx)}/>
                         </div> );}
 
-                return ( <div className="InfoEdit"><p>Edit</p>{inputs}</div>);
-            } else{
+                return ( <div className="InfoEdit">
+                        {inputs}
+                        </div>);
+            }
+            else{
                 return ( <div className="InfoEdit"></div> );
             }
         }
