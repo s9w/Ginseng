@@ -25,14 +25,17 @@
         clickNav: function(mode) {
             this.setState({activeMode: mode});
         },
-        handleSelect: function(p) {
+        handleSelectInfo: function(p) {
             this.setState({selectedInfoId:p});
         },
         handleEdit: function(editedInfo) {
-            console.log("handleEdit, editedInfo: " + JSON.stringify(editedInfo));
+//            console.log("handleEdit, editedInfo: " + JSON.stringify(editedInfo));
             var infos_old = this.state.informations;
             infos_old[this.state.selectedInfoId] = editedInfo;
             this.setState( {informations:infos_old} );
+        },
+        loadDefault: function(){
+            this.setState(init_data);
         },
         getDefaultInfo: function () {
             return {
@@ -51,20 +54,19 @@
             } else{
                 var selectedInfo = this.getDefaultInfo();
             }
-//            console.log("selectedInfo: " + JSON.stringify(selectedInfo));
             return (
                 <div className="app">
                     <h1 id="title">Ginseng</h1>
                     <div className="nav-main">
                         <ul className="nav-site">
-                            <li className={this.state.activeMode=="status"?"active":"inactive"}><p onClick={this.clickNav.bind(this, "status")} >status</p></li>
-                            <li className={this.state.activeMode=="browse"?"active":"inactive"}><p onClick={this.clickNav.bind(this, "browse")}>browse</p></li>
-                            <li className={this.state.activeMode=="edit"?"active":"inactive"}><p onClick={this.clickNav.bind(this, "edit")}>edit/new</p></li>
+                            <li className={this.state.activeMode=="status"?"active":"inactive"}><p onClick={this.clickNav.bind(this, "status")} >Status</p></li>
+                            <li className={this.state.activeMode=="browse"?"active":"inactive"}><p onClick={this.clickNav.bind(this, "browse")}>Browse</p></li>
+                            <li className={this.state.activeMode=="edit"?"active":"inactive"}><p onClick={this.clickNav.bind(this, "edit")}>Edit/New</p></li>
                         </ul></div>
 
-                    <Status show={this.state.activeMode=="status"} infoCount={this.state.informations.length} />
-                    <InfoBrowser infos={this.state.informations} onSelect={this.handleSelect} show={this.state.activeMode=="browse"} />
-                    <InfoEdit info={selectedInfo} show={this.state.activeMode=="edit"} onEdit={this.handleEdit} />
+                    <Status      show={this.state.activeMode=="status"} clickLoad={this.loadDefault} infoCount={this.state.informations.length} />
+                    <InfoBrowser show={this.state.activeMode=="browse"} infos={this.state.informations} onSelect={this.handleSelectInfo}  />
+                    <InfoEdit    show={this.state.activeMode=="edit"}   info={selectedInfo}  onEdit={this.handleEdit} />
             </div>);}
     });
 
@@ -73,7 +75,7 @@
             if(this.props.show) { return (
                 <div className="Status">
                     <p>{this.props.infoCount} Infos loaded</p>
-
+                    <button onClick={this.props.clickLoad}>load default</button>
                 </div>
             ) } else{ return(
                     <div className="Status"></div>
@@ -81,19 +83,15 @@
 
     var TableRow = React.createClass({
         propogateClick: function() {
-//            console.log("debug " + JSON.stringify(this.props));
-            this.props.rowSelect(this.props.index);
+            this.props.onRowSelect(this.props.index);
         },
         render: function() {
-            for (first_key in this.props.data[0]) break;
-            first_value = this.props.data[0][first_key];
-            for (second_key in this.props.data[1]) break;
-            second_value = this.props.data[1][second_key];
-
+            var firstField_value = this.props.data[0][1];
+            var secondField_value = this.props.data[1][1];
             return(
-            <tr onClick={this.propogateClick}>
-                <td>{first_value}</td><td>{second_value}</td>
-            </tr>
+                <tr onClick={this.propogateClick}>
+                    <td>{firstField_value}</td><td>{secondField_value}</td>
+                </tr>
             );}
     });
 
@@ -113,29 +111,25 @@
             if(this.props.show) {
                 var infos_indexed = [];
                 for (var i in this.props.infos) {
-                    var n = this.props.infos[i];
-                    n["index"] = i;
-                    infos_indexed.push(n);
+                    var info_indexed = this.props.infos[i];
+                    info_indexed["index"] = i;
+                    infos_indexed.push(info_indexed);
                 }
 
-                var sorted = infos_indexed.sort(function(a,b){
-                    for (first_a in a.data[0]) break;
-                    a_str = a.data[0][first_a];
-                    for (first_b in b.data[0]) break;
-                    b_str = b.data[0][first_b];
-                    return a_str.localeCompare(b_str)
-
+                // sort infos based on value of first entry
+                var infos_sorted = infos_indexed.sort(function(a,b){
+                    var entry_a_first_value = a.data[0][1];
+                    var entry_b_first_value = b.data[0][1];
+                    return entry_a_first_value.localeCompare(entry_b_first_value)
                 });
 
                 var tableRows = [];
                 this_infoBrowser = this;
-                sorted.forEach(function (info) {
-                    for (first in info.data[0]) break;
-                    a_str = info.data[0][first];
-                    if( a_str.indexOf(this_infoBrowser.state.filterText) !== -1 ) {
+                infos_sorted.forEach(function (info) {
+                    var firstField_value = info.data[0][1];
+                    if( firstField_value.indexOf(this_infoBrowser.state.filterText) !== -1 ) {
                         tableRows.push(
-                                <TableRow key={a_str} data={info.data} index={info.index} rowSelect={this_infoBrowser.handleRowSelect} />
-
+                            <TableRow key={firstField_value} data={info.data} index={info.index} onRowSelect={this_infoBrowser.handleRowSelect} />
                         );
                     }
                 });
@@ -163,46 +157,23 @@
 
 
     var InfoEdit = React.createClass({
-        handleInfoEdit: function(idx, e, ttt) {
-//            console.log("debug, e: " + JSON.stringify(e.target.value));
-            console.log("debug, e: " + idx + " und " + e.target.value);
+        handleInfoEdit: function(idx, type, e) {
             var infoChanged = this.props.info;
-//            if(ttt === "key")
-//                new_entry = {this.props.info["data"][idx] };
-//
-//            else
-
-            infoChanged["data"][idx] = new_entry;
+            infoChanged["data"][idx][type] = e.target.value;
             this.props.onEdit(infoChanged);
-
-//            console.log("changed! info_changed: " + JSON.stringify(this.state.myInfo));
-//            this.setState({myInfo: this.refs.});
-//            this.setState({filterText: this.refs.filterTextInput.getDOMNode().value});
-//            this.props.onEdit(info_changed);
-//            this.setState({filterText: this.refs.filterTextInput.getDOMNode().value});
         },
         render: function() {
             if(this.props.show) {
-                console.log("forms render");
-                var this_InfoEdit = this;
-//                var entries = this.props.info.data.map(function(entry) {
                 var inputs = [];
                 for(idx in this.props.info.data){
+                    var entry_name = this.props.info.data[idx][0];
+                    var entry_value = this.props.info.data[idx][1];
+                    inputs.push( <div key={idx}>
+                        <textarea type="text" value={entry_name} onChange={this.handleInfoEdit.bind(this, idx, 0)}/>
+                        <textarea type="text" value={entry_value} onChange={this.handleInfoEdit.bind(this, idx, 1)}/>
+                        </div> );}
 
-                    for (onlyKey in this.props.info.data[idx]) break;
-                    var onlyValue = this.props.info.data[idx][onlyKey];
-//                    console.log("onlyKey " + onlyKey);
-//                    console.log("onlyValue " + onlyValue);
-                    inputs.push( <input key={onlyKey} type="text" value={onlyKey} onChange={this_InfoEdit.handleInfoEdit.bind(this, idx, "key")}/> );
-                }
-
-                return (
-                    <div className="InfoEdit">
-                        <p>Edit</p>
-                        {inputs}
-
-                    </div>
-                );
+                return ( <div className="InfoEdit"><p>Edit</p>{inputs}</div>);
             } else{
                 return ( <div className="InfoEdit"></div> );
             }

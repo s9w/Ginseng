@@ -2,8 +2,8 @@ var init_data = {
   "informations": [
     {
       "data":[
-        ["front", "my first front"],
-        ["back", "my first back"]
+        ["front", "child"],
+        ["back", "el niño"]
       ],
       "tags": [
         "physik",
@@ -16,8 +16,8 @@ var init_data = {
 
     {
       "data":[
-        ["front", "Apfel"],
-        ["back", "Apple"]
+        ["front", "Apple"],
+        ["back", "Manzana"]
       ],
       "tags": [
       ],
