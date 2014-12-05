@@ -4,6 +4,10 @@ table {
     cursor: default;
 }
 
+th{
+    text-align: left;
+}
+
 tbody tr:nth-child(even) {
     background-color: rgba(230, 230, 230, 0.68);
 }
@@ -12,25 +16,40 @@ tbody tr:hover {
     background: yellow;
 }
 
-.nav-site li{
-    display:inline;
+tbody tr.selected {
+    background: #ff230f;
 }
 
-.nav-site li.active{
-    background-color: #ececec;
+
+div .nav-site{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 320px;
+    border-bottom: thick solid #000000;
 }
 
-.nav-site p {
+div .nav-site > span{
+    flex: 0 1 auto;
+    align-items: flex-start;
     padding: 0 8px;
     display:inline;
     cursor: pointer;
-    /*text-decoration: none;*/
 }
 
-.nav-site p:hover {
-    border-bottom: 3px solid #cc7a6f;
-    color: #0a0a0a;
+.nav-site > span:hover {
+    background-color: #ececec;
 }
+
+.nav-site > span.active{
+    background-color: #FF9966;
+}
+
+
+a{
+    text-decoration: none;
+}
+
 
 html {
     font-family: "Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
@@ -48,8 +67,30 @@ html {
 
 .editEntryContainer{
     display: flex;
+    flex-direction: column;
 }
 
 .editEntryElement{
+    flex: 0 1 auto;
     margin: 5px 10px;
+    max-width: 320px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.Component{
+    margin-top: 10px;
+}
+
+.grid_left{
+    min-width: 80px;
+}
+
+.invisible{
+    visibility: hidden;
+}
+
+.navInfoStr{
+    min-width: 80px;
+    display: block;
 }

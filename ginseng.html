@@ -1,196 +1,20 @@
-<!-- template.html -->
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>Ginseng</title>
-    <script src="http://fb.me/react-with-addons-0.12.1.js"></script>
-    <script src="init_data.js"></script>
-    <script src="http://fb.me/JSXTransformer-0.12.1.js"></script>
-    <script src="https://cdn.firebase.com/js/client/2.0.4/firebase.js"></script>
+    <script src="http://fb.me/react-0.12.1.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+    <script src="init_data.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.3/dropbox.min.js"></script>
+    <script src="http://fb.me/JSXTransformer-0.12.1.js"></script>
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 <div id="content"></div>
-
-<script type="text/jsx">
-    var App = React.createClass({
-        getInitialState: function() {
-            return {
-                informations:[],
-                info_types:[],
-                activeMode: "status",
-                selectedInfoId: -1
-            };
-        },
-        clickNav: function(mode) {
-            this.setState({activeMode: mode});
-        },
-        handleSelectInfo: function(p) {
-            this.setState({selectedInfoId:p});
-        },
-        handleEdit: function(editedInfo) {
-//            console.log("handleEdit, editedInfo: " + JSON.stringify(editedInfo));
-            var infos_old = this.state.informations;
-            infos_old[this.state.selectedInfoId] = editedInfo;
-            this.setState( {informations:infos_old} );
-        },
-        loadDefault: function(){
-            this.setState(init_data);
-        },
-        getDefaultInfo: function () {
-            return {
-                "type": "front and back",
-                "data": ["", ""],
-                "tags": [],
-                "metadata": {
-                    "created": "jetzt todo"
-                }
-            };
-        },
-        render: function () {
-            if( this.state.selectedInfoId !== -1){
-                var selectedInfo = this.state.informations[this.state.selectedInfoId];
-            } else{
-                var selectedInfo = this.getDefaultInfo();
-            }
-            return (
-                <div className="app">
-                    <h1 id="title">Ginseng</h1>
-                    <div className="nav-main">
-                        <ul className="nav-site">
-                            <li className={this.state.activeMode=="status"?"active":"inactive"}><p onClick={this.clickNav.bind(this, "status")} >Status</p></li>
-                            <li className={this.state.activeMode=="browse"?"active":"inactive"}><p onClick={this.clickNav.bind(this, "browse")}>Browse</p></li>
-                            <li className={this.state.activeMode=="edit"?"active":"inactive"}><p onClick={this.clickNav.bind(this, "edit")}>Edit/New</p></li>
-                        </ul></div>
-
-                    <Status      show={this.state.activeMode=="status"} clickLoad={this.loadDefault} infoCount={this.state.informations.length} />
-                    <InfoBrowser show={this.state.activeMode=="browse"} infos={this.state.informations} onSelect={this.handleSelectInfo}  />
-                    <InfoEdit    show={this.state.activeMode=="edit"}   info={selectedInfo} info_type={this.state.info_types[selectedInfo["type"]]}  onEdit={this.handleEdit} />
-            </div>);}
-    });
-
-    var Status = React.createClass({
-        render: function() {
-            if(this.props.show) { return (
-                <div className="Status">
-                    <p>{this.props.infoCount} Infos loaded</p>
-                    <button onClick={this.props.clickLoad}>load default</button>
-                </div>
-            ) } else{ return(
-                    <div className="Status"></div>
-            )} } });
-
-    var TableRow = React.createClass({
-        propogateClick: function() {
-            this.props.onRowSelect(this.props.index);
-        },
-        render: function() {
-            var firstField_value = this.props.data[0];
-            var secondField_value = this.props.data[1];
-            return(
-                <tr onClick={this.propogateClick}>
-                    <td>{firstField_value}</td><td>{secondField_value}</td>
-                </tr>
-            );}
-    });
-
-    var InfoBrowser = React.createClass({
-        getInitialState: function() {
-            return {
-                filterText: ''
-            };
-        },
-        handleChange: function() {
-            this.setState({filterText: this.refs.filterTextInput.getDOMNode().value});
-        },
-        handleRowSelect: function(selectedIndex){
-            this.props.onSelect(selectedIndex);
-        },
-        render: function() {
-            if(this.props.show) {
-                var infos_indexed = [];
-                for (var i in this.props.infos) {
-                    var info_indexed = this.props.infos[i];
-                    info_indexed["index"] = i;
-                    infos_indexed.push(info_indexed);
-                }
-
-                // Sort infos based on value of first entry
-                var infos_sorted = infos_indexed.sort(function(a,b){
-                    var entry_a_first_value = a.data[0];
-                    var entry_b_first_value = b.data[0];
-                    return entry_a_first_value.localeCompare(entry_b_first_value)
-                });
-
-                // Filter infos
-                var tableRows = [];
-                this_infoBrowser = this;
-                infos_sorted.forEach(function (info) {
-                    var firstField_value = info.data[0];
-                    if( firstField_value.indexOf(this_infoBrowser.state.filterText) !== -1 ) {
-                        tableRows.push(
-                            <TableRow key={firstField_value} data={info.data} index={info.index} onRowSelect={this_infoBrowser.handleRowSelect} />
-                        );
-                    }
-                });
-
-                return (
-                    <div className="InfoBrowser">
-                        <input type="text" placeholder="Filter first entry..." value={this.state.filterText} onChange={this.handleChange} ref="filterTextInput"/>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>First entry</th>
-                                    <th>Second entry</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {tableRows }
-                            </tbody>
-                        </table>
-                    </div>
-                );
-            } else{
-                return(<div></div>);
-            }
-        }
-    });
-
-
-    var InfoEdit = React.createClass({
-        handleInfoEdit: function(idx, e) {
-            var infoChanged = this.props.info;
-            infoChanged["data"][idx] = e.target.value;
-            this.props.onEdit(infoChanged);
-        },
-        render: function() {
-            if(this.props.show) {
-                var inputs = [];
-                for(idx in this.props.info.data){
-                    var entry_name = this.props.info_type["fieldNames"][idx];
-                    var entry_value = this.props.info.data[idx];
-                    inputs.push( <div key={idx} className="editEntryContainer">
-                        <div className="editEntryElement">{entry_name}</div>
-                        <textarea className="editEntryElement" type="text" value={entry_value} onChange={this.handleInfoEdit.bind(this, idx)}/>
-                        </div> );}
-
-                return ( <div className="InfoEdit">
-                        {inputs}
-                        </div>);
-            }
-            else{
-                return ( <div className="InfoEdit"></div> );
-            }
-        }
-    });
-
-
-    React.render(
-            <App />, document.getElementById('content')
-    );
-
-
-</script>
+<script type="text/jsx" src="jsx/app_browser.js"></script>
+<script type="text/jsx" src="jsx/app_infos.js"></script>
+<script type="text/jsx" src="jsx/app_review.js"></script>
+<script type="text/jsx" src="jsx/script_app.js"></script>
 </body>
 </html>
