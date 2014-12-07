@@ -40,16 +40,38 @@ var InfoEdit = React.createClass({
     onSave: function(){
         this.props.onSave(this.state.info.fields, this.state.tagsStr.replace(/ /g, "").split(","), this.state.selectedTypeIndex);
     },
+    addUsedTag: function (nextTagStr) {
+        var newTagStr = this.state.tagsStr;
+        var separator;
+        if(newTagStr === "")
+            separator = "";
+        else
+            separator = ", ";
+        newTagStr += separator + nextTagStr;
+        this.setState({tagsStr: newTagStr});
+    },
     render: function() {
         var data_elements = [];
+        console.log("this.state.selectedTypeIndex: " + this.state.selectedTypeIndex);
         for (var i = 0; i < this.props.info_types[this.state.selectedTypeIndex].fieldNames.length; ++i) {
             var element_name = this.props.info_types[this.state.selectedTypeIndex].fieldNames[i];
             data_elements.push(
                 <div key={i} className="editEntryElement">
                     <div className="grid_left">{element_name}</div>
-                    <textarea type="text" value={this.state.info.fields[i]} onChange={this.onFieldEdit.bind(this, i)} />
+                    <textarea rows={1} type="text" value={this.state.info.fields[i]} onChange={this.onFieldEdit.bind(this, i)} />
                 </div>
             );
+        }
+
+        // used Tags
+        var usedTagEls = [];
+        var seperator = "";
+        for (var index = 0; index < this.props.usedTags.length; ++index) {
+            if(index === this.props.usedTags.length-1)
+                seperator = "";
+            else
+                seperator = ", ";
+            usedTagEls.push( <a key={index}  onClick={this.addUsedTag.bind(this, this.props.usedTags[index])} href="#">{this.props.usedTags[index] + seperator}</a> );
         }
 
         return (
@@ -59,7 +81,11 @@ var InfoEdit = React.createClass({
                     {data_elements}
                     <div className="editEntryElement">
                         <div className="grid_left">Tags</div>
-                        <textarea type="text" value={this.state.tagsStr} onChange={this.onTagsEdit} />
+                        <textarea rows={1} type="text" value={this.state.tagsStr} onChange={this.onTagsEdit} />
+                    </div>
+                    <div className="editEntryElement">
+                        <div className="grid_left"></div>
+                        {usedTagEls}
                     </div>
                 </div>
                 <button onClick={this.onSave}>Save</button>
@@ -131,7 +157,7 @@ var InfoTypes = React.createClass({
     onNameEdit: function(event) {
         this.props.onNameEdit(this.state.selectedTypeIndex, event.target.value);
     },
-    change_iType: function(iTypeName){
+    onTypeChange: function(iTypeName){
         this.setState({selectedTypeIndex: iTypeName});
     },
     onFieldsResize: function(fieldNameIndex){
@@ -144,7 +170,7 @@ var InfoTypes = React.createClass({
                 var fieldName = this.props.info_types[this.state.selectedTypeIndex].fieldNames[i];
                 iType_elements.push(
                     <div key={i} className="editEntryElement">
-                        <span className="grid_left">Field {i}</span>
+                        <span className="grid_left">Fieldname {i}</span>
                         <input type="text" value={fieldName} onChange={this.onFieldNameEdit.bind(this, i)} />
                         <a href="#" onClick={this.onFieldsResize.bind(this, i)}>(-)</a>
                     </div>
@@ -154,9 +180,10 @@ var InfoTypes = React.createClass({
             return (
                 <div className="InfoTypes Component">
                     <div className="editEntryContainer">
-                        <ITypeSwitcher selected_iType={this.state.selectedTypeIndex} onTypeChange={this.change_iType} info_types={this.props.info_types} onAddType={this.props.onEdit}/>
+                        <ITypeSwitcher selected_iType={this.state.selectedTypeIndex} onTypeChange={this.onTypeChange}
+                            info_types={this.props.info_types} onAddType={this.props.onEdit}/>
                         <div className="editEntryElement">
-                            <span className="grid_left">Name</span>
+                            <span className="grid_left">Type name</span>
                             <input className="grid_right" type="text" value={this.props.info_types[this.state.selectedTypeIndex].name} onChange={this.onNameEdit} />
                         </div>
                     </div>

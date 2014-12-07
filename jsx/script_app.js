@@ -26,7 +26,8 @@ var App = React.createClass({
                 lastInfoType: "Front and back"
             },
             activeMode: "status",
-            selectedInfoIndex: 0
+            selectedInfoIndex: 0,
+            usedTags: []
         };
     },
 
@@ -41,6 +42,19 @@ var App = React.createClass({
         });
         return infos_sorted;
     },
+    updateUsedTags: function(infos){
+        var newUsedTagsObj = {};
+        for (var i = 0; i < infos.length; ++i) {
+            for (var j = 0; j < infos[i].tags.length; ++j) {
+                newUsedTagsObj[infos[i].tags[j]] = 1;
+            }
+        }
+        var newUsedTags = [];
+        for(key in newUsedTagsObj){
+            newUsedTags.push(key);
+        }
+        this.setState({usedTags: newUsedTags});
+    },
     loadDefault: function(){
         this.setState( {
             ginseng_infos: this.getSortedInfos(init_data.infos),
@@ -48,6 +62,7 @@ var App = React.createClass({
             ginseng_selections: init_data.selections,
             ginseng_settings: init_data.settings
         });
+        this.updateUsedTags(init_data.infos); // not fast enough if called on own state. setstate too slow :(
     },
     onRowSelect: function(index_selected) {
         console.log("selected row " + index_selected);
@@ -58,7 +73,7 @@ var App = React.createClass({
     },
 
 
-    handleEdit: function(newData, newTags, newTypeIndex) {
+    onInfoEdit: function(newData, newTags, newTypeIndex) {
         var newInfos = JSON.parse( JSON.stringify( this.state.ginseng_infos ));
         newInfos[this.state.selectedInfoIndex].fields = newData;
         newInfos[this.state.selectedInfoIndex].tags = newTags;
@@ -67,6 +82,27 @@ var App = React.createClass({
             ginseng_infos: newInfos,
             activeMode: "browse"
         } );
+        this.updateUsedTags(newInfos); // not fast enough if called on own state. setstate too slow :(
+    },
+    addInfo: function(newFields, newTags, newTypeIndex){
+        console.log("addInfo. fields: " + newFields + ", tags: " + newTags);
+        var newInfo = this.getSanitizedInfo({
+            type: this.state.ginseng_infoTypes[newTypeIndex].name,
+            fields: newFields,
+            tags: newTags
+        }, newTypeIndex);
+
+        var newInfos = JSON.parse( JSON.stringify( this.state.ginseng_infos ));
+        newInfos.push(newInfo);
+
+        var new_settings = JSON.parse( JSON.stringify( this.state.ginseng_settings ));
+        new_settings.lastInfoType = this.state.ginseng_infoTypes[newTypeIndex].name;
+        this.setState( {
+            ginseng_infos: newInfos,
+            ginseng_settings: new_settings,
+            activeMode: "browse"
+        } );
+        this.updateUsedTags(newInfos); // not fast enough if called on own state. setstate too slow :(
     },
     onNew: function(){
         this.setState({activeMode: "new"})
@@ -89,26 +125,6 @@ var App = React.createClass({
         }
         return newInfo;
     },
-    addInfo: function(newFields, newTags, newTypeIndex){
-        console.log("addInfo. fields: " + newFields + ", tags: " + newTags);
-        var newInfo = this.getSanitizedInfo({
-            type: this.state.ginseng_infoTypes[newTypeIndex].name,
-            fields: newFields,
-            tags: newTags
-        }, newTypeIndex);
-        console.log("newInfo: " + JSON.stringify(newInfo));
-
-        var newInfos = JSON.parse( JSON.stringify( this.state.ginseng_infos ));
-        newInfos.push(newInfo);
-
-        var new_settings = JSON.parse( JSON.stringify( this.state.ginseng_settings ));
-        new_settings.lastInfoType = this.state.ginseng_infoTypes[newTypeIndex].name;
-        this.setState( {
-            ginseng_infos: newInfos,
-            ginseng_settings: new_settings,
-            activeMode: "browse"
-        } );
-    },
 
     onTypesEdit: function(newTypes){
         this.setState({ginseng_infoTypes: newTypes} );
@@ -118,7 +134,6 @@ var App = React.createClass({
         console.log("resizing");
         for (var index = 0; index < new_infos.length; ++index) {
             if(new_infos[index].type === this.state.ginseng_infoTypes[typeIndex].name){
-                console.log("joa treffer");
                 if(fieldNameIndex === -1){
                     new_infos[index].fields.push("");
                 }else{
@@ -170,11 +185,11 @@ var App = React.createClass({
                 onSave = this.addInfo;
             }
             else {
-                default_iType_index = this.state.selectedInfoIndex;
+                default_iType_index = iTypeIdxLookup[ this.state.ginseng_infos[this.state.selectedInfoIndex].type ];
                 editInfo = this.state.ginseng_infos[this.state.selectedInfoIndex];
-                onSave = this.handleEdit;
+                onSave = this.onInfoEdit;
             }
-            comp_new = <InfoEdit info_types={this.state.ginseng_infoTypes} info={editInfo}
+            comp_new = <InfoEdit info_types={this.state.ginseng_infoTypes} info={editInfo} usedTags={this.state.usedTags}
                 default_iType_index={default_iType_index} onSave={onSave} cancelEdit={this.cancelEdit} />
         }
 
