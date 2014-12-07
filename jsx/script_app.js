@@ -1,4 +1,5 @@
 var client = new Dropbox.Client({ key: "ob9346e5yc509q2" });
+//client.authDriver(new Dropbox.AuthDriver.Popup({receiverUrl: "https://s9w.github.io/ginseng/dropbox_receiver.html"}));
 client.authDriver(new Dropbox.AuthDriver.Popup({receiverUrl: "https://leastaction.org/ginseng/dropbox_receiver.html"}));
 
 var App = React.createClass({
@@ -78,19 +79,17 @@ var App = React.createClass({
     },
     loadDB: function() {
         var thisApp = this;
-        console.log("loadDB");
         client.readFile("ginseng_data.txt", function (error, data) {
             if (error) {
                 return showError(error);  // Something went wrong.
             }
             var js = JSON.parse(data);
-            console.log("data: " + JSON.stringify( js) );
-            console.log("size: " + js.infos.length);
             thisApp.setState({
                 ginseng_infos: js.infos,
                 ginseng_infoTypes: js.infoTypes,
                 ginseng_settings: js.settings
             });
+            thisApp.updateUsedTags(js.infos);
         });
     },
     getSortedInfos: function(infos, sortField){
@@ -114,15 +113,15 @@ var App = React.createClass({
         }
         this.setState({usedTags: newUsedTags});
     },
-    loadDefault: function(){
-        this.setState( {
-            ginseng_infos: this.getSortedInfos(init_data.infos),
-            ginseng_infoTypes: init_data.infoTypes,
-            ginseng_selections: init_data.selections,
-            ginseng_settings: init_data.settings
-        });
-        this.updateUsedTags(init_data.infos); // not fast enough if called on own state. setstate too slow :(
-    },
+    //loadDefault: function(){
+    //    this.setState( {
+    //        ginseng_infos: this.getSortedInfos(init_data.infos),
+    //        ginseng_infoTypes: init_data.infoTypes,
+    //        ginseng_selections: init_data.selections,
+    //        ginseng_settings: init_data.settings
+    //    });
+    //    this.updateUsedTags(init_data.infos); // not fast enough if called on own state. setstate too slow :(
+    //},
     onRowSelect: function(index_selected) {
         console.log("selected row " + index_selected);
         this.setState({
@@ -142,6 +141,15 @@ var App = React.createClass({
             activeMode: "browse"
         } );
         this.updateUsedTags(newInfos); // not fast enough if called on own state. setstate too slow :(
+    },
+    onInfoDelete: function(){
+        var newInfos = JSON.parse( JSON.stringify( this.state.ginseng_infos ));
+        console.log("ondelete, this.state.selectedInfoIndex: " + this.state.selectedInfoIndex);
+        newInfos.splice(this.state.selectedInfoIndex, 1);
+        this.setState({
+            ginseng_infos: newInfos,
+            activeMode: "browse"
+        } );
     },
     addInfo: function(newFields, newTags, newTypeIndex){
         console.log("addInfo. fields: " + newFields + ", tags: " + newTags);
@@ -238,19 +246,21 @@ var App = React.createClass({
         var comp_edit = <div/>;
 
         if(["new", "edit"].indexOf(this.state.activeMode) !== -1){
-            var default_iType_index, editInfo, onSave;
+            var default_iType_index, editInfo, onSave, onDelete;
             if (this.state.activeMode == "new") {
                 default_iType_index = iTypeIdxLookup[this.state.ginseng_settings.lastInfoType];
                 editInfo = {tags: [], fields: []};
                 onSave = this.addInfo;
+                onDelete = false;
             }
             else {
                 default_iType_index = iTypeIdxLookup[ this.state.ginseng_infos[this.state.selectedInfoIndex].type ];
                 editInfo = this.state.ginseng_infos[this.state.selectedInfoIndex];
                 onSave = this.onInfoEdit;
+                onDelete = this.onInfoDelete;
             }
             comp_new = <InfoEdit info_types={this.state.ginseng_infoTypes} info={editInfo} usedTags={this.state.usedTags}
-                default_iType_index={default_iType_index} onSave={onSave} cancelEdit={this.cancelEdit} />
+                default_iType_index={default_iType_index} onSave={onSave} cancelEdit={this.cancelEdit} onDelete={onDelete} />
         }
         var comp_review = <div/>;
         if(this.state.activeMode === "review")
@@ -284,7 +294,7 @@ var App = React.createClass({
 
                 {comp_new}
                 {comp_edit}
-                <Status      show={this.state.activeMode=="status"} clickLoad={this.loadDefault}
+                <Status      show={this.state.activeMode=="status"}
                     infoCount={this.state.ginseng_infos.length} dropBoxStatus={this.state.dropBoxStatus} onDBAuth={this.authDB}
                     onDbSave={this.saveDB} lastSaved={this.state.lastSaved} onDbLoad={this.loadDB}/>
                 <InfoBrowser show={this.state.activeMode=="browse"} infos={this.state.ginseng_infos}
@@ -307,18 +317,16 @@ var Status = React.createClass({
 
             return (
                 <div className="Status Component">
-                    <span>{this.props.infoCount} Infos loaded</span>
-                    <button onClick={this.props.clickLoad}>load default</button>
+                    <div>Infos loaded: {this.props.infoCount}</div>
+                    <div>Dropbox Status: {this.props.dropBoxStatus}</div>
+                    <div>Last save: {this.props.lastSaved}</div>
+
                     <div>
-                        <span>Dropbox Status: </span><span>{this.props.dropBoxStatus}</span>
-                        <button className={this.props.dropBoxStatus==="logged in!"?"invisible":""} onClick={this.props.onDBAuth}>auth Dropbox</button>
+                        <button disabled={this.props.dropBoxStatus==="logged in!"?"invisible":""} onClick={this.props.onDBAuth}>auth Dropbox</button>
                     </div>
                     <div>
-                        <button onClick={this.props.onDbLoad}>load from Dropbox</button>
-                    </div>
-                    <div>
-                        <span>last save: </span><span>{this.props.lastSaved}</span>
-                        <button onClick={this.props.onDbSave}>save to Dropbox</button>
+                        <button disabled={this.props.dropBoxStatus!=="logged in!"} onClick={this.props.onDbLoad}>load from Dropbox</button>
+                        <button disabled={this.props.dropBoxStatus!=="logged in!"} onClick={this.props.onDbSave}>save to Dropbox</button>
                     </div>
                 </div>
             ) } else{

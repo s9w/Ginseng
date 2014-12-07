@@ -22,6 +22,14 @@ tbody tr.selected {
     background: #ff230f;
 }
 
+.browseControls{
+    margin-bottom: 5px;
+}
+
+.browseControls > input{
+    margin-right: 10px;
+}
+
 
 div .nav-site{
     display: flex;
@@ -50,6 +58,7 @@ div .nav-site > span{
 
 .clickable{
     cursor: pointer;
+    padding: 0 0 0 5px;
 }
 
 .clickable:hover{
@@ -108,4 +117,8 @@ html {
 
 .iTypeSwitcher{
     align-items: flex-start;
+}
+
+.markdowned{
+    white-space: pre;
 }

@@ -1,26 +1,63 @@
 var converter = new Showdown.converter();
 
+function getSelected(infos, selectionStr){
+    if(selectionStr === "")
+        return infos;
+    console.log("selectionStr: " + selectionStr);
+    var selectedInfos = [];
+    var selectionStr_new = selectionStr.replace(/ /g, "");
+    selectionStr_new = selectionStr_new.split(" OR ").map(function(el){
+        return el.split(",").map(function(fc){
+            fc = fc.replace(/tag:(\w+)/, 'infos[i].tags.indexOf("$1") !== -1');
+            return fc;
+        }).join(" && ")
+    }).join(" || ");
+    console.log("selectionStr_new: " + selectionStr_new);
+
+    for (var i = 0; i < infos.length; ++i) {
+        if( eval(selectionStr_new) ){
+            selectedInfos.push(infos[i]);
+        }
+    }
+    console.log("selectedInfos: " + JSON.stringify( selectedInfos) );
+    return selectedInfos;
+}
+
 var Review = React.createClass({
     getInitialState: function() {
         return {
-            reviewIndex: 0
+            reviewIndex: 0,
+            flipped: false
         };
     },
     nextReview: function(){
-        this.setState({reviewIndex: this.state.reviewIndex+1});
+        this.setState({
+            reviewIndex: this.state.reviewIndex+1,
+            flipped: false
+        });
+        this.refs.flipButton.getDOMNode().focus();
+    },
+    flip: function(){
+        this.setState({flipped: true})
+        this.refs.nextButton.getDOMNode().focus();
+    },
+    componentDidMount: function(){
+        this.refs.flipButton.getDOMNode().focus();
     },
     render: function() {
         var i, j, k, info, lastReview, iTypeName, iTypeIndex, iType;
         var fieldnameToIndex = {};
+
         for (i = 0; i < this.props.info_types.length; ++i) {
             for (j = 0; j < this.props.info_types[i].fieldNames.length; ++j) {
                 fieldnameToIndex[ this.props.info_types[i].fieldNames[j] ] = j;
             }
         }
 
+        var filteredInfos = getSelected(this.props.infos, "");
         var reviewsItems = [];
-        for (i = 0; i < this.props.infos.length; ++i) {
-            info = this.props.infos[i];
+        for (i = 0; i < filteredInfos.length; ++i) {
+            info = filteredInfos[i];
             for (j = 0; j < info.reviews.length; ++j) {
                 if( info.reviews[j].length === 0 ){
                     lastReview = {
@@ -56,12 +93,15 @@ var Review = React.createClass({
         }
         //console.log("reviewsItems: " + JSON.stringify(reviewsItems, null, "  ") + ", length: " + reviewsItems.length);
         //converter.makeHtml( reviewsItems[this.state.reviewIndex].front )
+        var backsideClassname = "markdowned";
+        if(!(this.state.flipped))
+            backsideClassname += " invisible";
         return (
             <div className="Review Component">
-                <div dangerouslySetInnerHTML={{__html: converter.makeHtml( reviewsItems[this.state.reviewIndex].front )}}></div>
-                <div>BREAK</div>
-                <div dangerouslySetInnerHTML={{__html: converter.makeHtml( reviewsItems[this.state.reviewIndex].back )}}></div>
-                <button onClick={this.nextReview}>next</button>
+                <div className="markdowned" dangerouslySetInnerHTML={{__html: converter.makeHtml( reviewsItems[this.state.reviewIndex].front )}}></div>
+                <div className={backsideClassname} dangerouslySetInnerHTML={{__html: converter.makeHtml( reviewsItems[this.state.reviewIndex].back )}}></div>
+                <button onClick={this.flip} ref="flipButton">show backside</button>
+                <button onClick={this.nextReview} ref="nextButton">next</button>
                 <div>
                     <span>Status</span>
                     <span>{this.state.reviewIndex+1 + "/" + reviewsItems.length}</span>

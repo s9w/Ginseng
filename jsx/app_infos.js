@@ -90,6 +90,7 @@ var InfoEdit = React.createClass({
                 </div>
                 <button onClick={this.onSave}>Save</button>
                 <button onClick={this.props.cancelEdit}>Cancel</button>
+                <button className={!(this.props.onDelete)?"invisible":""} onClick={this.props.onDelete}>Delete</button>
             </div>);
     }
 });
@@ -126,7 +127,7 @@ var ITypeSwitcher = React.createClass({
         }
         var buttonAddType = "";
         if(this.props.onAddType)
-            buttonAddType = <button onClick={this.onAddType}>New type</button>;
+            buttonAddType = <span className="fa fa-plus-circle clickable" title="new type" onClick={this.onAddType}></span>;
 
         return (
             <div className="iTypeSwitcher editEntryElement">
@@ -172,7 +173,7 @@ var InfoTypes = React.createClass({
                     <div key={i} className="editEntryElement">
                         <span className="grid_left">Field {i}</span>
                         <input type="text" value={fieldName} onChange={this.onFieldNameEdit.bind(this, i)} />
-                        <span className="fa fa-minus-circle clickable" onClick={this.onFieldsResize.bind(this, i)}></span>
+                        <span className="fa fa-minus-circle clickable" title="delete field" onClick={this.onFieldsResize.bind(this, i)}></span>
                     </div>
                 )
             }

@@ -1,28 +1,3 @@
-function getSelected(infos, selectionStr){
-    if(selectionStr === "")
-        return infos;
-
-    console.log("selectionStr: " + selectionStr);
-    var selectedInfos = [];
-
-    var selectionStr_new = selectionStr.replace(/ /g, "");
-    selectionStr_new = selectionStr_new.split(" OR ").map(function(el){
-        return el.split(",").map(function(fc){
-            fc = fc.replace(/tag:(\w+)/, 'infos[i].tags.indexOf("$1") !== -1');
-            return fc;
-        }).join(" && ")
-    }).join(" || ");
-    console.log("selectionStr_new: " + selectionStr_new);
-
-    for (var i = 0; i < infos.length; ++i) {
-        if( eval(selectionStr_new) ){
-            selectedInfos.push(infos[i]);
-        }
-    }
-    console.log("selectedInfos: " + JSON.stringify( selectedInfos) );
-    return selectedInfos;
-}
-
 var InfoBrowser = React.createClass({
     getInitialState: function() {
         return {
@@ -55,8 +30,11 @@ var InfoBrowser = React.createClass({
 
             return (
                 <div className="InfoBrowser Component">
-                    <input type="text" placeholder="Quick filter..." value={this.state.filterText}
-                        onChange={this.onFilterChange}/><button onClick={this.props.onNew}>New</button>
+                    <div className="browseControls">
+                        <input type="text" placeholder="Quick filter..." value={this.state.filterText}
+                            onChange={this.onFilterChange}/>
+                        <button onClick={this.props.onNew}>New info</button>
+                    </div>
                     <table>
                         <thead><tr>
                                 <th>1st</th>

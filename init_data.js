@@ -34,7 +34,7 @@ var init_data = {
         },
         {
           "front": "Und andersrum. Hier ist back: {back}",
-          "back": "Hier ist front: {front}. Und hier noch **bold** uuh\nund nächste zeile",
+          "back": "Hier ist front: {front}. Und hier noch **bold** uuh\\nund nächste zeile",
           "condition": "tag: reverse"
         }
       ]
