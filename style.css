@@ -8,6 +8,8 @@ th{
     text-align: left;
 }
 
+th, td { padding: 0 10px 0 0; }
+
 tbody tr:nth-child(even) {
     background-color: rgba(230, 230, 230, 0.68);
 }
@@ -46,6 +48,13 @@ div .nav-site > span{
     background-color: #FF9966;
 }
 
+.clickable{
+    cursor: pointer;
+}
+
+.clickable:hover{
+    color: red;
+}
 
 a{
     text-decoration: none;

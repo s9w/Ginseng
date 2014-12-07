@@ -21,18 +21,77 @@ var App = React.createClass({
                     }
                 ]
             }],
-            ginseng_selections: [""],
             ginseng_settings:{
                 lastInfoType: "Front and back"
             },
+            "intervalModifiers": {
+                "set_dueTime":{
+                    "parameters": ["time"]
+                },
+                "setInterval": {
+                    "parameters": ["months", "weeks", "days", "hours", "minutes"]
+                },
+                "modIntervalRelative": {
+                    "parameters": ["percent"]
+                },
+                "modIntervalAbsolutely": {
+                    "parameters": ["months", "weeks", "days", "hours", "minutes"]
+                }
+            },
             activeMode: "status",
             selectedInfoIndex: 0,
-            usedTags: []
+            usedTags: [],
+            dropBoxStatus: "off",
+            lastSaved: "never"
         };
     },
 
     clickNav: function(mode) {
         this.setState({activeMode: mode});
+    },
+    authDB: function(){
+        var thisApp = this;
+        client.authenticate(function (error) {
+            if (error) {
+                thisApp.setState({dropBoxStatus: "ERROR"});
+            }
+            else
+                thisApp.setState({dropBoxStatus: "logged in!"});
+        });
+    },
+    saveDB: function(){
+        var thisApp = this;
+        var writeData = {
+            infos: this.state.ginseng_infos,
+            infoTypes: this.state.ginseng_infoTypes,
+            settings: this.state.ginseng_settings
+        };
+        client.writeFile("ginseng_data.txt", JSON.stringify(writeData, null, '\t'), function(error, stat) {
+            if (error) {
+                console.log("error: " + error);
+            }
+            else {
+                console.log("file saved with revision " + stat.versionTag);
+                thisApp.setState({lastSaved: moment().format("LT")});
+            }
+        });
+    },
+    loadDB: function() {
+        var thisApp = this;
+        console.log("loadDB");
+        client.readFile("ginseng_data.txt", function (error, data) {
+            if (error) {
+                return showError(error);  // Something went wrong.
+            }
+            var js = JSON.parse(data);
+            console.log("data: " + JSON.stringify( js) );
+            console.log("size: " + js.infos.length);
+            thisApp.setState({
+                ginseng_infos: js.infos,
+                ginseng_infoTypes: js.infoTypes,
+                ginseng_settings: js.settings
+            });
+        });
     },
     getSortedInfos: function(infos, sortField){
         // Sort infos based on value of first entry.
@@ -114,12 +173,13 @@ var App = React.createClass({
     },
     getSanitizedInfo: function(info, typeIndex){
         var newInfo = JSON.parse( JSON.stringify( info ));
-        if(!"creationDate" in newInfo)
+        if(!("creationDate" in newInfo)) {
             newInfo.creationDate = moment().format();
-        if(!"reviews" in newInfo){
+        }
+        if(!("reviews" in newInfo)){
             var reviews = [];
             for (var index = 0; index < this.state.ginseng_infoTypes[typeIndex].fieldNames.length; ++index) {
-                reviews.push({});
+                reviews.push([]);
             }
             newInfo.reviews = reviews;
         }
@@ -192,6 +252,13 @@ var App = React.createClass({
             comp_new = <InfoEdit info_types={this.state.ginseng_infoTypes} info={editInfo} usedTags={this.state.usedTags}
                 default_iType_index={default_iType_index} onSave={onSave} cancelEdit={this.cancelEdit} />
         }
+        var comp_review = <div/>;
+        if(this.state.activeMode === "review")
+            comp_review = <Review
+                infos={this.state.ginseng_infos}
+                info_types={this.state.ginseng_infoTypes}
+                iTypeIdxLookup={iTypeIdxLookup}
+            />;
 
         // Info-nav string
         var var_browse_el;
@@ -217,13 +284,15 @@ var App = React.createClass({
 
                 {comp_new}
                 {comp_edit}
-                <Status      show={this.state.activeMode=="status"} clickLoad={this.loadDefault} infoCount={this.state.ginseng_infos.length} />
+                <Status      show={this.state.activeMode=="status"} clickLoad={this.loadDefault}
+                    infoCount={this.state.ginseng_infos.length} dropBoxStatus={this.state.dropBoxStatus} onDBAuth={this.authDB}
+                    onDbSave={this.saveDB} lastSaved={this.state.lastSaved} onDbLoad={this.loadDB}/>
                 <InfoBrowser show={this.state.activeMode=="browse"} infos={this.state.ginseng_infos}
                     onRowSelect={this.onRowSelect} onNew={this.onNew} selections={this.state.ginseng_selections} />
                 <InfoTypes   show={this.state.activeMode=="types"} info_types={this.state.ginseng_infoTypes}
                     onFieldNameEdit={this.onTypeFieldnameEdit} onNameEdit={this.onTypeNameEdit}
                     onEdit={this.onTypesEdit} onResize={this.onTypeResize}/>
-                <Review show={this.state.activeMode=="review"} infos={this.state.ginseng_infos}/>
+                {comp_review}
 
             </div>);}
 });
@@ -231,10 +300,26 @@ var App = React.createClass({
 var Status = React.createClass({
     render: function() {
         if(this.props.show) {
+//            var blob = new Blob([JSON.stringify(this.props.gData, null, '\t')], {type: "application/json"});
+//            var url  = URL.createObjectURL(blob);
+////...
+//            <a download="ginseng.json" href={url}>download JSON</a>
+
             return (
                 <div className="Status Component">
-                    <div>{this.props.infoCount} Infos loaded</div>
+                    <span>{this.props.infoCount} Infos loaded</span>
                     <button onClick={this.props.clickLoad}>load default</button>
+                    <div>
+                        <span>Dropbox Status: </span><span>{this.props.dropBoxStatus}</span>
+                        <button className={this.props.dropBoxStatus==="logged in!"?"invisible":""} onClick={this.props.onDBAuth}>auth Dropbox</button>
+                    </div>
+                    <div>
+                        <button onClick={this.props.onDbLoad}>load from Dropbox</button>
+                    </div>
+                    <div>
+                        <span>last save: </span><span>{this.props.lastSaved}</span>
+                        <button onClick={this.props.onDbSave}>save to Dropbox</button>
+                    </div>
                 </div>
             ) } else{
             return(

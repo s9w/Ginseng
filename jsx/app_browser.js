@@ -26,8 +26,7 @@ function getSelected(infos, selectionStr){
 var InfoBrowser = React.createClass({
     getInitialState: function() {
         return {
-            filterText: "",
-            currSelectionId: 0
+            filterText: ""
         };
     },
     onFilterChange: function(event) {
@@ -36,14 +35,8 @@ var InfoBrowser = React.createClass({
     onRowSelect: function(index){
         this.props.onRowSelect(index);
     },
-    onSelectSelection: function(e){
-        this.setState({currSelectionId: e.target.value});
-    },
     render: function() {
         if(this.props.show) {
-            // Apply selection
-            //var filteredInfos = getSelected(this.props.infos, this.state.filterText);
-
             // generate filtered table rows
             var tableRows = [];
             for (var i = 0; i < this.props.infos.length; ++i) {
@@ -60,22 +53,14 @@ var InfoBrowser = React.createClass({
                 }
             }
 
-            var selectionEls = [];
-            for (var j = 0; j < this.props.selections.length; ++j) {
-                selectionEls.push(<option key={j} value={j}>{this.props.selections[j].name}</option>);
-            }
-
             return (
                 <div className="InfoBrowser Component">
-                    <select value={this.state.currSelectionId} onChange={this.onSelectSelection}>
-                        {selectionEls}
-                    </select>
                     <input type="text" placeholder="Quick filter..." value={this.state.filterText}
                         onChange={this.onFilterChange}/><button onClick={this.props.onNew}>New</button>
                     <table>
                         <thead><tr>
-                                <th>1st entry</th>
-                                <th>2nd entry</th>
+                                <th>1st</th>
+                                <th>2nd</th>
                                 <th>Type</th>
                                 <th>Tags</th>
                             </tr></thead>

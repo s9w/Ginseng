@@ -170,9 +170,9 @@ var InfoTypes = React.createClass({
                 var fieldName = this.props.info_types[this.state.selectedTypeIndex].fieldNames[i];
                 iType_elements.push(
                     <div key={i} className="editEntryElement">
-                        <span className="grid_left">Fieldname {i}</span>
+                        <span className="grid_left">Field {i}</span>
                         <input type="text" value={fieldName} onChange={this.onFieldNameEdit.bind(this, i)} />
-                        <a href="#" onClick={this.onFieldsResize.bind(this, i)}>(-)</a>
+                        <span className="fa fa-minus-circle clickable" onClick={this.onFieldsResize.bind(this, i)}></span>
                     </div>
                 )
             }

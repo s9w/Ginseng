@@ -10,12 +10,12 @@ var init_data = {
             {
               "reviewTime": "2014-12-04T10:46:39+01:00",
               "dueTime": "2014-12-04T12:46:39+01:00",
-              "modifier": "Set review time"
+              "intervalModifier": "set_dueTime"
             },
             {
               "reviewTime": "2014-12-04T13:46:39+01:00",
               "dueTime": "2014-12-04T20:46:39+01:00",
-              "modifier": "Set interval"
+              "intervalModifier": "setInterval"
             }
           ],
           []
@@ -38,38 +38,6 @@ var init_data = {
           "condition": "tag: reverse"
         }
       ]
-    }
-  ],
-  "intervalModifiers":[
-    {
-      "name": "Set review time",
-      "parameters": ["time"]
-    },
-    {
-      "name": "Set interval",
-      "parameters": ["months", "weeks", "days", "hours", "minutes"]
-    },
-    {
-      "name": "Modify time since last review relatively",
-      "parameters": ["percent"]
-    },
-    {
-      "name": "Modify time since last review absolutely",
-      "parameters": ["months", "weeks", "days", "hours", "minutes"]
-    }
-  ],
-  "selections": [
-    {
-      "name": "All",
-      "string": ""
-    },
-    {
-      "name": "Due + not hidden",
-      "string": "is: due, tag: !hidden"
-    },
-    {
-      "name": "Science",
-      "string": "tag: math OR tag: physics"
     }
   ],
   "settings":{
