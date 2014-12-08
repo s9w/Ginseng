@@ -44,7 +44,11 @@ var InfoEdit = React.createClass({
     },
     onTagsEdit: function(event) {
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
-        newInfo.tags = event.target.value.replace(/ /g, "").split(",");
+        if(event.target.value === ""){
+            newInfo.tags = [];
+        }else{
+            newInfo.tags = event.target.value.replace(/ /g, "").split(",");
+        }
         this.setState( {info: newInfo} );
     },
     onSave: function(){
@@ -56,14 +60,7 @@ var InfoEdit = React.createClass({
         this.setState( {info: newInfo} );
     },
     render: function() {
-        var Label123 = ReactBootstrap.Label;
-        var Input = ReactBootstrap.Input;
-        var Grid = ReactBootstrap.Grid;
-        var Row = ReactBootstrap.Row;
-
         var data_elements = [];
-        console.log("this.state.info.type: " + this.state.info.type);
-        console.log("this.props.info_types: " + JSON.stringify(this.props.info_types));
         for (var i = 0; i < this.props.info_types[this.state.info.type].fieldNames.length; ++i) {
             var element_name = this.props.info_types[this.state.info.type].fieldNames[i];
             data_elements.push(
@@ -93,19 +90,6 @@ var InfoEdit = React.createClass({
             }
         }
 
-        var labelVariationInstance = (
-            <div>
-                <Label123 bsStyle="default">en</Label123>
-                <Label123 bsStyle="default">language</Label123>
-                <Label123 bsStyle="default">math</Label123>
-                <Label123 bsStyle="primary">Primary</Label123>
-                <Label123 bsStyle="success">Success</Label123>
-                <Label123 bsStyle="info">Info</Label123>
-                <Label123 bsStyle="warning">Warning</Label123>
-                <Label123 bsStyle="danger">Danger</Label123>
-            </div>
-        );
-
         return (
             <div className="InfoEdit Component">
                 <div className="editEntryContainer">
@@ -118,7 +102,6 @@ var InfoEdit = React.createClass({
                     <div className="editEntryElement">
                         <div className="grid_left"></div>
                         {usedTagEls}
-
                     </div>
                 </div>
                 <button onClick={this.onSave}>Save</button>
@@ -126,19 +109,7 @@ var InfoEdit = React.createClass({
                 <button className={!(this.props.onDelete)?"invisible":""} onClick={this.props.onDelete}>Delete</button>
 
                 <div>
-                {labelVariationInstance}
                 </div>
-            </div>);
-    }
-});
-
-var DangerPopup = React.createClass({
-    render: function() {
-        return (
-            <div className="DangerPopup">
-                <div>Danger Will Robinson</div>
-                <button onClick={this.action}>OK</button>
-                <button onClick={this.props.cancelEdit}>Cancel</button>
             </div>);
     }
 });
@@ -169,7 +140,6 @@ var ITypeSwitcher = React.createClass({
     render: function() {
         var options = [];
         for(key in this.props.info_types){
-        //for (var j = 0; j < this.props.info_types.length; ++j) {
             options.push( <option key={key} value={key}>{key}</option> );
         }
         var buttonAddType = "";
@@ -186,7 +156,6 @@ var ITypeSwitcher = React.createClass({
             </div>);
     }
 });
-
 
 var InfoTypes = React.createClass({
     getInitialState: function() {
@@ -224,7 +193,7 @@ var InfoTypes = React.createClass({
                         addonBefore={"Label "+ i}
                         value={this.props.info_types[this.state.selectedTypeName].fieldNames[i]}
                         onChange={this.onFieldNameEdit.bind(this, i)}
-                        buttonAfter={<Button bsStyle="danger" onClick={this.onFieldsResize.bind(this, i)}>delete!</Button>}
+                        buttonAfter={<BButton bsStyle="danger" onClick={this.onFieldsResize.bind(this, i)}>delete!</BButton>}
                     />
                 )
             }

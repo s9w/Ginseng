@@ -35,24 +35,17 @@ var Review = React.createClass({
             reviewIndex: this.state.reviewIndex+1,
             flipped: false
         });
-        this.refs.flipButton.getDOMNode().focus();
+        //this.refs.flipButton.getDOMNode().focus();
     },
     flip: function(){
-        this.setState({flipped: true})
-        this.refs.nextButton.getDOMNode().focus();
+        this.setState({flipped: true});
+        //this.refs.nextButton.getDOMNode().focus();
     },
     componentDidMount: function(){
-        this.refs.flipButton.getDOMNode().focus();
+        //this.refs.flipButton.getDOMNode().focus();
     },
     render: function() {
-        var i, j, k, info, lastReview, iTypeName, iTypeIndex, iType;
-        var fieldnameToIndex = {};
-
-        for (i = 0; i < this.props.info_types.length; ++i) {
-            for (j = 0; j < this.props.info_types[i].fieldNames.length; ++j) {
-                fieldnameToIndex[ this.props.info_types[i].fieldNames[j] ] = j;
-            }
-        }
+        var i, j, k, info, lastReview, iType;
 
         var filteredInfos = getSelected(this.props.infos, "");
         var reviewsItems = [];
@@ -62,22 +55,19 @@ var Review = React.createClass({
                 if( info.reviews[j].length === 0 ){
                     lastReview = {
                         reviewTime: "never",
-                        dueTime: moment().format(),
-                        modifier: ""
+                        dueTime: moment().format()
                     };
                 }else{
                     lastReview = info.reviews[j][ info.reviews[j].length-1 ];
                 }
 
-                iTypeName = info.type;
-                iTypeIndex = this.props.iTypeIdxLookup[iTypeName];
-                iType = this.props.info_types[iTypeIndex];
+                iType = this.props.info_types[info.type];
                 var frontStr = iType.views[j].front;
                 var backStr =  iType.views[j].back;
                 for (k = 0; k < iType.fieldNames.length; ++k) {
                     var regex = new RegExp("{" + iType.fieldNames[k] + "}", "g");
-                    frontStr = frontStr.replace(regex, info.fields[ fieldnameToIndex[iType.fieldNames[k]] ]);
-                    backStr  =  backStr.replace(regex, info.fields[ fieldnameToIndex[iType.fieldNames[k]] ]);
+                    frontStr = frontStr.replace(regex, info.fields[ k ]);
+                    backStr = backStr.replace(regex, info.fields[ k ]);
                 }
 
                 reviewsItems.push({
@@ -91,21 +81,28 @@ var Review = React.createClass({
                 });
             }
         }
-        //console.log("reviewsItems: " + JSON.stringify(reviewsItems, null, "  ") + ", length: " + reviewsItems.length);
-        //converter.makeHtml( reviewsItems[this.state.reviewIndex].front )
+        if(reviewsItems.length === 0){
+            return(<div>No reviews</div>);
+        }
         var backsideClassname = "markdowned";
         if(!(this.state.flipped))
             backsideClassname += " invisible";
+        var lastInterval = moment.duration(moment().diff(reviewsItems[this.state.reviewIndex].lastReview.reviewTime)).asMilliseconds();
         return (
             <div className="Review Component">
-                <div className="markdowned" dangerouslySetInnerHTML={{__html: converter.makeHtml( reviewsItems[this.state.reviewIndex].front )}}></div>
-                <div className={backsideClassname} dangerouslySetInnerHTML={{__html: converter.makeHtml( reviewsItems[this.state.reviewIndex].back )}}></div>
-                <button onClick={this.flip} ref="flipButton">show backside</button>
-                <button onClick={this.nextReview} ref="nextButton">next</button>
-                <div>
-                    <span>Status</span>
-                    <span>{this.state.reviewIndex+1 + "/" + reviewsItems.length}</span>
+                <div id="reviewStage">
+                    <div className="markdowned"
+                        dangerouslySetInnerHTML={{__html: converter.makeHtml( reviewsItems[this.state.reviewIndex].front )}}></div>
+                    <div className={backsideClassname}
+                        dangerouslySetInnerHTML={{__html: converter.makeHtml( reviewsItems[this.state.reviewIndex].back )}}></div>
                 </div>
+
+                <Intervaller show={this.state.flipped} lastInterval={lastInterval} />
+
+                <span>
+                    <button className={this.state.flipped?"invisible":""} onClick={this.flip} ref="flipButton">show backside</button>
+                    <span >Status: {this.state.reviewIndex+1 + "/" + reviewsItems.length}</span>
+                </span>
             </div>);
     }
 });

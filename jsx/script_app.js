@@ -28,9 +28,6 @@ var App = React.createClass({
                 lastInfoType: "Front and back"
             },
             "intervalModifiers": {
-                "set_dueTime":{
-                    "parameters": ["time"]
-                },
                 "setInterval": {
                     "parameters": ["months", "weeks", "days", "hours", "minutes"]
                 },
@@ -58,8 +55,10 @@ var App = React.createClass({
             if (error) {
                 thisApp.setState({dropBoxStatus: "ERROR"});
             }
-            else
+            else {
                 thisApp.setState({dropBoxStatus: "logged in!"});
+                thisApp.loadDB();
+            }
         });
     },
     saveDB: function(){
@@ -252,21 +251,24 @@ var App = React.createClass({
         else
             var_browse_el = <span className="navInfoStr">Infos</span>;
 
-        var TabbedArea = ReactBootstrap.TabbedArea;
-        var TabPane = ReactBootstrap.TabPane;
-
         return (
             <div className="app">
 
                 <div className="nav-site">
-                    <span className={this.state.activeMode=="status"?"active":"inactive"}>
-                        <span onClick={this.clickNav.bind(this, "status")}>Status</span></span>
-                    <span className={ ["browse", "edit", "new"].indexOf(this.state.activeMode) !== -1?"active":"inactive" }
-                        onClick={this.clickNav.bind(this, "browse")}>{var_browse_el}</span>
-                    <span className={this.state.activeMode=="types"? "active":"inactive"}>
-                        <span onClick={this.clickNav.bind(this, "types" )}>Types</span> </span>
-                    <span className={this.state.activeMode=="review"? "active":"inactive"}>
-                        <span onClick={this.clickNav.bind(this, "review" )}>Review</span> </span>
+                    <div
+                        className={this.state.activeMode=="status"?"active":"inactive"}
+                        onClick={this.clickNav.bind(this, "status")}>
+                        Status
+                    </div>
+                    <div className={ ["browse", "edit", "new"].indexOf(this.state.activeMode) !== -1?"active":"inactive" }
+                        onClick={this.clickNav.bind(this, "browse")}>
+                        Infos</div>
+                    <div className={this.state.activeMode=="types"? "active":"inactive"}
+                        onClick={this.clickNav.bind(this, "types" )}>
+                        Types</div>
+                    <div className={this.state.activeMode=="review"? "active":"inactive"}
+                        onClick={this.clickNav.bind(this, "review" )}>
+                        Review</div>
                 </div>
 
                 {comp_new}
@@ -284,9 +286,6 @@ var App = React.createClass({
             </div>);}
 });
 
-var Button = ReactBootstrap.Button;
-var Badge = ReactBootstrap.Badge;
-
 var Status = React.createClass({
     render: function() {
         if(this.props.show) {
@@ -302,11 +301,11 @@ var Status = React.createClass({
                     <div>Last save: {this.props.lastSaved}</div>
 
                     <div>
-                        <Button disabled={this.props.dropBoxStatus==="logged in!"} onClick={this.props.onDBAuth} bsStyle="primary" bsSize="xsmall">auth Dropbox</Button>
+                        <BButton disabled={this.props.dropBoxStatus==="logged in!"} onClick={this.props.onDBAuth} bsStyle="primary" bsSize="small">auth Dropbox</BButton>
                     </div>
                     <div>
-                        <button disabled={this.props.dropBoxStatus!=="logged in!"} onClick={this.props.onDbLoad}>load from Dropbox</button>
-                        <button disabled={this.props.dropBoxStatus!=="logged in!"} onClick={this.props.onDbSave}>save to Dropbox</button>
+                        <BButton disabled={this.props.dropBoxStatus!=="logged in!"} bsSize="small" onClick={this.props.onDbLoad}>load from Dropbox</BButton>
+                        <BButton disabled={this.props.dropBoxStatus!=="logged in!"} bsSize="small" onClick={this.props.onDbSave}>save to Dropbox</BButton>
                     </div>
                 </div>
             ) } else{

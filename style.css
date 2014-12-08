@@ -1,8 +1,8 @@
 
-/*Table {*/
+Table {
     /*border-collapse: collapse;*/
-    /*cursor: default;*/
-/*}*/
+    cursor: pointer;
+}
 
 /*th{*/
     /*text-align: left;*/
@@ -39,21 +39,24 @@ div .nav-site{
     border-bottom: thick solid #000000;
 }
 
-div .nav-site > span{
-    flex: 0 1 auto;
-    align-items: flex-start;
-    padding: 0 8px;
-    display:inline;
+div .nav-site > div{
+    flex: 1 1 auto;
+    text-align: center;
+    /*padding: 0 8px;*/
+    /*display:inline;*/
     cursor: pointer;
-    height: 25px;
+    height: 30px;
+    font-size: 2rem;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
 }
 
-.nav-site > span:hover {
+.nav-site > div:hover {
     background-color: #ececec;
 }
 
-.nav-site > span.active{
-    background-color: #FF9966;
+.nav-site > div.active{
+    background-color: #5cb85c;
 }
 
 .clickable{
@@ -110,11 +113,6 @@ html {
     visibility: hidden;
 }
 
-.navInfoStr{
-    min-width: 80px;
-    display: block;
-}
-
 .iTypeSwitcher{
     align-items: flex-start;
 }
@@ -129,4 +127,79 @@ html {
     left: 20px;
     background-color: rgb(255, 192, 192);
     padding: 20px 20px 20px 20px;
+}
+
+.nav>li>a{
+    padding: 0 0;
+}
+
+.flexContHoriz{
+    display: flex;
+    justify-content: space-around;
+    max-width: 320px;
+}
+
+.flexContVert{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.flexElem{
+    flex: 0 1 auto;
+}
+
+.flexElemContHoriz{
+    flex: 0 1 auto;
+    display: flex;
+}
+
+.flexElemContVert{
+    flex: 0 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.flexElemContVert Button{
+    text-align: right;
+}
+
+.flexElemContVert span{
+    align-self: center;
+}
+
+#reviewModeSwitches{
+    display: flex;
+    justify-content: center;
+    max-width: 320px;
+}
+
+#reviewStage{
+    min-height: 100px;
+}
+
+.intervalButtonCont{
+    display: flex;
+    justify-content: space-around;
+    max-width: 320px;
+    flex-wrap: wrap;
+}
+
+.intervalButtonCont span {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.intervalButtonCont span div {
+    flex: 1 1 auto;
+    display: flex;
+}
+
+.intervalButtonCont span div button {
+    flex: 1 1 auto;
+}
+
+.intervalButtonCont button{
+    padding: 6px 6px;
 }
