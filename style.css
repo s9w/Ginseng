@@ -1,26 +1,26 @@
 
-table {
-    border-collapse: collapse;
-    cursor: default;
-}
+/*Table {*/
+    /*border-collapse: collapse;*/
+    /*cursor: default;*/
+/*}*/
 
-th{
-    text-align: left;
-}
+/*th{*/
+    /*text-align: left;*/
+/*}*/
 
-th, td { padding: 0 10px 0 0; }
+/*th, td { padding: 0 10px 0 0; }*/
 
-tbody tr:nth-child(even) {
-    background-color: rgba(230, 230, 230, 0.68);
-}
+/*tbody tr:nth-child(even) {*/
+    /*background-color: rgba(230, 230, 230, 0.68);*/
+/*}*/
 
-tbody tr:hover {
-    background: yellow;
-}
+/*tbody tr:hover {*/
+    /*background: yellow;*/
+/*}*/
 
-tbody tr.selected {
-    background: #ff230f;
-}
+/*tbody tr.selected {*/
+    /*background: #ff230f;*/
+/*}*/
 
 .browseControls{
     margin-bottom: 5px;
@@ -121,4 +121,12 @@ html {
 
 .markdowned{
     white-space: pre;
+}
+
+.DangerPopup{
+    position:absolute;
+    top: 100px;
+    left: 20px;
+    background-color: rgb(255, 192, 192);
+    padding: 20px 20px 20px 20px;
 }

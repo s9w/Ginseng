@@ -27,6 +27,7 @@ var InfoBrowser = React.createClass({
                     );
                 }
             }
+            var Table = ReactBootstrap.Table;
 
             return (
                 <div className="InfoBrowser Component">
@@ -35,7 +36,7 @@ var InfoBrowser = React.createClass({
                             onChange={this.onFilterChange}/>
                         <button onClick={this.props.onNew}>New info</button>
                     </div>
-                    <table>
+                    <Table responsive striped condensed hover>
                         <thead><tr>
                                 <th>1st</th>
                                 <th>2nd</th>
@@ -45,7 +46,7 @@ var InfoBrowser = React.createClass({
                         <tbody>
                             {tableRows }
                         </tbody>
-                    </table>
+                    </Table>
                 </div>
             );
         } else{

@@ -2,26 +2,28 @@ var client = new Dropbox.Client({ key: "ob9346e5yc509q2" });
 //client.authDriver(new Dropbox.AuthDriver.Popup({receiverUrl: "https://s9w.github.io/ginseng/dropbox_receiver.html"}));
 client.authDriver(new Dropbox.AuthDriver.Popup({receiverUrl: "https://leastaction.org/ginseng/dropbox_receiver.html"}));
 
+
 var App = React.createClass({
     getInitialState: function() {
         return {
             ginseng_infos:[],
-            ginseng_infoTypes:[{
-                "name": "Front and back",
-                "fieldNames": ["front", "back"],
-                "views": [
-                    {
-                        "front": "Hier ist front: {front}",
-                        "back": "Hier ist back: {back}. Und hier noch **bold** uuh\nund nächste zeile",
-                        "condition": ""
-                    },
-                    {
-                        "front": "Und andersrum. Hier ist back: {back}",
-                        "back": "Hier ist front: {front}. Und hier noch **bold** uuh\nund nächste zeile",
-                        "condition": "tag: reverse"
-                    }
-                ]
-            }],
+            ginseng_infoTypes:{
+                "Front and back":{
+                    "fieldNames": ["front", "back"],
+                    "views": [
+                        {
+                            "front": "Hier ist front: {front}",
+                            "back": "Hier ist back: {back}. Und hier noch **bold** uuh\nund nächste zeile",
+                            "condition": ""
+                        },
+                        {
+                            "front": "Und andersrum. Hier ist back: {back}",
+                            "back": "Hier ist front: {front}. Und hier noch **bold** uuh\nund nächste zeile",
+                            "condition": "tag: reverse"
+                        }
+                    ]
+                }
+            },
             ginseng_settings:{
                 lastInfoType: "Front and back"
             },
@@ -111,17 +113,9 @@ var App = React.createClass({
         for(key in newUsedTagsObj){
             newUsedTags.push(key);
         }
+        newUsedTags.sort();
         this.setState({usedTags: newUsedTags});
     },
-    //loadDefault: function(){
-    //    this.setState( {
-    //        ginseng_infos: this.getSortedInfos(init_data.infos),
-    //        ginseng_infoTypes: init_data.infoTypes,
-    //        ginseng_selections: init_data.selections,
-    //        ginseng_settings: init_data.settings
-    //    });
-    //    this.updateUsedTags(init_data.infos); // not fast enough if called on own state. setstate too slow :(
-    //},
     onRowSelect: function(index_selected) {
         console.log("selected row " + index_selected);
         this.setState({
@@ -131,11 +125,11 @@ var App = React.createClass({
     },
 
 
-    onInfoEdit: function(newData, newTags, newTypeIndex) {
+    onInfoEdit: function(newInfo) {
         var newInfos = JSON.parse( JSON.stringify( this.state.ginseng_infos ));
-        newInfos[this.state.selectedInfoIndex].fields = newData;
-        newInfos[this.state.selectedInfoIndex].tags = newTags;
-        newInfos[this.state.selectedInfoIndex].type = this.state.ginseng_infoTypes[newTypeIndex].name;
+        newInfos[this.state.selectedInfoIndex].fields = newInfo.fields;
+        newInfos[this.state.selectedInfoIndex].tags = newInfo.tags;
+        newInfos[this.state.selectedInfoIndex].type = newInfo.type;
         this.setState({
             ginseng_infos: newInfos,
             activeMode: "browse"
@@ -151,19 +145,13 @@ var App = React.createClass({
             activeMode: "browse"
         } );
     },
-    addInfo: function(newFields, newTags, newTypeIndex){
-        console.log("addInfo. fields: " + newFields + ", tags: " + newTags);
-        var newInfo = this.getSanitizedInfo({
-            type: this.state.ginseng_infoTypes[newTypeIndex].name,
-            fields: newFields,
-            tags: newTags
-        }, newTypeIndex);
-
+    addInfo: function(newInfo){
+        var newInfo_copy = JSON.parse( JSON.stringify( newInfo ));
         var newInfos = JSON.parse( JSON.stringify( this.state.ginseng_infos ));
-        newInfos.push(newInfo);
+        newInfos.push(newInfo_copy);
 
         var new_settings = JSON.parse( JSON.stringify( this.state.ginseng_settings ));
-        new_settings.lastInfoType = this.state.ginseng_infoTypes[newTypeIndex].name;
+        new_settings.lastInfoType = newInfo_copy.type;
         this.setState( {
             ginseng_infos: newInfos,
             ginseng_settings: new_settings,
@@ -179,29 +167,16 @@ var App = React.createClass({
             activeMode: "browse"
         } );
     },
-    getSanitizedInfo: function(info, typeIndex){
-        var newInfo = JSON.parse( JSON.stringify( info ));
-        if(!("creationDate" in newInfo)) {
-            newInfo.creationDate = moment().format();
-        }
-        if(!("reviews" in newInfo)){
-            var reviews = [];
-            for (var index = 0; index < this.state.ginseng_infoTypes[typeIndex].fieldNames.length; ++index) {
-                reviews.push([]);
-            }
-            newInfo.reviews = reviews;
-        }
-        return newInfo;
-    },
 
     onTypesEdit: function(newTypes){
-        this.setState({ginseng_infoTypes: newTypes} );
+        var newTypes_copy = JSON.parse( JSON.stringify( newTypes ));
+        this.setState({ginseng_infoTypes: newTypes_copy} );
     },
-    onTypeResize: function(typeIndex, fieldNameIndex){
+    onTypeResize: function(typeName, fieldNameIndex){
         var new_infos = JSON.parse( JSON.stringify( this.state.ginseng_infos ));
         console.log("resizing");
         for (var index = 0; index < new_infos.length; ++index) {
-            if(new_infos[index].type === this.state.ginseng_infoTypes[typeIndex].name){
+            if(new_infos[index].type === typeName){
                 if(fieldNameIndex === -1){
                     new_infos[index].fields.push("");
                 }else{
@@ -211,9 +186,9 @@ var App = React.createClass({
         }
         var new_types = JSON.parse( JSON.stringify( this.state.ginseng_infoTypes ));
         if(fieldNameIndex === -1){
-            new_types[typeIndex].fieldNames.push("");
+            new_types[typeName].fieldNames.push("");
         }else{
-            new_types[typeIndex].fieldNames.splice(fieldNameIndex, 1);
+            new_types[typeName].fieldNames.splice(fieldNameIndex, 1);
         }
 
         this.setState({
@@ -221,53 +196,51 @@ var App = React.createClass({
             ginseng_infoTypes: new_types
         });
     },
-    onTypeFieldnameEdit: function(typeIndex, fieldNameIndex, newFieldName){
+    onTypeFieldnameEdit: function(typeName, fieldNameIndex, newFieldName){
         var newInfoTypes = JSON.parse( JSON.stringify( this.state.ginseng_infoTypes ));
-        newInfoTypes[typeIndex].fieldNames[fieldNameIndex] = newFieldName;
+        newInfoTypes.typeName.fieldNames[fieldNameIndex] = newFieldName;
         this.setState({ginseng_infoTypes: newInfoTypes} );
     },
-    onTypeNameEdit: function(typeIndex, newTypeName){
+    onTypeNameEdit: function(typeName, newTypeName){
         for (var index = 0; index < this.state.ginseng_infos.length; ++index) {
-            if(this.state.ginseng_infos[index].type === this.state.ginseng_infoTypes[typeIndex].name){
+            if(this.state.ginseng_infos[index].type === typeName){
                 this.state.ginseng_infos[index].type = newTypeName;
             }
         }
         var newInfoTypes = JSON.parse( JSON.stringify( this.state.ginseng_infoTypes ));
-        newInfoTypes[typeIndex].name = newTypeName;
+        newInfoTypes.newTypeName = JSON.parse( JSON.stringify( newInfoTypes.typeName ));
+        delete newInfoTypes.typeName;
         this.setState({ginseng_infoTypes: newInfoTypes} );
     },
     render: function () {
-        var iTypeIdxLookup = {};
-        for (var index = 0; index < this.state.ginseng_infoTypes.length; ++index) {
-            iTypeIdxLookup[this.state.ginseng_infoTypes[index].name] = index;
-        }
+        //var iTypeIdxLookup = {};
+        //for (var index = 0; index < this.state.ginseng_infoTypes.length; ++index) {
+        //    iTypeIdxLookup[this.state.ginseng_infoTypes[index].name] = index;
+        //}
 
         var comp_new = <div/>;
         var comp_edit = <div/>;
 
         if(["new", "edit"].indexOf(this.state.activeMode) !== -1){
-            var default_iType_index, editInfo, onSave, onDelete;
+            var  editInfo, onSave, onDelete;
             if (this.state.activeMode == "new") {
-                default_iType_index = iTypeIdxLookup[this.state.ginseng_settings.lastInfoType];
-                editInfo = {tags: [], fields: []};
+                editInfo = {};
                 onSave = this.addInfo;
                 onDelete = false;
             }
             else {
-                default_iType_index = iTypeIdxLookup[ this.state.ginseng_infos[this.state.selectedInfoIndex].type ];
                 editInfo = this.state.ginseng_infos[this.state.selectedInfoIndex];
                 onSave = this.onInfoEdit;
                 onDelete = this.onInfoDelete;
             }
             comp_new = <InfoEdit info_types={this.state.ginseng_infoTypes} info={editInfo} usedTags={this.state.usedTags}
-                default_iType_index={default_iType_index} onSave={onSave} cancelEdit={this.cancelEdit} onDelete={onDelete} />
+                onSave={onSave} cancelEdit={this.cancelEdit} onDelete={onDelete} lastInfoTypeName={this.state.ginseng_settings.lastInfoType} />
         }
         var comp_review = <div/>;
         if(this.state.activeMode === "review")
             comp_review = <Review
                 infos={this.state.ginseng_infos}
                 info_types={this.state.ginseng_infoTypes}
-                iTypeIdxLookup={iTypeIdxLookup}
             />;
 
         // Info-nav string
@@ -279,8 +252,12 @@ var App = React.createClass({
         else
             var_browse_el = <span className="navInfoStr">Infos</span>;
 
+        var TabbedArea = ReactBootstrap.TabbedArea;
+        var TabPane = ReactBootstrap.TabPane;
+
         return (
             <div className="app">
+
                 <div className="nav-site">
                     <span className={this.state.activeMode=="status"?"active":"inactive"}>
                         <span onClick={this.clickNav.bind(this, "status")}>Status</span></span>
@@ -307,6 +284,9 @@ var App = React.createClass({
             </div>);}
 });
 
+var Button = ReactBootstrap.Button;
+var Badge = ReactBootstrap.Badge;
+
 var Status = React.createClass({
     render: function() {
         if(this.props.show) {
@@ -322,7 +302,7 @@ var Status = React.createClass({
                     <div>Last save: {this.props.lastSaved}</div>
 
                     <div>
-                        <button disabled={this.props.dropBoxStatus==="logged in!"?"invisible":""} onClick={this.props.onDBAuth}>auth Dropbox</button>
+                        <Button disabled={this.props.dropBoxStatus==="logged in!"} onClick={this.props.onDBAuth} bsStyle="primary" bsSize="xsmall">auth Dropbox</Button>
                     </div>
                     <div>
                         <button disabled={this.props.dropBoxStatus!=="logged in!"} onClick={this.props.onDbLoad}>load from Dropbox</button>
