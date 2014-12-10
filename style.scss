@@ -1,0 +1,305 @@
+.browseControls{
+  margin-bottom: 5px;
+}
+
+.browseControls > input{
+  margin-right: 10px;
+}
+
+
+
+
+/*.nav-site > div:hover {*/
+/*background-color: #ececec;*/
+/*}*/
+
+/*.navbar > div.active{*/
+/*background-color: #5cb85c;*/
+/*}*/
+
+.clickable{
+  cursor: pointer;
+  padding: 0 0 0 5px;
+}
+
+.clickable:hover{
+  color: red;
+}
+
+a{
+  text-decoration: none;
+}
+
+
+html {
+  font-family: "Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
+  font-family: proxima-nova,"Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
+  /*background-color: #f7f7f7;*/
+}
+
+#title{
+  color: #217234;
+  font-family: "titillium";
+  font-weight: normal;
+  text-rendering: optimizeLegibility;
+  font-size: 1.5rem;
+}
+
+.editEntryContainer{
+  display: flex;
+  flex-direction: column;
+}
+
+.editEntryElement{
+  flex: 0 1 auto;
+  margin: 5px 10px;
+  max-width: 320px;
+  display: inline-flex;
+  align-items: center;
+  white-space: pre;
+}
+
+.Component{
+  margin-top: 5px;
+}
+
+.grid_left{
+  min-width: 80px;
+}
+
+.invisible{
+  visibility: hidden;
+}
+
+.iTypeSwitcher{
+  align-items: flex-start;
+}
+
+.markdowned{
+  white-space: pre;
+  font-size: 1.2em;
+}
+
+.DangerPopup{
+  position:absolute;
+  top: 100px;
+  left: 20px;
+  background-color: rgb(255, 192, 192);
+  padding: 20px 20px 20px 20px;
+}
+
+.nav>li>a{
+  padding: 0 0;
+}
+
+
+
+.flexContVert{
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+
+
+
+.flexElemContHoriz{
+  flex: 0 1 auto;
+  display: flex;
+}
+
+.flexElemContVert{
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.flexElemContVert Button{
+  text-align: right;
+}
+
+.flexElemContVert span{
+  align-self: center;
+}
+
+#reviewModeSwitches{
+  display: flex;
+  justify-content: center;
+  max-width: 320px;
+}
+
+#reviewStage{
+  min-height: 100px;
+}
+
+.intervalButtonCont{
+  display: flex;
+  justify-content: space-around;
+  max-width: 320px;
+  flex-wrap: wrap;
+}
+
+.intervalButtonCont span {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.intervalButtonCont span div {
+  flex: 1 1 auto;
+  display: flex;
+}
+
+.intervalButtonCont span div button {
+  flex: 1 1 auto;
+}
+
+.intervalButtonCont button{
+  padding: 6px 6px;
+}
+
+
+
+
+$base-green: scale-color(#5cb83c, $lightness: 10%);
+table{
+  border-collapse: collapse;
+  width: 100%;
+  //  table-layout: fixed;
+}
+
+thead{
+  text-align: left;
+}
+
+$base-veryBright: scale_color($base-green, $lightness: 80%);
+$base-veryDark: scale_color($base-green, $lightness: -60%);
+$tr-highlight-darken: -10%;
+tbody>tr {
+  cursor: pointer;
+  &:nth-child(odd) {
+    background: $base-veryBright;
+    &:hover{
+      background: scale-color($base-veryBright, $lightness: $tr-highlight-darken);
+    }
+  }
+  &:hover {
+    background: scale-color(#ffffff, $lightness: $tr-highlight-darken);
+  }
+}
+
+tbody>tr>td{
+  padding-right: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  height: 20px;
+  //  max-width: 1px;
+}
+
+.navBar{
+  display: flex;
+  //  justify-content: space-between;
+  /*flex-wrap: wrap;*/
+  max-width: 500px;
+  margin-left: auto ;
+  margin-right: auto ;
+  border-bottom: thick solid #000000;
+  & > div{
+    flex: 1 1 auto;
+    text-align: center;
+    /*padding: 0 8px;*/
+    /*display:inline;*/
+    cursor: pointer;
+    //    height: 12.0vw;
+    line-height: 12.0vw;
+    font-size: 8.0vw;
+    @media (min-width: 300px) {
+      line-height: 36px;
+      font-size: 24px;
+    }
+    //  font-weight: normal;
+    //  text-rendering: optimizeLegibility;
+    &:hover{
+      background-color: lighten($base-green, 30%);
+    }
+    &.active{
+      background-color: $base-green;
+    }
+  }
+}
+
+.flexContHoriz{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  max-width: 320px;
+}
+
+.flexElem{
+  flex: 0 1 auto;
+}
+
+@mixin hoverDark($col) {
+  background: $col;
+  &:hover {
+    outline: 2px solid scale-color($col, $lightness: -30%);
+  }
+}
+
+$danger-red: #d9534f;
+.buttonMain{
+  //border: 2px solid transparent;
+  @include hoverDark(lightgray);
+  border: 0;
+  padding: 4px 6px;
+  cursor: pointer;
+  margin: 1px;
+  &.buttonGood{
+    @include hoverDark($base-green);
+  }
+  &.buttonDanger{
+    @include hoverDark($danger-red);
+  }
+  &:disabled{
+    color: graytext;
+    background: hsl(hue($base-green), 17%, 87%);
+    cursor: default;
+    outline: 0 !important;
+  }
+}
+
+.Component:not(.InfoBrowser){
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 500px;
+}
+
+#reviewStage{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+//#reviewToolbarLeft{
+//  float: left;
+//  width: 30%;
+//}
+//#reviewToolbarMiddle{
+////  margin-left: auto;
+//  text-align: center;
+//  float: left;
+//  width: 39%;
+//  box-sizing: border-box;
+////  margin-right: auto;
+//}
+//#reviewToolbarRight{
+//  float: right;
+//  width: 30%;
+//}
+
+#reviewToolbar{
+  display: flex;
+  justify-content: space-between;
+}
+
+//.clear { clear: both; }

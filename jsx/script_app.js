@@ -25,7 +25,8 @@ var App = React.createClass({
                 }
             },
             ginseng_settings:{
-                lastInfoType: "Front and back"
+                "lastInfoType": "Front and back",
+                "timeIntervalChoices": ["10m", "30m", "1h", "5h", "10h", "1d", "2d", "3d", "1w", "2w", "0%", "15%", "30%"]
             },
             "intervalModifiers": {
                 "setInterval": {
@@ -49,7 +50,7 @@ var App = React.createClass({
     clickNav: function(mode) {
         this.setState({activeMode: mode});
     },
-    authDB: function(){
+    authDB: function(event){
         var thisApp = this;
         client.authenticate(function (error) {
             if (error) {
@@ -92,6 +93,7 @@ var App = React.createClass({
             });
             thisApp.updateUsedTags(js.infos);
         });
+
     },
     getSortedInfos: function(infos, sortField){
         // Sort infos based on value of first entry.
@@ -211,17 +213,22 @@ var App = React.createClass({
         delete newInfoTypes.typeName;
         this.setState({ginseng_infoTypes: newInfoTypes} );
     },
+    applyInterval: function(infoIndex, reviewIndex, newInterval){
+        console.log("applyInterval: " + infoIndex, reviewIndex, newInterval);
+        var newInfos = JSON.parse( JSON.stringify( this.state.ginseng_infos ));
+        newInfos[infoIndex].reviews[reviewIndex].push({
+            "reviewTime": moment().format(),
+            "dueTime": moment().add(moment.duration(newInterval)).format()
+        });
+        this.setState( {
+            ginseng_infos: newInfos
+        } );
+    },
     render: function () {
-        //var iTypeIdxLookup = {};
-        //for (var index = 0; index < this.state.ginseng_infoTypes.length; ++index) {
-        //    iTypeIdxLookup[this.state.ginseng_infoTypes[index].name] = index;
-        //}
-
-        var comp_new = <div/>;
-        var comp_edit = <div/>;
-
+        // Edit / New
+        var compEdit = <div/>;
         if(["new", "edit"].indexOf(this.state.activeMode) !== -1){
-            var  editInfo, onSave, onDelete;
+            var editInfo, onSave, onDelete;
             if (this.state.activeMode == "new") {
                 editInfo = {};
                 onSave = this.addInfo;
@@ -232,29 +239,88 @@ var App = React.createClass({
                 onSave = this.onInfoEdit;
                 onDelete = this.onInfoDelete;
             }
-            comp_new = <InfoEdit info_types={this.state.ginseng_infoTypes} info={editInfo} usedTags={this.state.usedTags}
+            compEdit = <InfoEdit info_types={this.state.ginseng_infoTypes} info={editInfo} usedTags={this.state.usedTags}
                 onSave={onSave} cancelEdit={this.cancelEdit} onDelete={onDelete} lastInfoTypeName={this.state.ginseng_settings.lastInfoType} />
         }
-        var comp_review = <div/>;
-        if(this.state.activeMode === "review")
-            comp_review = <Review
-                infos={this.state.ginseng_infos}
-                info_types={this.state.ginseng_infoTypes}
-            />;
 
-        // Info-nav string
-        var var_browse_el;
-        if(this.state.activeMode=="edit")
-            var_browse_el = <span className="navInfoStr">Infos: Edit</span>;
-        else if(this.state.activeMode=="new")
-            var_browse_el = <span className="navInfoStr">Infos: New</span>;
-        else
-            var_browse_el = <span className="navInfoStr">Infos</span>;
+        // Info browser
+        var compBrowser = <div/>;
+        if(this.state.activeMode === "browse"){
+            compBrowser = <InfoBrowser
+                infos={this.state.ginseng_infos}
+                onRowSelect={this.onRowSelect}
+                onNew={this.onNew}
+                selections={this.state.ginseng_selections}
+            />
+        }
+
+        // Review
+        var comp_review = <div/>;
+        if(this.state.activeMode === "review") {
+            var thisApp = this;
+            var reviewInterval = 0;
+            var nextTypeName = "";
+            var dueCount = 0;
+            var nextInfoIndex = 0;
+            var nextReviewIndex = 0;
+            (function() {
+                console.log("review recalc");
+                var dueDiffsMs = [];
+                var infoIndex, reviewIndex, info;
+                var filteredInfos = thisApp.state.ginseng_infos;
+
+                for (infoIndex = 0; infoIndex < filteredInfos.length; ++infoIndex) {
+                    info = filteredInfos[infoIndex];
+                    for (reviewIndex = 0; reviewIndex < info.reviews.length; ++reviewIndex) {
+                        if(info.reviews[reviewIndex].length > 0) {
+                            var lastDueTime = info.reviews[reviewIndex][info.reviews[reviewIndex].length - 1].dueTime;
+                            if( moment(lastDueTime).isBefore(moment()) ){
+                                dueDiffsMs.push([moment(moment()).diff(info.reviews[reviewIndex][info.reviews[reviewIndex].length - 1].reviewTime), infoIndex, reviewIndex]);
+                            }
+                        }else{
+                            dueDiffsMs.push([0, infoIndex, reviewIndex]);
+                        }
+                    }                    
+                }
+
+                // find next due item
+                var biggestDueDiff = 0;
+
+                for (index = 0; index < dueDiffsMs.length; ++index) {
+                    if(dueDiffsMs[index][0] >= biggestDueDiff){
+                        biggestDueDiff = dueDiffsMs[index][0];
+                        nextInfoIndex = dueDiffsMs[index][1];
+                        nextReviewIndex = dueDiffsMs[index][2];
+                    }
+                }
+                reviewInterval = biggestDueDiff;
+                nextTypeName = thisApp.state.ginseng_infos[nextInfoIndex].type;
+                dueCount = dueDiffsMs.length;
+            })();
+
+            comp_review = <Review
+                applyInterval={this.applyInterval.bind(this, nextInfoIndex, nextReviewIndex)}
+                frontStr={
+                    thisApp.state.ginseng_infoTypes[nextTypeName].views[nextReviewIndex].front.replace(
+                        /{(\w*)}/g, function(match, p1){
+                            return thisApp.state.ginseng_infos[nextInfoIndex].fields[ thisApp.state.ginseng_infoTypes[nextTypeName].fieldNames.indexOf(p1) ];
+                        })
+                    }
+                backStr={
+                    thisApp.state.ginseng_infoTypes[nextTypeName].views[nextReviewIndex].back.replace(
+                        /{(\w*)}/g, function(match, p1){
+                            return thisApp.state.ginseng_infos[nextInfoIndex].fields[ thisApp.state.ginseng_infoTypes[nextTypeName].fieldNames.indexOf(p1) ];
+                        })
+                    }
+                dueCount={dueCount}
+                reviewInterval={reviewInterval}
+                timeIntervalChoices={this.state.ginseng_settings.timeIntervalChoices}
+            />;
+        }
 
         return (
             <div className="app">
-
-                <div className="nav-site">
+                <div className="navBar">
                     <div
                         className={this.state.activeMode=="status"?"active":"inactive"}
                         onClick={this.clickNav.bind(this, "status")}>
@@ -271,13 +337,11 @@ var App = React.createClass({
                         Review</div>
                 </div>
 
-                {comp_new}
-                {comp_edit}
+                {compEdit}
                 <Status      show={this.state.activeMode=="status"}
                     infoCount={this.state.ginseng_infos.length} dropBoxStatus={this.state.dropBoxStatus} onDBAuth={this.authDB}
                     onDbSave={this.saveDB} lastSaved={this.state.lastSaved} onDbLoad={this.loadDB}/>
-                <InfoBrowser show={this.state.activeMode=="browse"} infos={this.state.ginseng_infos}
-                    onRowSelect={this.onRowSelect} onNew={this.onNew} selections={this.state.ginseng_selections} />
+                {compBrowser}
                 <InfoTypes   show={this.state.activeMode=="types"} info_types={this.state.ginseng_infoTypes}
                     onFieldNameEdit={this.onTypeFieldnameEdit} onNameEdit={this.onTypeNameEdit}
                     onEdit={this.onTypesEdit} onResize={this.onTypeResize}/>
@@ -301,11 +365,11 @@ var Status = React.createClass({
                     <div>Last save: {this.props.lastSaved}</div>
 
                     <div>
-                        <BButton disabled={this.props.dropBoxStatus==="logged in!"} onClick={this.props.onDBAuth} bsStyle="primary" bsSize="small">auth Dropbox</BButton>
+                        <span disabled={this.props.dropBoxStatus==="logged in!"} className="buttonMain buttonGood" onClick={this.props.onDBAuth}>auth Dropbox</span>
                     </div>
-                    <div>
-                        <BButton disabled={this.props.dropBoxStatus!=="logged in!"} bsSize="small" onClick={this.props.onDbLoad}>load from Dropbox</BButton>
-                        <BButton disabled={this.props.dropBoxStatus!=="logged in!"} bsSize="small" onClick={this.props.onDbSave}>save to Dropbox</BButton>
+                    <div className={"flexContHoriz " + (this.props.dropBoxStatus === "logged in!"?"":"invisible")}>
+                        <span className="buttonMain" onClick={this.props.onDbLoad}>load from Dropbox</span>
+                        <span className="buttonMain" onClick={this.props.onDbSave}>save to Dropbox</span>
                     </div>
                 </div>
             ) } else{

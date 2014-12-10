@@ -64,14 +64,14 @@ var InfoEdit = React.createClass({
         for (var i = 0; i < this.props.info_types[this.state.info.type].fieldNames.length; ++i) {
             var element_name = this.props.info_types[this.state.info.type].fieldNames[i];
             data_elements.push(
-                <Input
-                    rows={(this.state.info.fields[i].match(/\n/g) || []).length+1}
-                    type="textarea"
-                    key={i}
-                    label={element_name}
-                    value={this.state.info.fields[i]}
-                    onChange={this.onFieldEdit.bind(this, i)}
-                />
+                <div key={i}>
+                    <div>{element_name}</div>
+                    <textarea
+                        value={this.state.info.fields[i]}
+                        onChange={this.onFieldEdit.bind(this, i)}
+                        rows={(this.state.info.fields[i].match(/\n/g) || []).length+1}
+                    />
+                </div>
             );
         }
 
@@ -104,9 +104,11 @@ var InfoEdit = React.createClass({
                         {usedTagEls}
                     </div>
                 </div>
-                <button onClick={this.onSave}>Save</button>
-                <button onClick={this.props.cancelEdit}>Cancel</button>
-                <button className={!(this.props.onDelete)?"invisible":""} onClick={this.props.onDelete}>Delete</button>
+                <div className="flexContHoriz">
+                    <span className="buttonMain buttonGood" onClick={this.onSave}>Save</span>
+                    <span className="buttonMain" onClick={this.props.cancelEdit}>Cancel</span>
+                    <span className={!(this.props.onDelete)?"invisible":"" + " buttonMain buttonDanger"} onClick={this.props.onDelete}>Delete</span>
+                </div>
 
                 <div>
                 </div>
