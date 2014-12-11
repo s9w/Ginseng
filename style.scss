@@ -32,17 +32,7 @@ a{
 
 
 html {
-  font-family: "Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
   font-family: proxima-nova,"Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
-  /*background-color: #f7f7f7;*/
-}
-
-#title{
-  color: #217234;
-  font-family: "titillium";
-  font-weight: normal;
-  text-rendering: optimizeLegibility;
-  font-size: 1.5rem;
 }
 
 .editEntryContainer{
@@ -61,6 +51,12 @@ html {
 
 .Component{
   margin-top: 5px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  &.InfoBrowser{
+    max-width: 800px;
+  }
 }
 
 .grid_left{
@@ -100,7 +96,11 @@ html {
   align-content: center;
 }
 
-
+.flexContHoriz{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
 
 .flexElemContHoriz{
   flex: 0 1 auto;
@@ -134,14 +134,13 @@ html {
 .intervalButtonCont{
   display: flex;
   justify-content: space-around;
-  max-width: 320px;
   flex-wrap: wrap;
 }
 
 .intervalButtonCont span {
   flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
+//  display: flex;
+//  flex-direction: column;
 }
 
 .intervalButtonCont span div {
@@ -149,8 +148,9 @@ html {
   display: flex;
 }
 
-.intervalButtonCont span div button {
-  flex: 1 1 auto;
+.intervalButtonCont>span>div>span {
+  text-align: center;
+  max-width: 50px;
 }
 
 .intervalButtonCont button{
@@ -192,8 +192,10 @@ tbody>tr>td{
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  height: 20px;
-  //  max-width: 1px;
+  @media (max-device-width: 400px)  {
+    height: 25px;
+  }
+
 }
 
 .navBar{
@@ -226,13 +228,6 @@ tbody>tr>td{
       background-color: $base-green;
     }
   }
-}
-
-.flexContHoriz{
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  max-width: 320px;
 }
 
 .flexElem{
@@ -268,12 +263,6 @@ $danger-red: #d9534f;
   }
 }
 
-.Component:not(.InfoBrowser){
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 500px;
-}
-
 #reviewStage{
   display: flex;
   flex-direction: column;
@@ -302,4 +291,11 @@ $danger-red: #d9534f;
   justify-content: space-between;
 }
 
-//.clear { clear: both; }
+textarea{
+  width: 100%;
+}
+
+input, select, textarea, button{
+  font-size: inherit;
+  font-family: inherit;
+}

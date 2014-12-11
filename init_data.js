@@ -3,74 +3,48 @@ var init_data = {
         {
           "type": "Front and back",
           "fields": [
-            "heresy",
-            "die Ketzerei"
+            "Weihnachten",
+            "Christmas"
           ],
           "tags": [
-            "en"
+            "englisch"
           ],
-          "creationDate": "2014-12-07T14:40:09+01:00",
-          "reviews": [
-            [
-              {
-                "reviewTime": "2014-12-08T10:46:39+01:00",
-                "dueTime": "2014-12-08T14:46:39+01:00"
-              },
-              {
-                "reviewTime": "2014-12-09T16:52:10+01:00",
-                "dueTime": "2014-12-09T17:02:10+01:00"
-              },
-              {
-                "reviewTime": "2014-12-09T17:46:11+01:00",
-                "dueTime": "2014-12-09T18:56:10+01:00"
-              },
-              {
-                "reviewTime": "2014-12-09T22:33:15+01:00",
-                "dueTime": "2014-12-09T22:43:15+01:00"
-              }
-            ],
-            []
-          ]
-        },
-        {
-          "type": "Front and back",
-          "fields": [
-            "to concur",
-            "zustimmen"
-          ],
-          "tags": [
-            "en"
-          ],
-          "creationDate": "2014-12-07T16:08:54+01:00",
-          "reviews": [
-            [
-              {
-                "reviewTime": "2014-12-09T17:46:45+01:00",
-                "dueTime": "2014-12-09T18:46:45+01:00"
-              },
-              {
-                "reviewTime": "2014-12-09T22:33:37+01:00",
-                "dueTime": "2014-12-09T22:43:37+01:00"
-              }
-            ],
-            []
-          ]
-        },
-        {
-          "type": "Front and back",
-          "fields": [
-            "makeshift",
-            "die Notlösung"
-          ],
-          "tags": [
-            "en"
-          ],
-          "creationDate": "2014-12-07T17:09:09+01:00",
+          "creationDate": "2014-12-10T21:40:09+01:00",
           "reviews": [
             [],
             []
           ]
-        }
+        },
+        {
+          "type": "Front and back",
+          "fields": [
+            "Tree",
+            "Baum"
+          ],
+          "tags": [
+            "englisch", "reverse"
+          ],
+          "creationDate": "2014-12-10T21:40:09+01:00",
+          "reviews": [
+            [],
+            []
+          ]
+        },
+      {
+        "type": "Front and back",
+        "fields": [
+          "Standardnormalverteilung",
+          "$\\frac{1}{2\\pi}e^{-\\frac{x^2}{2}}$"
+        ],
+        "tags": [
+          "math"
+        ],
+        "creationDate": "2014-12-10T21:40:09+01:00",
+        "reviews": [
+          [],
+          []
+        ]
+      }
       ],
       "infoTypes": {
         "Front and back": {
@@ -81,20 +55,65 @@ var init_data = {
           "views": [
             {
               "front": "{front}",
-              "back": "**{back}**",
+              "back": "{back}",
               "condition": ""
             },
             {
               "front": "{back}",
-              "back": "{front} **bold**",
+              "back": "{front}",
               "condition": "tag: reverse"
+            }
+          ]
+        },
+        "Countries": {
+          "fieldNames": [
+            "Country", "Capital", "Language"],
+          "views": [
+            {
+              "front": "Country: {Country}",
+              "back": "Capital: {Capital}",
+              "condition": ""
+            },
+            {
+              "front": "Capital: {Capital}",
+              "back": "Country: {Country}",
+              "condition": ""
+            },
+            {
+              "front": "Country: {Country}",
+              "back": "Language: {Language}",
+              "condition": ""
             }
           ]
         }
       },
       "settings": {
         "lastInfoType": "Front and back",
-        "timeIntervalChoices": [[10, 30], [1, 5, 10], [1, 2, 3], [1, 2], [0, 15, 30]]
+        "timeIntervalChoices": [
+          [
+            10,
+            30
+          ],
+          [
+            1,
+            5,
+            10
+          ],
+          [
+            1,
+            2,
+            3,
+            4
+          ],
+          [],
+          [],
+          [
+            0,
+            10,
+            20,
+            30
+          ]
+        ]
       }
     }
     ;

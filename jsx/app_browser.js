@@ -16,17 +16,36 @@ var InfoBrowser = React.createClass({
         for (var i = 0; i < this.props.infos.length; ++i) {
             if( this.props.infos[i].fields[0].toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1 ||
                 this.props.infos[i].fields[1].toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1) {
+                var ds=[];
+                var thData = [this.props.infos[i].fields[0], this.props.infos[i].fields[1],
+                    this.props.infos[i].type, this.props.infos[i].tags.join(", ")];
+                for (var j = 0; j < thData.length; ++j) {
+                    var content;
+                    var shortenLen = (j===2?5:15);
+                    if(thData[j].length > shortenLen){
+                        content= thData[j].slice(0,shortenLen)+"...";
+                    }else{
+                        content= thData[j];
+                    }
+                    ds.push(<td key={j}>{content}</td>);
+                }
+                //var ds=[this.props.infos[i].fields[0], this.props.infos[i].fields[1],
+                //    this.props.infos[i].type, this.props.infos[i].tags.join(", ")].map(function(el){
+                //        var content;
+                //        if(el.length >= 15){
+                //            content= el.slice(0,10)+"...";
+                //        }else{
+                //            content= el;
+                //        }
+                //        return(<td key={content}>{content}</td>);
+                //    });
                 tableRows.push(
                     <tr key={i} onClick={this.onRowSelect.bind(this, i)}>
-                        <td>{this.props.infos[i].fields[0]}</td>
-                        <td>{this.props.infos[i].fields[1]}</td>
-                        <td>{this.props.infos[i].type}</td>
-                        <td>{this.props.infos[i].tags.join(", ")}</td>
+                        {ds}
                     </tr>
                 );
             }
         }
-        var Table = ReactBootstrap.Table;
 
         return (
             <div className="InfoBrowser Component">

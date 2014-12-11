@@ -6,47 +6,15 @@ client.authDriver(new Dropbox.AuthDriver.Popup({receiverUrl: "https://leastactio
 var App = React.createClass({
     getInitialState: function() {
         return {
-            ginseng_infos:[],
-            ginseng_infoTypes:{
-                "Front and back":{
-                    "fieldNames": ["front", "back"],
-                    "views": [
-                        {
-                            "front": "Hier ist front: {front}",
-                            "back": "Hier ist back: {back}. Und hier noch **bold** uuh\nund nächste zeile",
-                            "condition": ""
-                        },
-                        {
-                            "front": "Und andersrum. Hier ist back: {back}",
-                            "back": "Hier ist front: {front}. Und hier noch **bold** uuh\nund nächste zeile",
-                            "condition": "tag: reverse"
-                        }
-                    ]
-                }
-            },
-            ginseng_settings:{
-                "lastInfoType": "Front and back",
-                "timeIntervalChoices": ["10m", "30m", "1h", "5h", "10h", "1d", "2d", "3d", "1w", "2w", "0%", "15%", "30%"]
-            },
-            "intervalModifiers": {
-                "setInterval": {
-                    "parameters": ["months", "weeks", "days", "hours", "minutes"]
-                },
-                "modIntervalRelative": {
-                    "parameters": ["percent"]
-                },
-                "modIntervalAbsolutely": {
-                    "parameters": ["months", "weeks", "days", "hours", "minutes"]
-                }
-            },
+            ginseng_infos: init_data.infos,
+            ginseng_infoTypes: init_data.infoTypes,
+            ginseng_settings: init_data.settings,
             activeMode: "status",
             selectedInfoIndex: 0,
-            usedTags: [],
             dropBoxStatus: "off",
             lastSaved: "never"
         };
     },
-
     clickNav: function(mode) {
         this.setState({activeMode: mode});
     },
@@ -58,7 +26,6 @@ var App = React.createClass({
             }
             else {
                 thisApp.setState({dropBoxStatus: "logged in!"});
-                thisApp.loadDB();
             }
         });
     },
@@ -75,7 +42,7 @@ var App = React.createClass({
             }
             else {
                 console.log("file saved with revision " + stat.versionTag);
-                thisApp.setState({lastSaved: moment().format("LT")});
+                thisApp.setState({lastSaved: moment().format("LTS")});
             }
         });
     },
@@ -91,7 +58,6 @@ var App = React.createClass({
                 ginseng_infoTypes: js.infoTypes,
                 ginseng_settings: js.settings
             });
-            thisApp.updateUsedTags(js.infos);
         });
 
     },
@@ -103,22 +69,7 @@ var App = React.createClass({
         });
         return infos_sorted;
     },
-    updateUsedTags: function(infos){
-        var newUsedTagsObj = {};
-        for (var i = 0; i < infos.length; ++i) {
-            for (var j = 0; j < infos[i].tags.length; ++j) {
-                newUsedTagsObj[infos[i].tags[j]] = 1;
-            }
-        }
-        var newUsedTags = [];
-        for(key in newUsedTagsObj){
-            newUsedTags.push(key);
-        }
-        newUsedTags.sort();
-        this.setState({usedTags: newUsedTags});
-    },
     onRowSelect: function(index_selected) {
-        console.log("selected row " + index_selected);
         this.setState({
             selectedInfoIndex: index_selected,
             activeMode: "edit"
@@ -135,7 +86,6 @@ var App = React.createClass({
             ginseng_infos: newInfos,
             activeMode: "browse"
         } );
-        this.updateUsedTags(newInfos); // not fast enough if called on own state. setstate too slow :(
     },
     onInfoDelete: function(){
         var newInfos = JSON.parse( JSON.stringify( this.state.ginseng_infos ));
@@ -158,7 +108,6 @@ var App = React.createClass({
             ginseng_settings: new_settings,
             activeMode: "browse"
         } );
-        this.updateUsedTags(newInfos); // not fast enough if called on own state. setstate too slow :(
     },
     onNew: function(){
         this.setState({activeMode: "new"})
@@ -214,7 +163,6 @@ var App = React.createClass({
         this.setState({ginseng_infoTypes: newInfoTypes} );
     },
     applyInterval: function(infoIndex, reviewIndex, newInterval){
-        console.log("applyInterval: " + infoIndex, reviewIndex, newInterval);
         var newInfos = JSON.parse( JSON.stringify( this.state.ginseng_infos ));
         newInfos[infoIndex].reviews[reviewIndex].push({
             "reviewTime": moment().format(),
@@ -224,7 +172,40 @@ var App = React.createClass({
             ginseng_infos: newInfos
         } );
     },
+    filterInfo: function(filterStr, info){
+        if(filterStr===""){
+            return true
+        }
+        var filterStrNew = filterStr.replace(/ /g, "");
+        var filters = filterStrNew.split(",");
+        for (var i = 0; i < filters.length; ++i) {
+            if(filters[i] === ""){
+                console.log("   empty?");
+            }
+            else if(filters[i] === "tag:reverse"){
+                if(info.tags.indexOf("reverse") === -1){
+                    return false;
+                }
+            }else{
+                console.log("other filter, eek");
+            }
+        }
+        return true;
+    },
     render: function () {
+        // get used Tags
+        var newUsedTagsObj = {};
+        for (var i = 0; i < this.state.ginseng_infos.length; ++i) {
+            for (var j = 0; j < this.state.ginseng_infos[i].tags.length; ++j) {
+                newUsedTagsObj[this.state.ginseng_infos[i].tags[j]] = 1;
+            }
+        }
+        var usedTags = [];
+        for(key in newUsedTagsObj){
+            usedTags.push(key);
+        }
+        usedTags.sort();
+
         // Edit / New
         var compEdit = <div/>;
         if(["new", "edit"].indexOf(this.state.activeMode) !== -1){
@@ -239,7 +220,7 @@ var App = React.createClass({
                 onSave = this.onInfoEdit;
                 onDelete = this.onInfoDelete;
             }
-            compEdit = <InfoEdit info_types={this.state.ginseng_infoTypes} info={editInfo} usedTags={this.state.usedTags}
+            compEdit = <InfoEdit info_types={this.state.ginseng_infoTypes} info={editInfo} usedTags={usedTags}
                 onSave={onSave} cancelEdit={this.cancelEdit} onDelete={onDelete} lastInfoTypeName={this.state.ginseng_settings.lastInfoType} />
         }
 
@@ -258,64 +239,79 @@ var App = React.createClass({
         var comp_review = <div/>;
         if(this.state.activeMode === "review") {
             var thisApp = this;
-            var reviewInterval = 0;
-            var nextTypeName = "";
-            var dueCount = 0;
-            var nextInfoIndex = 0;
-            var nextReviewIndex = 0;
             (function() {
                 console.log("review recalc");
-                var dueDiffsMs = [];
+                var dueItems = [];
                 var infoIndex, reviewIndex, info;
                 var filteredInfos = thisApp.state.ginseng_infos;
-
+                var urgency;
                 for (infoIndex = 0; infoIndex < filteredInfos.length; ++infoIndex) {
                     info = filteredInfos[infoIndex];
                     for (reviewIndex = 0; reviewIndex < info.reviews.length; ++reviewIndex) {
+                        if( !(thisApp.filterInfo(thisApp.state.ginseng_infoTypes[info.type].views[reviewIndex].condition, info))){
+                            console.log("rausgefiltert: " + info.fields[0].slice(0,10) + ", reviewIndex: " + reviewIndex);
+                            continue;
+                        }
                         if(info.reviews[reviewIndex].length > 0) {
-                            var lastDueTime = info.reviews[reviewIndex][info.reviews[reviewIndex].length - 1].dueTime;
-                            if( moment(lastDueTime).isBefore(moment()) ){
-                                dueDiffsMs.push([moment(moment()).diff(info.reviews[reviewIndex][info.reviews[reviewIndex].length - 1].reviewTime), infoIndex, reviewIndex]);
+                            var lastDueTimeStr = info.reviews[reviewIndex][info.reviews[reviewIndex].length - 1].dueTime;
+                            var lastReviewTimeStr = info.reviews[reviewIndex][info.reviews[reviewIndex].length - 1].reviewTime;
+                            var plannedIntervalMs = moment(lastDueTimeStr).diff(moment(lastReviewTimeStr));
+                            var actualIntervalMs = moment().diff(moment(lastReviewTimeStr));
+                            urgency = actualIntervalMs/plannedIntervalMs;
+                            if( urgency>=1.0 ){
+                                console.log("drin wegen urgency: " + info.fields[0].slice(0,10) + ", reviewIndex: " + reviewIndex + ", urgency: " + urgency);
+                                dueItems.push([actualIntervalMs, infoIndex, reviewIndex, urgency]);
+                            }else{
+                                console.log("raus wegen urgency: " + info.fields[0].slice(0,10) + ", reviewIndex: " + reviewIndex + ", urgency: " + urgency);
                             }
                         }else{
-                            dueDiffsMs.push([0, infoIndex, reviewIndex]);
+                            dueItems.push([0, infoIndex, reviewIndex, 1.1]);
+                            console.log("drin wegen neu: " + info.fields[0].slice(0,10) + ", reviewIndex: " + reviewIndex);
                         }
                     }                    
                 }
 
-                // find next due item
-                var biggestDueDiff = 0;
-
-                for (index = 0; index < dueDiffsMs.length; ++index) {
-                    if(dueDiffsMs[index][0] >= biggestDueDiff){
-                        biggestDueDiff = dueDiffsMs[index][0];
-                        nextInfoIndex = dueDiffsMs[index][1];
-                        nextReviewIndex = dueDiffsMs[index][2];
+                var dueCount = dueItems.length;
+                if(dueCount >0) {
+                    // find next due item
+                    var winnerActualInterval = 0;
+                    var winnerUrgency = 0;
+                    var nextInfoIndex = 0;
+                    var nextReviewIndex = 0;
+                    for (index = 0; index < dueItems.length; ++index) {
+                        if (dueItems[index][3] >= winnerUrgency) {
+                            winnerActualInterval = dueItems[index][0];
+                            nextInfoIndex = dueItems[index][1];
+                            nextReviewIndex = dueItems[index][2];
+                            winnerUrgency = dueItems[index][3];
+                        }
                     }
+                    var nextTypeName = thisApp.state.ginseng_infos[nextInfoIndex].type;
+
+                    console.log("backstr: " + thisApp.state.ginseng_infoTypes[nextTypeName].views[nextReviewIndex].back.replace(
+                        /{(\w*)}/g, function(match, p1){
+                            return thisApp.state.ginseng_infos[nextInfoIndex].fields[ thisApp.state.ginseng_infoTypes[nextTypeName].fieldNames.indexOf(p1) ];
+                        }));
+                    comp_review = <Review
+                        applyInterval={thisApp.applyInterval.bind(thisApp, nextInfoIndex, nextReviewIndex)}
+                        frontStr={
+                            thisApp.state.ginseng_infoTypes[nextTypeName].views[nextReviewIndex].front.replace(
+                                /{(\w*)}/g, function(match, p1){
+                                    return thisApp.state.ginseng_infos[nextInfoIndex].fields[ thisApp.state.ginseng_infoTypes[nextTypeName].fieldNames.indexOf(p1) ];
+                                })
+                            }
+                        backStr={
+                            thisApp.state.ginseng_infoTypes[nextTypeName].views[nextReviewIndex].back.replace(
+                                /{(\w*)}/g, function(match, p1){
+                                    return thisApp.state.ginseng_infos[nextInfoIndex].fields[ thisApp.state.ginseng_infoTypes[nextTypeName].fieldNames.indexOf(p1) ];
+                                })
+                            }
+                        dueCount={dueCount}
+                        reviewInterval={winnerActualInterval}
+                        timeIntervalChoices={thisApp.state.ginseng_settings.timeIntervalChoices}
+                    />;
                 }
-                reviewInterval = biggestDueDiff;
-                nextTypeName = thisApp.state.ginseng_infos[nextInfoIndex].type;
-                dueCount = dueDiffsMs.length;
             })();
-
-            comp_review = <Review
-                applyInterval={this.applyInterval.bind(this, nextInfoIndex, nextReviewIndex)}
-                frontStr={
-                    thisApp.state.ginseng_infoTypes[nextTypeName].views[nextReviewIndex].front.replace(
-                        /{(\w*)}/g, function(match, p1){
-                            return thisApp.state.ginseng_infos[nextInfoIndex].fields[ thisApp.state.ginseng_infoTypes[nextTypeName].fieldNames.indexOf(p1) ];
-                        })
-                    }
-                backStr={
-                    thisApp.state.ginseng_infoTypes[nextTypeName].views[nextReviewIndex].back.replace(
-                        /{(\w*)}/g, function(match, p1){
-                            return thisApp.state.ginseng_infos[nextInfoIndex].fields[ thisApp.state.ginseng_infoTypes[nextTypeName].fieldNames.indexOf(p1) ];
-                        })
-                    }
-                dueCount={dueCount}
-                reviewInterval={reviewInterval}
-                timeIntervalChoices={this.state.ginseng_settings.timeIntervalChoices}
-            />;
         }
 
         return (
@@ -362,14 +358,15 @@ var Status = React.createClass({
                 <div className="Status Component">
                     <div>Infos loaded: {this.props.infoCount}</div>
                     <div>Dropbox Status: {this.props.dropBoxStatus}</div>
-                    <div>Last save: {this.props.lastSaved}</div>
+                    <div>Last save: {this.props.lastSaved} (local time)</div>
 
                     <div>
-                        <span disabled={this.props.dropBoxStatus==="logged in!"} className="buttonMain buttonGood" onClick={this.props.onDBAuth}>auth Dropbox</span>
+
                     </div>
-                    <div className={"flexContHoriz " + (this.props.dropBoxStatus === "logged in!"?"":"invisible")}>
-                        <span className="buttonMain" onClick={this.props.onDbLoad}>load from Dropbox</span>
-                        <span className="buttonMain" onClick={this.props.onDbSave}>save to Dropbox</span>
+                    <div className={"flexContHoriz"}>
+                        <span disabled={this.props.dropBoxStatus==="logged in!"} className="buttonMain buttonGood" onClick={this.props.onDBAuth}>auth Dropbox</span>
+                        <span className={"buttonMain " + (this.props.dropBoxStatus === "logged in!"?"":"invisible")} onClick={this.props.onDbLoad}>load from Dropbox</span>
+                        <span className={"buttonMain " + (this.props.dropBoxStatus === "logged in!"?"":"invisible")} onClick={this.props.onDbSave}>save to Dropbox</span>
                     </div>
                 </div>
             ) } else{

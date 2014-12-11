@@ -21,16 +21,7 @@ a {
   text-decoration: none; }
 
 html {
-  font-family: "Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
-  font-family: proxima-nova,"Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
-  /*background-color: #f7f7f7;*/ }
-
-#title {
-  color: #217234;
-  font-family: "titillium";
-  font-weight: normal;
-  text-rendering: optimizeLegibility;
-  font-size: 1.5rem; }
+  font-family: proxima-nova,"Helvetica Neue",Helvetica,Roboto,Arial,sans-serif; }
 
 .editEntryContainer {
   display: flex;
@@ -45,7 +36,12 @@ html {
   white-space: pre; }
 
 .Component {
-  margin-top: 5px; }
+  margin-top: 5px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto; }
+  .Component.InfoBrowser {
+    max-width: 800px; }
 
 .grid_left {
   min-width: 80px; }
@@ -75,6 +71,11 @@ html {
   flex-direction: column;
   align-content: center; }
 
+.flexContHoriz {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap; }
+
 .flexElemContHoriz {
   flex: 0 1 auto;
   display: flex; }
@@ -101,20 +102,18 @@ html {
 .intervalButtonCont {
   display: flex;
   justify-content: space-around;
-  max-width: 320px;
   flex-wrap: wrap; }
 
 .intervalButtonCont span {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column; }
+  flex: 1 1 auto; }
 
 .intervalButtonCont span div {
   flex: 1 1 auto;
   display: flex; }
 
-.intervalButtonCont span div button {
-  flex: 1 1 auto; }
+.intervalButtonCont > span > div > span {
+  text-align: center;
+  max-width: 50px; }
 
 .intervalButtonCont button {
   padding: 6px 6px; }
@@ -139,8 +138,10 @@ tbody > tr > td {
   padding-right: 10px;
   text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden;
-  height: 20px; }
+  overflow: hidden; }
+  @media (max-device-width: 400px) {
+    tbody > tr > td {
+      height: 25px; } }
 
 .navBar {
   display: flex;
@@ -165,12 +166,6 @@ tbody > tr > td {
       background-color: #c9eabe; }
     .navBar > div.active {
       background-color: #6ac44a; }
-
-.flexContHoriz {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  max-width: 320px; }
 
 .flexElem {
   flex: 0 1 auto; }
@@ -197,11 +192,6 @@ tbody > tr > td {
     cursor: default;
     outline: 0 !important; }
 
-.Component:not(.InfoBrowser) {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 500px; }
-
 #reviewStage {
   display: flex;
   flex-direction: column;
@@ -210,5 +200,12 @@ tbody > tr > td {
 #reviewToolbar {
   display: flex;
   justify-content: space-between; }
+
+textarea {
+  width: 100%; }
+
+input, select, textarea, button {
+  font-size: inherit;
+  font-family: inherit; }
 
 /*# sourceMappingURL=style.css.map */

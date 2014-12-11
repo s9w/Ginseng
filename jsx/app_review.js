@@ -1,5 +1,3 @@
-var converter = new Showdown.converter();
-
 //function getSelected(infos, selectionStr){
 //    if(selectionStr === "")
 //        return infos;
@@ -28,6 +26,8 @@ var Review = React.createClass({
         return {
             progressState: "frontSide"
         };
+
+
     },
     componentDidMount: function(){
         this.refs.flipButton.getDOMNode().focus();
@@ -42,6 +42,16 @@ var Review = React.createClass({
     applyInterval: function(newInterval){
         this.props.applyInterval(newInterval);
         this.setState({progressState: "frontSide"});
+    },
+    getRenderedStr: function(str){
+        var latexStringBuffer = [];
+        var backStrNew = str.replace(/(\$.*?\$)/g, function(match, p1){
+            latexStringBuffer.push(p1.slice(1,-1));
+            return '$$';
+        });
+        return marked(backStrNew).replace(/\$\$/g, function(){
+            return katex.renderToString(latexStringBuffer.shift());
+        });
     },
     render: function() {
         return (
@@ -58,9 +68,10 @@ var Review = React.createClass({
 
                 <div id="reviewStage">
                     <div className="markdowned"
-                        dangerouslySetInnerHTML={{__html: converter.makeHtml( this.props.frontStr )}}></div>
+                        dangerouslySetInnerHTML={{__html: this.getRenderedStr( this.props.frontStr )}}></div>
                     <div className={"markdowned "+(this.state.progressState==="backSide"?"":"invisible")}
-                        dangerouslySetInnerHTML={{__html: converter.makeHtml( this.props.backStr )}}></div>
+                        dangerouslySetInnerHTML={{__html: this.getRenderedStr(this.props.backStr) }}></div>
+
                 </div>
 
                 <Intervaller

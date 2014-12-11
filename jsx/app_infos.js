@@ -8,6 +8,9 @@ var InfoEdit = React.createClass({
             info: infoNew
         };
     },
+    componentDidMount: function(){
+        this.refs.firstTextbox.getDOMNode().focus();
+    },
     createInfo: function(typeName){
         var newInfo = {};
         newInfo.type = typeName;
@@ -26,14 +29,14 @@ var InfoEdit = React.createClass({
     change_infoType: function(newTypeName){
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
         newInfo.type = newTypeName;
-        var size_new = this.props.info_types.newTypeName.fieldNames.length;
+        var size_new = this.props.info_types[newTypeName].fieldNames.length;
         var sizeDiff = size_new - this.state.info.fields.length;
         if( sizeDiff > 0 ){
             for(var i=0; i<sizeDiff; i++){
                 newInfo.fields.push("");
             }
         } else if(sizeDiff < 0){
-            newInfo = newInfo.fields.slice(0, size_new);
+            newInfo.fields = newInfo.fields.slice(0, size_new);
         }
         this.setState( {info: newInfo} );
     },
@@ -63,11 +66,16 @@ var InfoEdit = React.createClass({
         var data_elements = [];
         for (var i = 0; i < this.props.info_types[this.state.info.type].fieldNames.length; ++i) {
             var element_name = this.props.info_types[this.state.info.type].fieldNames[i];
+            var refStr="";
+            if(i===0){
+                refStr="firstTextbox";
+            }
             data_elements.push(
                 <div key={i}>
                     <div>{element_name}</div>
                     <textarea
                         value={this.state.info.fields[i]}
+                        ref={refStr}
                         onChange={this.onFieldEdit.bind(this, i)}
                         rows={(this.state.info.fields[i].match(/\n/g) || []).length+1}
                     />
@@ -166,11 +174,6 @@ var InfoTypes = React.createClass({
             selectedTypeName: first
         };
     },
-    //componentWillReceiveProps: function(nextProps) {
-    //    this.setState({
-    //        selectedTypeName: nextProps.info_types.length-1
-    //    });
-    //},
     onFieldNameEdit: function(fieldNameIndex, event) {
         this.props.onFieldNameEdit(this.state.selectedTypeName, fieldNameIndex, event.target.value);
     },

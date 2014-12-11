@@ -4,13 +4,13 @@ var Intervaller = React.createClass({
 
         // construct intervalChoiceGroups
         var intervalChoiceGroups = [], intervalChoiceGroup=[];
-        var timeframeNameDict = ["Minutes","Hours", "Days", "Weeks", "Relative"];
-        //var keyIndex = 0;
+        var timeframeNameDict = ["Minutes","Hours", "Days", "Weeks", "Months", "Relative"];
         for (var intervalGroupIndex = 0; intervalGroupIndex < this.props.timeIntervalChoices.length; ++intervalGroupIndex) {
+            if(this.props.timeIntervalChoices[intervalGroupIndex].length===0)
+                continue;
             intervalChoiceGroup = [];
             for (var typeIndex = 0; typeIndex < this.props.timeIntervalChoices[intervalGroupIndex].length; ++typeIndex) {
                 intervalChoiceGroup.push(this.props.timeIntervalChoices[intervalGroupIndex][typeIndex]);
-                //keyIndex += 1;
             }
             intervalChoiceGroups.push({
                 label: timeframeNameDict[intervalGroupIndex],
@@ -20,8 +20,8 @@ var Intervaller = React.createClass({
 
         return {
             modifyType: "change", // change, set
-            changeType: "relative", // minutes, hours, weeks, relative
-            modifyAmount: 0,
+            changeType: "minutes", // minutes, hours, weeks, relative
+            modifyAmount: 10,
             activeKeyIndex: 0,
             intervalChoiceGroups: intervalChoiceGroups
         };
@@ -34,9 +34,6 @@ var Intervaller = React.createClass({
             this.setState({modifyType: newModeStr, activeKeyIndex: newActiveKeyIndex});
         }
     },
-    //reportPreviewInterval: function(newInterval){
-    //    this.props.previewInterval(newInterval);
-    //},
     getNewInterval: function(){
         var intervalDiff;
         if(this.state.modifyType === "change") {
@@ -54,7 +51,6 @@ var Intervaller = React.createClass({
     },
     onIntervalChoice: function(modifyAmount, keyIndex, changeType, event){
         if(this.state.activeKeyIndex === keyIndex){
-            console.log("apply! mit " + this.getNewInterval());
             this.props.applyInterval(this.getNewInterval());
         }
         this.setState({
@@ -63,10 +59,6 @@ var Intervaller = React.createClass({
             modifyAmount: modifyAmount
         });
     },
-    //applyInterval: function(newInterval){
-    //    console.log("apply");
-    //    this.props.applyInterval(newInterval);
-    //},
     getPreciseIntervalStr: function(interval){
         var duration = moment.duration(interval);
         if(duration.asMinutes()<=1)
@@ -79,7 +71,6 @@ var Intervaller = React.createClass({
         if(duration.asMinutes() >= 1) return (Math.round(duration.asMinutes() * 10)/10)+" minutes";
     },
     render: function(){
-        // create interval buttons
         var toolbarConents = [];
         var groupConents;
         var amount;
@@ -109,7 +100,6 @@ var Intervaller = React.createClass({
             );
         }
 
-        //console.log("intervaller rerender");
         return(
             <div className={this.props.show?"":"invisible"}>
                 <div className="intervalButtonCont">
@@ -120,9 +110,10 @@ var Intervaller = React.createClass({
                             <span className={"buttonMain "+ (this.state.modifyType==="set"?"buttonGood":"")} onClick={this.onModeChange.bind(this, "set")}>set</span>
                         </div>
                     </span>
-                {toolbarConents}
+                    {toolbarConents}
                 </div>
-                <span>New interval: {this.getPreciseIntervalStr( this.getNewInterval() )}</span>
+                <div>Old interval: {this.getPreciseIntervalStr( this.props.reviewInterval )}</div>
+                <div>New interval: {this.getPreciseIntervalStr( this.getNewInterval() )}</div>
 
             </div>
         );
