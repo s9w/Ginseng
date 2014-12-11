@@ -82,7 +82,7 @@ var Intervaller = React.createClass({
                 groupConents.push(
                     <span
                         key={j}
-                        className={"buttonMain " + (keyIndex === this.state.activeKeyIndex ? "buttonGood" : "")}
+                        className={"buttonMain unselectable " + (keyIndex === this.state.activeKeyIndex ? "buttonGood" : "")}
                         onClick={this.onIntervalChoice.bind(this, amount, keyIndex, this.state.intervalChoiceGroups[i].label.toLowerCase())}> {amount}
                     </span>
                 );

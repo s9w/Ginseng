@@ -72,7 +72,7 @@ html {
 }
 
 .markdowned{
-  white-space: pre;
+//  white-space: pre;
   font-size: 1.2em;
 }
 
@@ -193,7 +193,7 @@ tbody>tr>td{
   white-space: nowrap;
   overflow: hidden;
   @media (max-device-width: 400px)  {
-    height: 25px;
+    height: 30px;
   }
 
 }
@@ -249,13 +249,14 @@ $danger-red: #d9534f;
   padding: 4px 6px;
   cursor: pointer;
   margin: 1px;
+  white-space: nowrap;
   &.buttonGood{
     @include hoverDark($base-green);
   }
   &.buttonDanger{
     @include hoverDark($danger-red);
   }
-  &:disabled{
+  &.disabled{
     color: graytext;
     background: hsl(hue($base-green), 17%, 87%);
     cursor: default;
@@ -298,4 +299,10 @@ textarea{
 input, select, textarea, button{
   font-size: inherit;
   font-family: inherit;
+}
+
+.unselectable {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }

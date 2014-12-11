@@ -29,16 +29,6 @@ var InfoBrowser = React.createClass({
                     }
                     ds.push(<td key={j}>{content}</td>);
                 }
-                //var ds=[this.props.infos[i].fields[0], this.props.infos[i].fields[1],
-                //    this.props.infos[i].type, this.props.infos[i].tags.join(", ")].map(function(el){
-                //        var content;
-                //        if(el.length >= 15){
-                //            content= el.slice(0,10)+"...";
-                //        }else{
-                //            content= el;
-                //        }
-                //        return(<td key={content}>{content}</td>);
-                //    });
                 tableRows.push(
                     <tr key={i} onClick={this.onRowSelect.bind(this, i)}>
                         {ds}

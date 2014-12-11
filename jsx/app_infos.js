@@ -1,44 +1,49 @@
+function getITypeIndex(types, nameS){
+    for(var i = 0; i < types.length; i++) {
+        if(types[i].name === nameS) {
+            return i;
+        }
+    }
+}
+
 var InfoEdit = React.createClass({
     getInitialState: function() {
         var infoNew = JSON.parse( JSON.stringify( this.props.info ));
-        if(Object.getOwnPropertyNames(infoNew).length == 0){
-            infoNew = this.createInfo(this.props.lastInfoTypeName);
+        if(Object.keys(infoNew).length === 1){
+            var fields = [];
+            var reviews = [];
+            for (var i = 0; i < this.props.types[0].fieldNames.length; ++i) {
+                fields.push("");
+                reviews.push([]);
+            }
+            infoNew.fields = fields;
+            infoNew.reviews = reviews;
+            infoNew.tags = [];
+            infoNew.creationDate = moment().format();
         }
         return {
             info: infoNew
         };
     },
     componentDidMount: function(){
-        this.refs.firstTextbox.getDOMNode().focus();
+        //this.refs.firstTextbox.getDOMNode().focus();
     },
-    createInfo: function(typeName){
-        var newInfo = {};
-        newInfo.type = typeName;
-        var fields = [];
-        var reviews = [];
-        for (var index = 0; index < this.props.info_types[typeName].fieldNames.length; ++index) {
-            fields.push("");
-            reviews.push([]);
-        }
-        newInfo.fields = fields;
-        newInfo.reviews = reviews;
-        newInfo.tags = [];
-        newInfo.creationDate = moment().format();
-        return newInfo;
+    componentWillUpdate: function(nextProps, nextState){
+        console.log("UPDATE");
     },
-    change_infoType: function(newTypeName){
+    onTypeChange: function(newTypeIndex){
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
-        newInfo.type = newTypeName;
-        var size_new = this.props.info_types[newTypeName].fieldNames.length;
-        var sizeDiff = size_new - this.state.info.fields.length;
+        newInfo.type = this.props.types[newTypeIndex].name;
+        var newFieldsLength = this.props.types[newTypeIndex].fieldNames.length;
+        var sizeDiff = newFieldsLength - this.state.info.fields.length;
         if( sizeDiff > 0 ){
             for(var i=0; i<sizeDiff; i++){
                 newInfo.fields.push("");
             }
         } else if(sizeDiff < 0){
-            newInfo.fields = newInfo.fields.slice(0, size_new);
+            newInfo.fields = newInfo.fields.slice(0, newFieldsLength);
         }
-        this.setState( {info: newInfo} );
+        this.setState({info: newInfo});
     },
     onFieldEdit: function(fieldIndex, e) {
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
@@ -54,7 +59,7 @@ var InfoEdit = React.createClass({
         }
         this.setState( {info: newInfo} );
     },
-    onSave: function(){
+    onSave: function(){ //inline?
         this.props.onSave(this.state.info);
     },
     addUsedTag: function (nextTagStr) {
@@ -64,20 +69,21 @@ var InfoEdit = React.createClass({
     },
     render: function() {
         var data_elements = [];
-        for (var i = 0; i < this.props.info_types[this.state.info.type].fieldNames.length; ++i) {
-            var element_name = this.props.info_types[this.state.info.type].fieldNames[i];
-            var refStr="";
-            if(i===0){
+        var typeIndex = this.props.typeNames.indexOf(this.state.info.type);
+        for (var fieldIdx = 0; fieldIdx < this.state.info.fields.length; ++fieldIdx) {
+            var element_name = this.props.types[typeIndex].fieldNames[fieldIdx];
+            var refStr = false;
+            if(fieldIdx===0){
                 refStr="firstTextbox";
             }
             data_elements.push(
-                <div key={i}>
+                <div key={fieldIdx}>
                     <div>{element_name}</div>
                     <textarea
-                        value={this.state.info.fields[i]}
+                        value={this.state.info.fields[fieldIdx]}
                         ref={refStr}
-                        onChange={this.onFieldEdit.bind(this, i)}
-                        rows={(this.state.info.fields[i].match(/\n/g) || []).length+1}
+                        onChange={this.onFieldEdit.bind(this, fieldIdx)}
+                        rows={(this.state.info.fields[fieldIdx].match(/\n/g) || []).length+1}
                     />
                 </div>
             );
@@ -85,23 +91,28 @@ var InfoEdit = React.createClass({
 
         // used Tags
         var usedTagEls = [];
-        var seperator = "";
+        var seperator;
         for (var index = 0; index < this.props.usedTags.length; ++index) {
             if( this.state.info.tags.indexOf(this.props.usedTags[index]) === -1 ){
-                if(index === this.props.usedTags.length-1)
+                if(usedTagEls.length===0)
                     seperator = "";
                 else
                     seperator = ", ";
                 usedTagEls.push(
-                    <a key={index} onClick={this.addUsedTag.bind(this, this.props.usedTags[index])} href="#">{this.props.usedTags[index] + seperator}</a>
+                    <a key={index} onClick={this.addUsedTag.bind(this, this.props.usedTags[index])} href="#">{seperator+this.props.usedTags[index]}</a>
                 );
             }
         }
 
+        var isChanged = JSON.stringify(this.props.info)===JSON.stringify(this.state.info);
         return (
             <div className="InfoEdit Component">
                 <div className="editEntryContainer">
-                    <ITypeSwitcher selected_iType={this.state.info.type} onTypeChange={this.change_infoType} info_types={this.props.info_types} />
+                    <ITypeSwitcher
+                        typeNames={this.props.typeNames}
+                        selectedTypeIndex={this.props.typeNames.indexOf(this.state.info.type)}
+                        onTypeChange={this.onTypeChange}
+                    />
                     {data_elements}
                     <div className="editEntryElement">
                         <div className="grid_left">Tags</div>
@@ -113,7 +124,10 @@ var InfoEdit = React.createClass({
                     </div>
                 </div>
                 <div className="flexContHoriz">
-                    <span className="buttonMain buttonGood" onClick={this.onSave}>Save</span>
+                    <span
+                        className={"buttonMain buttonGood "+ (isChanged?"disabled":"")}
+                        onClick={this.onSave}>{this.props.saveButtonStr}
+                    </span>
                     <span className="buttonMain" onClick={this.props.cancelEdit}>Cancel</span>
                     <span className={!(this.props.onDelete)?"invisible":"" + " buttonMain buttonDanger"} onClick={this.props.onDelete}>Delete</span>
                 </div>
@@ -128,39 +142,40 @@ var ITypeSwitcher = React.createClass({
     onTypeChange: function(e){
         this.props.onTypeChange(e.target.value);
     },
-    onAddType: function(){
-        var new_infoTypes = JSON.parse( JSON.stringify( this.props.info_types ));
-        new_infoTypes["new info type"] = {
-            "fieldNames": ["first field", "second field"],
-            "views": [
-                {
-                    "front": "{first field}",
-                    "back": "{second field}",
-                    "condition": ""
-                },
-                {
-                    "front": "{second field}",
-                    "back": "{first field}",
-                    "condition": "tag: reverse"
-                }
-            ]
-        };
-        this.props.onAddType(new_infoTypes);
-    },
+    //onAddType: function(){
+    //    var new_infoTypes = JSON.parse( JSON.stringify( this.props.info_types ));
+    //    new_infoTypes.push( {
+    //        "name": "new info type",
+    //        "fieldNames": ["first field", "second field"],
+    //        "views": [
+    //            {
+    //                "front": "{first field}",
+    //                "back": "{second field}",
+    //                "condition": ""
+    //            },
+    //            {
+    //                "front": "{second field}",
+    //                "back": "{first field}",
+    //                "condition": "tag: reverse"
+    //            }
+    //        ]
+    //    });
+    //    this.props.onAddType(new_infoTypes);
+    //},
     render: function() {
-        var options = [];
-        for(key in this.props.info_types){
-            options.push( <option key={key} value={key}>{key}</option> );
+        var typeNameOptions = new Array(this.props.typeNames.length);
+        for(var i=0; i<this.props.typeNames.length; i++){
+            typeNameOptions.push( <option key={i} value={i}>{this.props.typeNames[i]}</option> );
         }
         var buttonAddType = "";
         if(this.props.onAddType)
-            buttonAddType = <span className="fa fa-plus-circle clickable" title="new type" onClick={this.onAddType}></span>;
+            buttonAddType = <span className="buttonMain" title="new type" onClick={this.onAddType}></span>;
 
         return (
             <div className="iTypeSwitcher editEntryElement">
                 <div className="grid_left">Info type</div>
-                <select size={options.length} value={this.props.selected_iType} ref="selector" onChange={this.onTypeChange}>
-                    {options}
+                <select size={typeNameOptions.length} value={this.props.selectedTypeIndex} ref="selector" onChange={this.onTypeChange}>
+                    {typeNameOptions}
                 </select>
                 {buttonAddType}
             </div>);
@@ -169,9 +184,9 @@ var ITypeSwitcher = React.createClass({
 
 var InfoTypes = React.createClass({
     getInitialState: function() {
-        for (var first in this.props.info_types) break;
         return {
-            selectedTypeName: first
+            selectedTypeIndex: 0,
+            newInfoTypes: this.props.infoTypes
         };
     },
     onFieldNameEdit: function(fieldNameIndex, event) {
@@ -180,51 +195,50 @@ var InfoTypes = React.createClass({
     onNameEdit: function(event) {
         this.props.onNameEdit(this.state.selectedTypeName, event.target.value);
     },
-    onTypeChange: function(iTypeName){
-        this.setState({selectedTypeName: iTypeName});
+    onTypeChange: function(newIndex){
+        this.setState({selectedTypeIndex: newIndex});
     },
     onFieldsResize: function(fieldNameIndex){
-        this.props.onResize(this.state.selectedTypeName, fieldNameIndex)
+        this.props.onResize(this.state.selectedTypeIndex, fieldNameIndex)
     },
     render: function() {
-        if(this.props.show) {
-            var iType_elements = [];
-            for (var i = 0; i < this.props.info_types[this.state.selectedTypeName].fieldNames.length; ++i) {
-                iType_elements.push(
+        var iType_elements = [];
+        for (var i = 0; i < this.state.newInfoTypes[this.state.selectedTypeIndex].fieldNames.length; ++i) {
+            iType_elements.push(
+                <Input
+                    type="text"
+                    key={i}
+                    bsSize="small"
+                    addonBefore={"Label "+ i}
+                    value={this.state.newInfoTypes[this.state.selectedTypeIndex].fieldNames[i]}
+                    onChange={this.onFieldNameEdit.bind(this, i)}
+                    buttonAfter={<BButton bsStyle="danger" onClick={this.onFieldsResize.bind(this, i)}>delete!</BButton>}
+                />
+            )
+        }
+
+        return (
+            <div className="InfoTypes Component">
+                <div className="editEntryContainer">
+                    <ITypeSwitcher
+                        typeNames={this.state.newInfoTypes.map(function(type){ return type.name;})}
+                        selectedTypeIndex={this.state.selectedTypeIndex}
+                        onTypeChange={this.onTypeChange}
+                    />
                     <Input
                         type="text"
-                        key={i}
                         bsSize="small"
-                        addonBefore={"Label "+ i}
-                        value={this.props.info_types[this.state.selectedTypeName].fieldNames[i]}
-                        onChange={this.onFieldNameEdit.bind(this, i)}
-                        buttonAfter={<BButton bsStyle="danger" onClick={this.onFieldsResize.bind(this, i)}>delete!</BButton>}
+                        addonBefore="Type name"
+                        value={this.state.newInfoTypes[this.state.selectedTypeIndex].name}
+                        onChange={this.onNameEdit}
                     />
-                )
-            }
+                </div>
 
-            return (
-                <div className="InfoTypes Component">
-                    <div className="editEntryContainer">
-                        <ITypeSwitcher selected_iType={this.state.selectedTypeName} onTypeChange={this.onTypeChange}
-                            info_types={this.props.info_types} onAddType={this.props.onEdit}/>
-                        <Input
-                            type="text"
-                            bsSize="small"
-                            addonBefore="Type name"
-                            value={this.state.selectedTypeName}
-                            onChange={this.onNameEdit}
-                        />
-                    </div>
-
-                    <div className="editEntryContainer">
-                        {iType_elements}
-                    </div>
-                    <button onClick={this.onFieldsResize.bind(this, -1)}>Add new field</button>
-                </div>);
-        }
-        else{
-            return ( <div className="InfoNew"></div> );
-        }
+                <div className="editEntryContainer">
+                    {iType_elements}
+                </div>
+                <button onClick={this.onFieldsResize.bind(this, -1)}>Add new field</button>
+                <span onClick={this.onFieldsResize.bind(this, -1)}>Add new field</span>
+            </div>);
     }
 });

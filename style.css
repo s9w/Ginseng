@@ -53,7 +53,6 @@ html {
   align-items: flex-start; }
 
 .markdowned {
-  white-space: pre;
   font-size: 1.2em; }
 
 .DangerPopup {
@@ -141,7 +140,7 @@ tbody > tr > td {
   overflow: hidden; }
   @media (max-device-width: 400px) {
     tbody > tr > td {
-      height: 25px; } }
+      height: 30px; } }
 
 .navBar {
   display: flex;
@@ -175,7 +174,8 @@ tbody > tr > td {
   border: 0;
   padding: 4px 6px;
   cursor: pointer;
-  margin: 1px; }
+  margin: 1px;
+  white-space: nowrap; }
   .buttonMain:hover {
     outline: 2px solid #949494; }
   .buttonMain.buttonGood {
@@ -186,7 +186,7 @@ tbody > tr > td {
     background: #d9534f; }
     .buttonMain.buttonDanger:hover {
       outline: 2px solid #aa2925; }
-  .buttonMain:disabled {
+  .buttonMain.disabled {
     color: graytext;
     background: #dbe3d8;
     cursor: default;
@@ -207,5 +207,10 @@ textarea {
 input, select, textarea, button {
   font-size: inherit;
   font-family: inherit; }
+
+.unselectable {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none; }
 
 /*# sourceMappingURL=style.css.map */
