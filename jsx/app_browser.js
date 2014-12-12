@@ -18,7 +18,7 @@ var InfoBrowser = React.createClass({
                 this.props.infos[i].fields[1].toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1) {
                 var ds=[];
                 var thData = [this.props.infos[i].fields[0], this.props.infos[i].fields[1],
-                    this.props.infos[i].type, this.props.infos[i].tags.join(", ")];
+                    this.props.typeNames[this.props.infos[i].typeID], this.props.infos[i].tags.join(", ")];
                 for (var j = 0; j < thData.length; ++j) {
                     var content;
                     var shortenLen = (j===2?5:15);
@@ -42,7 +42,7 @@ var InfoBrowser = React.createClass({
                 <div className="browseControls">
                     <input type="text" placeholder="Quick filter..." value={this.state.filterText}
                         onChange={this.onFilterChange}/>
-                    <span className="buttonMain buttonGood" onClick={this.props.onNew}>New info</span>
+                    <span className="button buttonGood" onClick={this.props.onNew}>New info</span>
                 </div>
                 <table>
                     <thead>

@@ -60,7 +60,7 @@ var Review = React.createClass({
                     <span id="reviewToolbarLeft">{this.props.dueCount}</span>
                     <button id="reviewToolbarRight"
                         ref="flipButton"
-                        className={"buttonMain buttonGood "+ (this.state.progressState === "frontSide"?"":"invisible")}
+                        className={"button buttonGood "+ (this.state.progressState === "frontSide"?"":"invisible")}
                         onClick={this.flip} >Show backside
                     </button>
                 </div>

@@ -242,7 +242,7 @@ tbody>tr>td{
 }
 
 $danger-red: #d9534f;
-.buttonMain{
+.button {
   //border: 2px solid transparent;
   @include hoverDark(lightgray);
   border: 0;
@@ -250,6 +250,15 @@ $danger-red: #d9534f;
   cursor: pointer;
   margin: 1px;
   white-space: nowrap;
+  &.interval0{
+    @include hoverDark(#66CCFF);
+  }
+  &.interval1{
+    @include hoverDark(#3399FF);
+  }
+  &.intervalSelected{
+    @include hoverDark(#f00);
+  }
   &.buttonGood{
     @include hoverDark($base-green);
   }

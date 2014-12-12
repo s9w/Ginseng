@@ -169,24 +169,36 @@ tbody > tr > td {
 .flexElem {
   flex: 0 1 auto; }
 
-.buttonMain {
+.button {
   background: lightgray;
   border: 0;
   padding: 4px 6px;
   cursor: pointer;
   margin: 1px;
   white-space: nowrap; }
-  .buttonMain:hover {
+  .button:hover {
     outline: 2px solid #949494; }
-  .buttonMain.buttonGood {
+  .button.interval0 {
+    background: #66CCFF; }
+    .button.interval0:hover {
+      outline: 2px solid #00a7fa; }
+  .button.interval1 {
+    background: #3399FF; }
+    .button.interval1:hover {
+      outline: 2px solid #006bd6; }
+  .button.intervalSelected {
+    background: #f00; }
+    .button.intervalSelected:hover {
+      outline: 2px solid #b30000; }
+  .button.buttonGood {
     background: #6ac44a; }
-    .buttonMain.buttonGood:hover {
+    .button.buttonGood:hover {
       outline: 2px solid #478f2f; }
-  .buttonMain.buttonDanger {
+  .button.buttonDanger {
     background: #d9534f; }
-    .buttonMain.buttonDanger:hover {
+    .button.buttonDanger:hover {
       outline: 2px solid #aa2925; }
-  .buttonMain.disabled {
+  .button.disabled {
     color: graytext;
     background: #dbe3d8;
     cursor: default;

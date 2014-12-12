@@ -79,11 +79,19 @@ var Intervaller = React.createClass({
             groupConents = [];
             for (var j = 0; j < this.state.intervalChoiceGroups[i].members.length; ++j) {
                 amount = this.state.intervalChoiceGroups[i].members[j];
+                var buttonClassName = "button unselectable";
+                buttonClassName += " interval"+(i%2);
+                buttonClassName += keyIndex === this.state.activeKeyIndex ? " intervalSelected" : "";
+                var buttonStr = amount;
+                if(this.state.intervalChoiceGroups[i].label==="Relative")
+                    buttonStr += "%";
+                else
+                    buttonStr += this.state.intervalChoiceGroups[i].label.slice(0,1).toLowerCase();
                 groupConents.push(
                     <span
                         key={j}
-                        className={"buttonMain unselectable " + (keyIndex === this.state.activeKeyIndex ? "buttonGood" : "")}
-                        onClick={this.onIntervalChoice.bind(this, amount, keyIndex, this.state.intervalChoiceGroups[i].label.toLowerCase())}> {amount}
+                        className={buttonClassName}
+                        onClick={this.onIntervalChoice.bind(this, amount, keyIndex, this.state.intervalChoiceGroups[i].label.toLowerCase())}> {buttonStr}
                     </span>
                 );
                 keyIndex += 1;
@@ -106,8 +114,8 @@ var Intervaller = React.createClass({
                     <span>
                         <span>Type</span>
                         <div >
-                            <span className={"buttonMain "+ (this.state.modifyType==="change"?"buttonGood":"")} onClick={this.onModeChange.bind(this, "change")}>change</span>
-                            <span className={"buttonMain "+ (this.state.modifyType==="set"?"buttonGood":"")} onClick={this.onModeChange.bind(this, "set")}>set</span>
+                            <span className={"button "+ (this.state.modifyType==="change"?"buttonGood":"")} onClick={this.onModeChange.bind(this, "change")}>change</span>
+                            <span className={"button "+ (this.state.modifyType==="set"?"buttonGood":"")} onClick={this.onModeChange.bind(this, "set")}>set</span>
                         </div>
                     </span>
                     {toolbarConents}

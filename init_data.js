@@ -1,7 +1,7 @@
 var init_data = {
         "infos": [
             {
-                "type": "Front and back",
+                "typeID": "0",
                 "fields": [
                     "Weihnachten",
                     "Christmas"
@@ -16,7 +16,7 @@ var init_data = {
                 ]
             },
             {
-                "type": "Front and back",
+                "typeID": "0",
                 "fields": [
                     "Tree",
                     "Baum"
@@ -31,10 +31,10 @@ var init_data = {
                 ]
             },
             {
-                "type": "Front and back",
+                "typeID": "0",
                 "fields": [
                     "Standardnormalverteilung",
-                    "$\\frac{1}{2\\pi}e^{-\\frac{x^2}{2}}$"
+                    "$\\frac{1}{\\sqrt{2\\pi}}e^{-\\frac{x^2}{2}}$"
                 ],
                 "tags": [
                     "math"
@@ -46,8 +46,8 @@ var init_data = {
                 ]
             }
         ],
-        "infoTypes": [
-            {
+        "infoTypes": {
+            "0": {
                 "name": "Front and back",
                 "fieldNames": [
                     "front",
@@ -65,8 +65,9 @@ var init_data = {
                         "condition": "tag: reverse"
                     }
                 ]
-            },
-            {
+            }
+            ,
+            "1": {
                 "name": "Countries",
                 "fieldNames": [
                     "Country", "Capital", "Language"],
@@ -88,7 +89,7 @@ var init_data = {
                     }
                 ]
             }
-        ],
+        },
         "settings": {
             "lastInfoType": "Front and back",
             "timeIntervalChoices": [
@@ -107,7 +108,7 @@ var init_data = {
                     3,
                     4
                 ],
-                [],
+                [1, 2],
                 [],
                 [
                     0,

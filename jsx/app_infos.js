@@ -1,10 +1,10 @@
-function getITypeIndex(types, nameS){
-    for(var i = 0; i < types.length; i++) {
-        if(types[i].name === nameS) {
-            return i;
-        }
-    }
-}
+//function getITypeIndex(types, nameS){
+//    for(var i = 0; i < types.length; i++) {
+//        if(types[i].name === nameS) {
+//            return i;
+//        }
+//    }
+//}
 
 var InfoEdit = React.createClass({
     getInitialState: function() {
@@ -12,7 +12,7 @@ var InfoEdit = React.createClass({
         if(Object.keys(infoNew).length === 1){
             var fields = [];
             var reviews = [];
-            for (var i = 0; i < this.props.types[0].fieldNames.length; ++i) {
+            for (var i = 0; i < this.props.types[this.props.info.typeID].fieldNames.length; ++i) {
                 fields.push("");
                 reviews.push([]);
             }
@@ -31,10 +31,10 @@ var InfoEdit = React.createClass({
     componentWillUpdate: function(nextProps, nextState){
         console.log("UPDATE");
     },
-    onTypeChange: function(newTypeIndex){
+    onTypeChange: function(newTypeID){
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
-        newInfo.type = this.props.types[newTypeIndex].name;
-        var newFieldsLength = this.props.types[newTypeIndex].fieldNames.length;
+        newInfo.typeID = newTypeID
+        var newFieldsLength = this.props.types[newTypeID].fieldNames.length;
         var sizeDiff = newFieldsLength - this.state.info.fields.length;
         if( sizeDiff > 0 ){
             for(var i=0; i<sizeDiff; i++){
@@ -69,9 +69,9 @@ var InfoEdit = React.createClass({
     },
     render: function() {
         var data_elements = [];
-        var typeIndex = this.props.typeNames.indexOf(this.state.info.type);
+        //var typeIndex = this.props.typeNames.indexOf(this.state.info.type);
         for (var fieldIdx = 0; fieldIdx < this.state.info.fields.length; ++fieldIdx) {
-            var element_name = this.props.types[typeIndex].fieldNames[fieldIdx];
+            var element_name = this.props.types[this.state.info.typeID].fieldNames[fieldIdx];
             var refStr = false;
             if(fieldIdx===0){
                 refStr="firstTextbox";
@@ -83,7 +83,7 @@ var InfoEdit = React.createClass({
                         value={this.state.info.fields[fieldIdx]}
                         ref={refStr}
                         onChange={this.onFieldEdit.bind(this, fieldIdx)}
-                        rows={(this.state.info.fields[fieldIdx].match(/\n/g) || []).length+1}
+                        rows={(this.state.info.fields[fieldIdx].match(/\n/g) || []).length+2}
                     />
                 </div>
             );
@@ -110,7 +110,7 @@ var InfoEdit = React.createClass({
                 <div className="editEntryContainer">
                     <ITypeSwitcher
                         typeNames={this.props.typeNames}
-                        selectedTypeIndex={this.props.typeNames.indexOf(this.state.info.type)}
+                        selectedTypeID={this.state.info.typeID}
                         onTypeChange={this.onTypeChange}
                     />
                     {data_elements}
@@ -123,13 +123,14 @@ var InfoEdit = React.createClass({
                         {usedTagEls}
                     </div>
                 </div>
+
                 <div className="flexContHoriz">
                     <span
-                        className={"buttonMain buttonGood "+ (isChanged?"disabled":"")}
+                        className={"button buttonGood "+ (isChanged?"disabled":"")}
                         onClick={this.onSave}>{this.props.saveButtonStr}
                     </span>
-                    <span className="buttonMain" onClick={this.props.cancelEdit}>Cancel</span>
-                    <span className={!(this.props.onDelete)?"invisible":"" + " buttonMain buttonDanger"} onClick={this.props.onDelete}>Delete</span>
+                    <span className="button" onClick={this.props.cancelEdit}>Cancel</span>
+                    <span className={!(this.props.onDelete)?"invisible":"" + " button buttonDanger"} onClick={this.props.onDelete}>Delete</span>
                 </div>
 
                 <div>
@@ -164,17 +165,18 @@ var ITypeSwitcher = React.createClass({
     //},
     render: function() {
         var typeNameOptions = new Array(this.props.typeNames.length);
-        for(var i=0; i<this.props.typeNames.length; i++){
-            typeNameOptions.push( <option key={i} value={i}>{this.props.typeNames[i]}</option> );
+        for(var typeID in this.props.typeNames){
+        //for(var i=0; i<this.props.typeNames.length; i++){
+            typeNameOptions.push( <option key={typeID} value={typeID}>{this.props.typeNames[typeID]}</option> );
         }
-        var buttonAddType = "";
+        var buttonAddType = false;
         if(this.props.onAddType)
-            buttonAddType = <span className="buttonMain" title="new type" onClick={this.onAddType}></span>;
+            buttonAddType = <span className="button" title="new type" onClick={this.onAddType}></span>;
 
         return (
             <div className="iTypeSwitcher editEntryElement">
                 <div className="grid_left">Info type</div>
-                <select size={typeNameOptions.length} value={this.props.selectedTypeIndex} ref="selector" onChange={this.onTypeChange}>
+                <select size={typeNameOptions.length} value={this.props.selectedTypeID} ref="selector" onChange={this.onTypeChange}>
                     {typeNameOptions}
                 </select>
                 {buttonAddType}
@@ -205,14 +207,14 @@ var InfoTypes = React.createClass({
         var iType_elements = [];
         for (var i = 0; i < this.state.newInfoTypes[this.state.selectedTypeIndex].fieldNames.length; ++i) {
             iType_elements.push(
-                <Input
+                <input
                     type="text"
                     key={i}
                     bsSize="small"
                     addonBefore={"Label "+ i}
                     value={this.state.newInfoTypes[this.state.selectedTypeIndex].fieldNames[i]}
                     onChange={this.onFieldNameEdit.bind(this, i)}
-                    buttonAfter={<BButton bsStyle="danger" onClick={this.onFieldsResize.bind(this, i)}>delete!</BButton>}
+                    buttonAfter={<span className="button buttonDanger" onClick={this.onFieldsResize.bind(this, i)}>delete!</span>}
                 />
             )
         }
@@ -225,7 +227,7 @@ var InfoTypes = React.createClass({
                         selectedTypeIndex={this.state.selectedTypeIndex}
                         onTypeChange={this.onTypeChange}
                     />
-                    <Input
+                    <input
                         type="text"
                         bsSize="small"
                         addonBefore="Type name"
