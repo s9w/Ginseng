@@ -11,10 +11,10 @@ var InfoEdit = React.createClass({
         var infoNew = JSON.parse( JSON.stringify( this.props.info ));
         if(Object.keys(infoNew).length === 1){
             var fields = [];
-            var reviews = [];
+            var reviews = {};
             for (var i = 0; i < this.props.types[this.props.info.typeID].fieldNames.length; ++i) {
                 fields.push("");
-                reviews.push([]);
+                reviews[i] = [];
             }
             infoNew.fields = fields;
             infoNew.reviews = reviews;

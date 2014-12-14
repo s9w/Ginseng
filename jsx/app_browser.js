@@ -36,6 +36,7 @@ var InfoBrowser = React.createClass({
                 );
             }
         }
+        console.log(JSON.stringify(this.props.infos, null, "    "));
 
         return (
             <div className="InfoBrowser Component">
