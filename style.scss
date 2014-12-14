@@ -128,6 +128,8 @@ h3{
   min-height: 100px;
 }
 
+
+
 .intervalButtonCont{
   display: flex;
   justify-content: space-around;
@@ -157,6 +159,8 @@ h3{
 
 
 
+
+
 $base-green: scale-color(#5cb83c, $lightness: 10%);
 table{
   border-collapse: collapse;
@@ -167,9 +171,13 @@ table{
 thead{
   text-align: left;
   background: $base-green;
-  &>tr{
+  &>tr>th{
     cursor: pointer;
+    @media (max-device-width: 400px)  {
+      height: 30px;
+    }
   }
+
 }
 
 $base-veryBright: scale_color($base-green, $lightness: 80%);
@@ -251,6 +259,10 @@ $danger-red: #d9534f;
   cursor: pointer;
   margin: 1px;
   white-space: nowrap;
+  font-size: inherit;
+//  button {
+//    border: 1px solid #ccc;
+//  }
   &.interval0{
     @include hoverDark(#66CCFF);
   }
@@ -291,13 +303,18 @@ $danger-red: #d9534f;
 
 input, select, textarea{
   font-size: inherit;
+  border: 1px solid #ccc;
   font-family: inherit;
   border-radius: 4px;
-  border: 1px solid #ccc;
 }
 
 .unselectable {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+}
+
+.tabContainer{
+  display: flex;
+  justify-content: flex-start;
 }

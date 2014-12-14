@@ -1,23 +1,20 @@
 # Ginseng
 
-Ginseng is a spaced repetition program/app.  Quick comparison:
+Ginseng is a spaced repetition program/app. Like Anki, but different.
 - 100% in browser client-side Javascript
 - Data stored in JSON format. Sync currently over file in/export, Dropbox and in browser
 - Repetition time can be freely chosen. Can be the classic spaced repetition way, or a fixed time intervals or anything you like
-- Informations can have arbitrary entries, tags, have rich metadata stored and reviews can be done on any selection based on that data. No fixed "deck" structure
+- No fixed "deck" structure. Rather you can create filters that dynamically create reviews
 - proper Markdown and LaTeX (Katex and Mathjax) support
 
 ## Quickstart / Introduction
 What you want to learn/memorize is stored in an *info* which contains several *entries*. If you learn Spanish, an info could contain two entries with the english and spanish expressions.
 
-You then create a *view* on those infos, which can be thought of as a flashcard with a front and back side. In this case, the front could show the english word and vici versa.
+You then create a *view* on those infos, where each view can be thought of as a flashcard with a front and back side. In this case, the front could show the english word and vici versa.
 
-Those views on the individual infos are then shown, or rather "tested" on you. You can then set a time for the next review.
+More than one view can be created from an info, for example if you want to test the reverse relation also. or any other template based on that info.
 
-There are sane defaults and auto-generated info types, views and selections, so don't be intimidated by the details below. That's more of a documentation
-
-### Views
-Then we can have several 'views' (cards) on that info. A common thing to do is set up two views for Those infos: One that shows the front and asks for the back side, and visi versa. That can also be conditional, only applying to a matching tag. That way you can generate "reverse" views on infos only for those where you set a `reverse` tag for example.
+Views can be bound to a condition or filter so they only get generated when for example the information has a "reverse" tag.
 
 The views are written in markdown code and you can access the info fields with curly braces. Example of a view-front:
 ```

@@ -87,6 +87,9 @@ var Intervaller = React.createClass({
                     buttonStr += "%";
                 else
                     buttonStr += this.state.intervalChoiceGroups[i].label.slice(0,1).toLowerCase();
+                if(this.state.modifyType==="change"){
+                    buttonStr = "+"+buttonStr;
+                }
                 groupConents.push(
                     <span
                         key={j}
