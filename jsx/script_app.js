@@ -118,47 +118,30 @@ var App = React.createClass({
     //        }
     //    }
     //},
-    //onTypesEdit: function(newTypes){
-    //    var newTypes_copy = JSON.parse( JSON.stringify( newTypes ));
-    //    this.setState({infoTypes: newTypes_copy} );
-    //},
-    //onTypeResize: function(selectedTypeIndex, fieldNameIndex){
-    //    var new_infos = JSON.parse( JSON.stringify( this.state.infos ));
-    //    for (var infoIdx = 0; infoIdx < new_infos.length; ++infoIdx) {
-    //        if(new_infos[infoIdx].type === this.state.infoTypes[selectedTypeIndex].name){
-    //            if(fieldNameIndex === -1){
-    //                new_infos[infoIdx].fields.push("");
-    //            }else{
-    //                new_infos[infoIdx].fields.splice(fieldNameIndex, 1);
-    //            }
-    //        }
-    //    }
-    //    var new_types = JSON.parse( JSON.stringify( this.state.infoTypes ));
-    //    if(fieldNameIndex === -1){
-    //        new_types[selectedTypeIndex].fieldNames.push("");
-    //    }else{
-    //        new_types[selectedTypeIndex].fieldNames.splice(fieldNameIndex, 1);
-    //    }
-    //
-    //    this.setState({
-    //        infos: new_infos,
-    //        infoTypes: new_types
-    //    });
-    //},
-    //onTypeNameEdit: function(typeName, newTypeName){
-    //    var newInfos = JSON.parse( JSON.stringify( this.state.infos ));
-    //    for (var index = 0; index < newInfos.length; ++index) {
-    //        if(newInfos[index].type === typeName){
-    //            newInfos[index].type = newTypeName;
-    //        }
-    //    }
-    //    var newInfoTypes = JSON.parse( JSON.stringify( this.state.infoTypes ));
-    //    newInfoTypes[this.getITypeIndex(newInfoTypes, typeName)].name = newTypeName;
-    //    this.setState({
-    //        infoTypes: newInfoTypes,
-    //        infos: newInfos
-    //    });
-    //},
+
+    onTypesEdit: function(newTypes, changes){
+        var newTypes_copy = JSON.parse( JSON.stringify( newTypes ));
+        var new_infos = JSON.parse( JSON.stringify( this.state.infos ));
+
+        for (var infoIdx = 0; infoIdx < new_infos.length; ++infoIdx) {
+            for (var resizeIdx = 0; resizeIdx < changes.typeResizes.length; ++resizeIdx) {
+                if(new_infos[infoIdx].typeID === changes.typeResizes[resizeIdx].id){
+                    var fieldNameIndex = changes.typeResizes[resizeIdx].fieldNameIndex;
+                    if(fieldNameIndex === -1){
+                        new_infos[infoIdx].fields.push("");
+                    }else{
+                        new_infos[infoIdx].fields.splice(fieldNameIndex, 1);
+                    }
+                }
+            }
+        }
+
+        this.setState({
+            infoTypes: newTypes_copy,
+            infos: new_infos,
+            activeMode: "browse"
+        });
+    },
     applyInterval: function(infoIndex, reviewKey, newInterval){
         var newInfos = JSON.parse( JSON.stringify( this.state.infos ));
         newInfos[infoIndex].reviews[reviewKey].push({
@@ -190,7 +173,8 @@ var App = React.createClass({
         return true;
     },
     render: function () {
-        React.addons.Perf.start();
+        //React.addons.Perf.start();
+
         // get used Tags
         var usedTags = [];
         for (var i = 0; i < this.state.infos.length; ++i) {
@@ -332,13 +316,12 @@ var App = React.createClass({
         if(this.state.activeMode=="types"){
             compTypes = <InfoTypes
                 infoTypes={this.state.infoTypes}
-                onNameEdit={this.onTypeNameEdit}
-                onEdit={this.onTypesEdit}
-                onResize={this.onTypeResize}
+                cancelEdit={this.clickNav.bind(this, "browse")}
+                onSave={this.onTypesEdit}
             />;
         }
-        React.addons.Perf.stop();
-        React.addons.Perf.printInclusive();
+        //React.addons.Perf.stop();
+        //React.addons.Perf.printInclusive();
         return (
             <div className="app">
                 <div className="navBar">
