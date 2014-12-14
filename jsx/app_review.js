@@ -65,7 +65,6 @@ var Review = React.createClass({
                     </button>
                 </div>
 
-
                 <div id="reviewStage">
                     <div className="markdowned"
                         dangerouslySetInnerHTML={{__html: this.getRenderedStr( this.props.frontStr )}}></div>

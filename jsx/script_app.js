@@ -159,9 +159,9 @@ var App = React.createClass({
     //        infos: newInfos
     //    });
     //},
-    applyInterval: function(infoIndex, reviewIndex, newInterval){
+    applyInterval: function(infoIndex, reviewKey, newInterval){
         var newInfos = JSON.parse( JSON.stringify( this.state.infos ));
-        newInfos[infoIndex].reviews[reviewIndex].push({
+        newInfos[infoIndex].reviews[reviewKey].push({
             "reviewTime": moment().format(),
             "dueTime": moment().add(moment.duration(newInterval)).format()
         });
@@ -261,27 +261,29 @@ var App = React.createClass({
                 var filteredInfos = thisApp.state.infos;
                 var urgency;
                 for (infoIndex = 0; infoIndex < filteredInfos.length; ++infoIndex) {
+                    console.log("in review?4");
                     info = filteredInfos[infoIndex];
-                    for (reviewIndex = 0; reviewIndex < info.reviews.length; ++reviewIndex) {
-                        if( !(thisApp.filterInfo(thisApp.state.infoTypes[info.typeID].views[reviewIndex].condition, info))){
-                            console.log("out due filter: " + info.fields[0].slice(0,10) + ", reviewIndex: " + reviewIndex);
+                    for(var reviewKey in info.reviews){
+                        console.log("reviewKey: " + reviewKey);
+                        if( !(thisApp.filterInfo(thisApp.state.infoTypes[info.typeID].views[reviewKey].condition, info))){
+                            console.log("out due filter: " + info.fields[0].slice(0,10) + ", reviewKey: " + reviewKey);
                             continue;
                         }
-                        if(info.reviews[reviewIndex].length > 0) {
-                            var lastDueTimeStr = info.reviews[reviewIndex][info.reviews[reviewIndex].length - 1].dueTime;
-                            var lastReviewTimeStr = info.reviews[reviewIndex][info.reviews[reviewIndex].length - 1].reviewTime;
+                        if(info.reviews[reviewKey].length > 0) {
+                            var lastDueTimeStr = info.reviews[reviewKey][info.reviews[reviewKey].length - 1].dueTime;
+                            var lastReviewTimeStr = info.reviews[reviewKey][info.reviews[reviewKey].length - 1].reviewTime;
                             var plannedIntervalMs = moment(lastDueTimeStr).diff(moment(lastReviewTimeStr));
                             var actualIntervalMs = moment().diff(moment(lastReviewTimeStr));
                             urgency = actualIntervalMs/plannedIntervalMs;
                             if( urgency>=1.0 ){
-                                console.log("in due urgency: " + info.fields[0].slice(0,10) + ", reviewIndex: " + reviewIndex + ", urgency: " + urgency);
-                                dueItems.push([actualIntervalMs, infoIndex, reviewIndex, urgency]);
+                                console.log("in due urgency: " + info.fields[0].slice(0,10) + ", reviewKey: " + reviewKey + ", urgency: " + urgency);
+                                dueItems.push([actualIntervalMs, infoIndex, reviewKey, urgency]);
                             }else{
-                                console.log("out due urgency: " + info.fields[0].slice(0,10) + ", reviewIndex: " + reviewIndex + ", urgency: " + urgency);
+                                console.log("out due urgency: " + info.fields[0].slice(0,10) + ", reviewKey: " + reviewKey + ", urgency: " + urgency);
                             }
                         }else{
-                            dueItems.push([0, infoIndex, reviewIndex, 1.1]);
-                            console.log("in because new: " + info.fields[0].slice(0,10) + ", reviewIndex: " + reviewIndex);
+                            dueItems.push([0, infoIndex, reviewKey, 1.1]);
+                            console.log("in because new: " + info.fields[0].slice(0,10) + ", reviewKey: " + reviewKey);
                         }
                     }                    
                 }
@@ -292,27 +294,27 @@ var App = React.createClass({
                     var winnerActualInterval = 0;
                     var winnerUrgency = 0;
                     var nextInfoIndex = 0;
-                    var nextReviewIndex = 0;
+                    var nextReviewID = 0;
                     for (index = 0; index < dueItems.length; ++index) {
                         if (dueItems[index][3] >= winnerUrgency) {
                             winnerActualInterval = dueItems[index][0];
                             nextInfoIndex = dueItems[index][1];
-                            nextReviewIndex = dueItems[index][2];
+                            nextReviewID = dueItems[index][2];
                             winnerUrgency = dueItems[index][3];
                         }
                     }
                     var nextTypeID = thisApp.state.infos[nextInfoIndex].typeID;
 
                     comp_review = <Review
-                        applyInterval={thisApp.applyInterval.bind(thisApp, nextInfoIndex, nextReviewIndex)}
+                        applyInterval={thisApp.applyInterval.bind(thisApp, nextInfoIndex, nextReviewID)}
                         frontStr={
-                            thisApp.state.infoTypes[nextTypeID].views[nextReviewIndex].front.replace(
+                            thisApp.state.infoTypes[nextTypeID].views[nextReviewID].front.replace(
                                 /{(\w*)}/g, function(match, p1){
                                     return thisApp.state.infos[nextInfoIndex].fields[ thisApp.state.infoTypes[nextTypeID].fieldNames.indexOf(p1) ];
                                 })
                             }
                         backStr={
-                            thisApp.state.infoTypes[nextTypeID].views[nextReviewIndex].back.replace(
+                            thisApp.state.infoTypes[nextTypeID].views[nextReviewID].back.replace(
                                 /{(\w*)}/g, function(match, p1){
                                     return thisApp.state.infos[nextInfoIndex].fields[ thisApp.state.infoTypes[nextTypeID].fieldNames.indexOf(p1) ];
                                 })
