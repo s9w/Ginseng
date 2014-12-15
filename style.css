@@ -215,7 +215,7 @@ tbody > tr > td {
 
 #reviewToolbar {
   display: flex;
-  justify-content: space-between; }
+  align-items: center; }
 
 input, select, textarea {
   font-size: inherit;

@@ -53,16 +53,28 @@ var Review = React.createClass({
             return katex.renderToString(latexStringBuffer.shift());
         });
     },
+    gotoEdit: function(){
+        this.props.gotoEdit(this.props.nextInfoIndex);
+    },
     render: function() {
+        var flipButton= false;
+        if(this.state.progressState === "frontSide")
+            flipButton =
+                <div style={{textAlign: "center"}}>
+                    <button
+                    ref="flipButton"
+                    className={"button buttonGood "+ (this.state.progressState === "frontSide"?"":"invisible")}
+                    onClick={this.flip} >Show backside
+                    </button>
+                </div>;
         return (
             <div className="Review Component">
-                <div id="reviewToolbar">
-                    <span id="reviewToolbarLeft">Due count: {this.props.dueCount}</span>
-                    <button id="reviewToolbarRight"
-                        ref="flipButton"
-                        className={"button buttonGood "+ (this.state.progressState === "frontSide"?"":"invisible")}
-                        onClick={this.flip} >Show backside
-                    </button>
+                <div>
+                    <span
+                        className="button"
+                        onClick={this.gotoEdit}
+                    >Edit Info</span>
+                    <span>{"Due count: "+this.props.dueCount}</span>
                 </div>
 
                 <div id="reviewStage">
@@ -70,9 +82,9 @@ var Review = React.createClass({
                         dangerouslySetInnerHTML={{__html: this.getRenderedStr( this.props.frontStr )}}></div>
                     <div className={"markdowned "+(this.state.progressState==="backSide"?"":"invisible")}
                         dangerouslySetInnerHTML={{__html: this.getRenderedStr(this.props.backStr) }}></div>
-
                 </div>
 
+                {flipButton}
                 <Intervaller
                     show={this.state.progressState==="backSide"}
                     reviewInterval={this.props.reviewInterval}

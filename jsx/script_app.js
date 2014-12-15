@@ -67,6 +67,12 @@ var App = React.createClass({
             activeMode: "edit"
         });
     },
+    gotoEdit: function(infoIndex){
+        this.setState({
+            selectedInfoIndex: infoIndex,
+            activeMode: "edit"
+        })
+    },
 
 
     onInfoEdit: function(newInfo) {
@@ -296,6 +302,8 @@ var App = React.createClass({
                         dueCount={dueCount}
                         reviewInterval={winnerActualInterval}
                         timeIntervalChoices={thisApp.state.ginseng_settings.timeIntervalChoices}
+                        nextInfoIndex={nextInfoIndex}
+                        gotoEdit={thisApp.gotoEdit}
                     />;
                 }
             })();
