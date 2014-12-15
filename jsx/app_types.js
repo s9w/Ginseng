@@ -28,7 +28,10 @@ var InfoTypes = React.createClass({
         });
     },
     selectType: function(newID){
-        this.setState({selectedTypeID: newID});
+        this.setState({
+            selectedTypeID: newID,
+            mode: "main"
+        });
     },
     onNameEdit: function(event) {
         var newTypes = JSON.parse( JSON.stringify( this.state.newInfoTypes ));
