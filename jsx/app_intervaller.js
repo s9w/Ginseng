@@ -59,17 +59,6 @@ var Intervaller = React.createClass({
             modifyAmount: modifyAmount
         });
     },
-    getPreciseIntervalStr: function(interval){
-        var duration = moment.duration(interval);
-        if(duration.asMinutes()<=1)
-            return "<1 min";
-        if(duration.asYears() >= 1) return (Math.round(duration.asYears() * 10)/10)+" years";
-        if(duration.asMonths() >= 1) return (Math.round(duration.asMonths() * 10)/10)+" months";
-        if(duration.asWeeks() >= 1) return (Math.round(duration.asWeeks() * 10)/10)+" weeks";
-        if(duration.asDays() >= 1) return (Math.round(duration.asDays() * 10)/10)+" days";
-        if(duration.asHours() >= 1) return (Math.round(duration.asHours() * 10)/10)+" hours";
-        if(duration.asMinutes() >= 1) return (Math.round(duration.asMinutes() * 10)/10)+" minutes";
-    },
     render: function(){
         var toolbarConents = [];
         var groupConents;
@@ -78,54 +67,48 @@ var Intervaller = React.createClass({
         for (var i = 0; i < this.state.intervalChoiceGroups.length; ++i) {
             groupConents = [];
             for (var j = 0; j < this.state.intervalChoiceGroups[i].members.length; ++j) {
-                amount = this.state.intervalChoiceGroups[i].members[j];
                 var buttonClassName = "button unselectable";
                 buttonClassName += " interval"+(i%2);
-                buttonClassName += keyIndex === this.state.activeKeyIndex ? " intervalSelected" : "";
+                buttonClassName += keyIndex === this.state.activeKeyIndex ? " buttonSelected" : "";
+                var plusEL = <span className={this.state.modifyType==="change"?"":"invisible"}>+</span>;
+                amount = this.state.intervalChoiceGroups[i].members[j];
                 var buttonStr = amount;
                 if(this.state.intervalChoiceGroups[i].label==="Relative")
                     buttonStr += "%";
                 else
                     buttonStr += this.state.intervalChoiceGroups[i].label.slice(0,1).toLowerCase();
-                if(this.state.modifyType==="change"){
-                    buttonStr = "+"+buttonStr;
+                var labelElement = false;
+                if(j===0){
+                    labelElement = <div>{this.state.intervalChoiceGroups[i].label}</div>;
                 }
-                groupConents.push(
+                var isSetAndRelative = this.state.intervalChoiceGroups[i].label==="Relative" && this.state.modifyType==="set" ;
+                toolbarConents.push(
                     <span
-                        key={j}
-                        className={buttonClassName}
-                        onClick={this.onIntervalChoice.bind(this, amount, keyIndex, this.state.intervalChoiceGroups[i].label.toLowerCase())}> {buttonStr}
+                        key={keyIndex}
+                        className={isSetAndRelative?"invisible":""}>
+                        {labelElement}
+                        <div
+                            className={buttonClassName}
+                            onClick={this.onIntervalChoice.bind(this, amount, keyIndex, this.state.intervalChoiceGroups[i].label.toLowerCase())}>{plusEL} {buttonStr}
+                        </div>
                     </span>
                 );
                 keyIndex += 1;
             }
-
-            var hideRelative = this.state.intervalChoiceGroups[i].label==="Relative" && this.state.modifyType==="set" ;
-            toolbarConents.push(
-                <span key={i} className={hideRelative?"invisible":""}>
-                    <span>{this.state.intervalChoiceGroups[i].label}</span>
-                    <div >
-                        {groupConents}
-                    </div>
-                </span>
-            );
         }
 
         return(
             <div className={this.props.show?"":"invisible"}>
                 <div className="intervalButtonCont">
-                    <span>
-                        <span>Type</span>
-                        <div >
-                            <span className={"button "+ (this.state.modifyType==="change"?"buttonGood":"")} onClick={this.onModeChange.bind(this, "change")}>change</span>
-                            <span className={"button "+ (this.state.modifyType==="set"?"buttonGood":"")} onClick={this.onModeChange.bind(this, "set")}>set</span>
-                        </div>
+                    <span >
+                        <div>Type</div>
+                        <div className={"button "+ (this.state.modifyType==="change"?"buttonGood":"")} onClick={this.onModeChange.bind(this, "change")}>change</div>
                     </span>
+                    <span className={"button "+ (this.state.modifyType==="set"?"buttonGood":"")} onClick={this.onModeChange.bind(this, "set")}>set</span>
                     {toolbarConents}
                 </div>
-                <div>Old interval: {this.getPreciseIntervalStr( this.props.reviewInterval )}</div>
-                <div>New interval: {this.getPreciseIntervalStr( this.getNewInterval() )}</div>
-
+                <div>Old interval: {getPreciseIntervalStr( this.props.reviewInterval )}</div>
+                <div>New interval: {getPreciseIntervalStr( this.getNewInterval() )}</div>
             </div>
         );
     }

@@ -1,11 +1,11 @@
 # Ginseng
 
-Ginseng is a spaced repetition program/app. Like Anki, but different.
+Ginseng is a spaced repetition program/app. Like Anki, SuperMemo but different.
 - 100% in browser client-side Javascript
-- Data stored in JSON format. Sync currently over file in/export, Dropbox and in browser
+- Data stored in JSON format, sync Dropbox
 - Repetition time can be freely chosen. Can be the classic spaced repetition way, or a fixed time intervals or anything you like
-- No fixed "deck" structure. Rather you can create filters that dynamically create reviews
-- proper Markdown and LaTeX (Katex and Mathjax) support
+- No fixed "deck" structure. Instead you can create filters that dynamically create reviews
+- native Markdown formatting and LaTeX support
 
 ## Quickstart / Introduction
 What you want to learn/memorize is stored in an *info* which contains several *entries*. If you learn Spanish, an info could contain two entries with the english and spanish expressions.
@@ -42,15 +42,7 @@ There is liberal use of HTML5 stuff, but the only part that isn't supported by a
 
 ## Philosophy / Goals
 This is designed to be as open and long-term as possible
-- The data (infos, types, views, settings, everything!) is saved in a straightforward human-readable (and therefore hackable) JSON format. It's also stored file-based, so no binary data. In doubt, just edit the data file with a text editor
+- All data is saved in a straightforward human-readable (and therefore hackable) JSON file.
 - The formatting is done markdown, which I think is better suited for this than full blown html
 - Dates/times are saved in ISO format. Time intervals are always calculated, never saved (no standard way)
 - Review ratings were abandoned in favor of just setting time intervals. Is Anki-like Interval modifier wanted?
-
-## Open Questions:
-- Naming
-- minimal or full JSON?
-- logic inside views
-    - Right now that's not possible
-    - Technical reason: Ginseng is built with React, and React has no templating with logics. There are more or less elegant ways around
-    - This means no conditional parts of views. Is there a need for this?

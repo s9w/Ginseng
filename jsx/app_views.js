@@ -22,7 +22,7 @@ var Views = React.createClass({
                 <textarea
                     className="sectionContent"
                     value={this.props.view.front}
-                    rows={(this.props.view.front.match(/\n/g) || []).length+2}
+                    rows={(this.props.view.front.match(/\n/g) || []).length+1}
                     onChange={this.onViewChange.bind(this, "front")}
                 />
             </section>
@@ -33,7 +33,7 @@ var Views = React.createClass({
                 <textarea
                     className="sectionContent"
                     value={this.props.view.back}
-                    rows={(this.props.view.back.match(/\n/g) || []).length+2}
+                    rows={(this.props.view.back.match(/\n/g) || []).length+1}
                     onChange={this.onViewChange.bind(this, "back")}
                 />
             </section>

@@ -26,10 +26,10 @@ var InfoEdit = React.createClass({
         };
     },
     componentDidMount: function(){
-        //this.refs.firstTextbox.getDOMNode().focus();
+        this.refs.firstTextbox.getDOMNode().focus();
     },
     componentWillUpdate: function(nextProps, nextState){
-        console.log("UPDATE");
+        //console.log("UPDATE");
     },
     onTypeChange: function(newTypeID){
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
@@ -69,22 +69,21 @@ var InfoEdit = React.createClass({
     },
     render: function() {
         var data_elements = [];
-        //var typeIndex = this.props.typeNames.indexOf(this.state.info.type);
         for (var fieldIdx = 0; fieldIdx < this.state.info.fields.length; ++fieldIdx) {
             var element_name = this.props.types[this.state.info.typeID].fieldNames[fieldIdx];
-            var refStr = false;
+            var refString = false;
             if(fieldIdx===0){
-                refStr="firstTextbox";
+                refString = "firstTextbox";
             }
             data_elements.push(
                 <section key={fieldIdx}>
                     <h3>Entry: {element_name}</h3>
                     <textarea
                         className="sectionContent"
+                        ref={refString}
                         value={this.state.info.fields[fieldIdx]}
-                        ref={refStr}
                         onChange={this.onFieldEdit.bind(this, fieldIdx)}
-                        rows={(this.state.info.fields[fieldIdx].match(/\n/g) || []).length+2}
+                        rows={(this.state.info.fields[fieldIdx].match(/\n/g) || []).length+1}
                     />
                 </section>
             );
@@ -139,38 +138,39 @@ var InfoEdit = React.createClass({
                     <span className="button" onClick={this.props.cancelEdit}>Cancel</span>
                     <span className={!(this.props.onDelete)?"invisible":"" + " button buttonDanger"} onClick={this.props.onDelete}>Delete</span>
                 </div>
-
-                <div>
-                </div>
             </div>);
     }
 });
 
 var ITypeSwitcher = React.createClass({
-    onTypeChange: function(e){
-        this.props.onTypeChange(e.target.value);
+    onTypeChange: function(typeID){
+        this.props.onTypeChange(typeID);
     },
     render: function() {
         var typeNameOptions = [];
         for(var typeID in this.props.typeNames){
-            typeNameOptions.push( <option key={typeID} value={typeID}>{this.props.typeNames[typeID]}</option> );
+            typeNameOptions.push(
+                <span
+                    className={"button"+(this.props.selectedTypeID===typeID?" buttonGood":"")}
+                    key={typeID}
+                    onClick={this.onTypeChange.bind(this, typeID)}>{this.props.typeNames[typeID]}</span>
+            );
+        }
+        if(this.props.onAddType) {
+            typeNameOptions.push(
+                <span
+                    className="button"
+                    key="new"
+                    onClick={this.props.onAddType}>New..</span>
+            );
         }
 
         return (
-            <section className="sectionElement">
-                <h3>Info type <span
-                    className={"microbutton fa fa-plus-square"+(this.props.onAddType?"":" invisible")}
-                    onClick={this.props.onAddType}>
-                </span></h3>
-
-                <select
-                    className="sectionContent"
-                    size={typeNameOptions.length}
-                    value={this.props.selectedTypeID}
-                    ref="selector"
-                    onChange={this.onTypeChange}>
+            <section>
+                <h3>Info type</h3>
+                <div className="sectionContent wrap">
                     {typeNameOptions}
-                </select>
+                </div>
             </section>);
     }
 });

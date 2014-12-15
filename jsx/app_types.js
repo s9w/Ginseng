@@ -61,12 +61,13 @@ var InfoTypes = React.createClass({
     onAddType: function(){
         var new_infoTypes = JSON.parse( JSON.stringify( this.state.newInfoTypes ));
         // get next type ID
-        var nextTypeID = 0;
-        while(nextTypeID.toString() in new_infoTypes){
-            nextTypeID++;
+        var nextTypeID = "0";
+        for(var typeID in new_infoTypes){
+            if(parseInt(typeID, 10) > parseInt(nextTypeID, 10)){
+                nextTypeID = typeID;
+            }
         }
-        nextTypeID = nextTypeID.toString();
-        console.log("nextTypeID: " + nextTypeID);
+        nextTypeID = (parseInt(nextTypeID, 10)+1).toString();
 
         new_infoTypes[nextTypeID] = {
             "name": "new info type",
@@ -84,7 +85,10 @@ var InfoTypes = React.createClass({
                 }
             }
         };
-        this.setState({newInfoTypes: new_infoTypes});
+        this.setState({
+            newInfoTypes: new_infoTypes,
+            selectedTypeID: nextTypeID
+        });
     },
     setMode: function(modeStr){
         this.setState({mode: modeStr});
@@ -106,9 +110,9 @@ var InfoTypes = React.createClass({
                         onChange={this.onFieldNameEdit.bind(this, i)}
                     />
                     <span
-                        className={"fa fa-trash-o button buttonDanger sectionContentElFixed"+(selectedType.fieldNames.length<=2?" invisible":"")}
+                        className={"button buttonDanger sectionContentElFixed"+(selectedType.fieldNames.length<=2?" invisible":"")}
                         onClick={this.onFieldsResize.bind(this, i)
-                            }></span>
+                            }>✖</span>
                 </div>
             )
         }
@@ -135,9 +139,7 @@ var InfoTypes = React.createClass({
             );
             mainSection.push(
                 <section key={1}>
-                    <h3>Entries
-                        <span className="microbutton fa fa-plus-square" onClick={this.onFieldsResize.bind(this, -1)}></span>
-                    </h3>
+                    <h3>Entries <span className="button" onClick={this.onFieldsResize.bind(this, -1)}>+</span></h3>
                     {iType_elements}
                 </section>
             );
@@ -160,6 +162,7 @@ var InfoTypes = React.createClass({
         }
 
         var isChanged = JSON.stringify(this.props.infoTypes)===JSON.stringify(this.state.newInfoTypes);
+
         return (
             <div className="InfoTypes Component">
                 <div className="sectionContainer">

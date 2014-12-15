@@ -4,13 +4,6 @@
 .browseControls > input {
   margin-right: 10px; }
 
-.clickable {
-  cursor: pointer;
-  padding: 0 0 0 5px; }
-
-.clickable:hover {
-  color: red; }
-
 a {
   text-decoration: none; }
 
@@ -40,6 +33,9 @@ h3 {
   display: flex;
   flex-direction: row;
   margin-bottom: 1px; }
+
+.wrap {
+  flex-wrap: wrap; }
 
 .sectionContentEl {
   flex: 1 1 auto; }
@@ -102,22 +98,13 @@ h3 {
 
 .intervalButtonCont {
   display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap; }
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  align-items: flex-end; }
 
-.intervalButtonCont span {
-  flex: 1 1 auto; }
-
-.intervalButtonCont span div {
+.intervalButtonCont > span {
   flex: 1 1 auto;
-  display: flex; }
-
-.intervalButtonCont > span > div > span {
-  text-align: center;
-  max-width: 50px; }
-
-.intervalButtonCont button {
-  padding: 6px 6px; }
+  max-width: 70px; }
 
 table {
   border-collapse: collapse;
@@ -127,7 +114,10 @@ thead {
   text-align: left;
   background: #6ac44a; }
   thead > tr > th {
-    cursor: pointer; }
+    cursor: pointer;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none; }
     @media (max-device-width: 400px) {
       thead > tr > th {
         height: 30px; } }
@@ -184,7 +174,8 @@ tbody > tr > td {
   cursor: pointer;
   margin: 1px;
   white-space: nowrap;
-  font-size: inherit; }
+  font-size: inherit;
+  text-align: center; }
   .button:hover {
     outline: 2px solid #949494; }
   .button.interval0 {
@@ -195,10 +186,6 @@ tbody > tr > td {
     background: #3399FF; }
     .button.interval1:hover {
       outline: 2px solid #006bd6; }
-  .button.intervalSelected {
-    background: #f00; }
-    .button.intervalSelected:hover {
-      outline: 2px solid #b30000; }
   .button.buttonGood {
     background: #6ac44a; }
     .button.buttonGood:hover {
@@ -212,6 +199,11 @@ tbody > tr > td {
     background: #dbe3d8;
     cursor: default;
     outline: 0 !important; }
+
+.buttonSelected {
+  outline: 2px solid #000000; }
+  .buttonSelected:hover {
+    background: #6ac44a; }
 
 .microbutton {
   cursor: pointer; }

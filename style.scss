@@ -6,15 +6,6 @@
   margin-right: 10px;
 }
 
-.clickable{
-  cursor: pointer;
-  padding: 0 0 0 5px;
-}
-
-.clickable:hover{
-  color: red;
-}
-
 a{
   text-decoration: none;
 }
@@ -49,6 +40,10 @@ h3{
   display: flex;
   flex-direction: row;
   margin-bottom: 1px;
+}
+
+.wrap{
+  flex-wrap: wrap;
 }
 
 .sectionContentEl{
@@ -132,31 +127,17 @@ h3{
 
 .intervalButtonCont{
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
   flex-wrap: wrap;
+  align-items: flex-end;
 }
 
-.intervalButtonCont span {
+.intervalButtonCont > span {
   flex: 1 1 auto;
+  max-width: 70px;
 //  display: flex;
 //  flex-direction: column;
 }
-
-.intervalButtonCont span div {
-  flex: 1 1 auto;
-  display: flex;
-}
-
-.intervalButtonCont>span>div>span {
-  text-align: center;
-  max-width: 50px;
-}
-
-.intervalButtonCont button{
-  padding: 6px 6px;
-}
-
-
 
 
 
@@ -173,6 +154,9 @@ thead{
   background: $base-green;
   &>tr>th{
     cursor: pointer;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
     @media (max-device-width: 400px)  {
       height: 30px;
     }
@@ -260,6 +244,7 @@ $danger-red: #d9534f;
   margin: 1px;
   white-space: nowrap;
   font-size: inherit;
+  text-align: center;
 //  button {
 //    border: 1px solid #ccc;
 //  }
@@ -268,9 +253,6 @@ $danger-red: #d9534f;
   }
   &.interval1{
     @include hoverDark(#3399FF);
-  }
-  &.intervalSelected{
-    @include hoverDark(#f00);
   }
   &.buttonGood{
     @include hoverDark($base-green);
@@ -283,6 +265,13 @@ $danger-red: #d9534f;
     background: hsl(hue($base-green), 17%, 87%);
     cursor: default;
     outline: 0 !important;
+  }
+}
+
+.buttonSelected{
+  outline: 2px solid #000000;
+  &:hover{
+    background: $base-green;
   }
 }
 

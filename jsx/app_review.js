@@ -57,7 +57,7 @@ var Review = React.createClass({
         return (
             <div className="Review Component">
                 <div id="reviewToolbar">
-                    <span id="reviewToolbarLeft">{this.props.dueCount}</span>
+                    <span id="reviewToolbarLeft">Due count: {this.props.dueCount}</span>
                     <button id="reviewToolbarRight"
                         ref="flipButton"
                         className={"button buttonGood "+ (this.state.progressState === "frontSide"?"":"invisible")}

@@ -18,7 +18,7 @@ var App = React.createClass({
     clickNav: function(mode) {
         this.setState({activeMode: mode});
     },
-    authDB: function(event){
+    authDB: function(){
         var thisApp = this;
         client.authenticate(function (error) {
             if (error) {
@@ -60,14 +60,6 @@ var App = React.createClass({
             });
         });
 
-    },
-    getSortedInfos: function(infos, sortField){
-        // Sort infos based on value of first entry.
-        var infos_sorted = JSON.parse( JSON.stringify( infos ));
-        infos_sorted = infos_sorted.sort(function(a, b){
-            return a.fields[0].localeCompare(b.fields[0])
-        });
-        return infos_sorted;
     },
     onRowSelect: function(index_selected) {
         this.setState({
@@ -241,14 +233,12 @@ var App = React.createClass({
             var thisApp = this;
             (function() {
                 var dueItems = [];
-                var infoIndex, reviewIndex, info;
+                var infoIndex, info;
                 var filteredInfos = thisApp.state.infos;
                 var urgency;
                 for (infoIndex = 0; infoIndex < filteredInfos.length; ++infoIndex) {
-                    console.log("in review?4");
                     info = filteredInfos[infoIndex];
                     for(var reviewKey in info.reviews){
-                        console.log("reviewKey: " + reviewKey);
                         if( !(thisApp.filterInfo(thisApp.state.infoTypes[info.typeID].views[reviewKey].condition, info))){
                             console.log("out due filter: " + info.fields[0].slice(0,10) + ", reviewKey: " + reviewKey);
                             continue;
@@ -279,7 +269,7 @@ var App = React.createClass({
                     var winnerUrgency = 0;
                     var nextInfoIndex = 0;
                     var nextReviewID = 0;
-                    for (index = 0; index < dueItems.length; ++index) {
+                    for (var index = 0; index < dueItems.length; ++index) {
                         if (dueItems[index][3] >= winnerUrgency) {
                             winnerActualInterval = dueItems[index][0];
                             nextInfoIndex = dueItems[index][1];
@@ -320,6 +310,7 @@ var App = React.createClass({
                 onSave={this.onTypesEdit}
             />;
         }
+
         //React.addons.Perf.stop();
         //React.addons.Perf.printInclusive();
         return (
@@ -340,10 +331,10 @@ var App = React.createClass({
                     </div>
                 </div>
 
-                {compEdit}
                 <Status      show={this.state.activeMode=="status"}
                     infoCount={this.state.infos.length} dropBoxStatus={this.state.dropBoxStatus} onDBAuth={this.authDB}
                     onDbSave={this.saveDB} lastSaved={this.state.lastSaved} onDbLoad={this.loadDB}/>
+                {compEdit}
                 {compBrowser}
                 {compTypes}
                 {comp_review}
