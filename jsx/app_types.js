@@ -1,11 +1,14 @@
 var InfoTypes = React.createClass({
     getInitialState: function() {
-        var firstTypeID = 0;
-        while(!(firstTypeID in this.props.infoTypes)){
-            firstTypeID++;
+        var chosenTypeID = 0;
+        while(!(chosenTypeID in this.props.infoTypes)){
+            chosenTypeID++;
+        }
+        if(this.props.selectedTypeID){
+            chosenTypeID = this.props.selectedTypeID;
         }
         return {
-            selectedTypeID: firstTypeID.toString(),
+            selectedTypeID: chosenTypeID.toString(),
             newInfoTypes: this.props.infoTypes,
             changes: {
                 "renames": "",
@@ -57,6 +60,11 @@ var InfoTypes = React.createClass({
     },
     onSave: function(){
         this.props.onSave(this.state.newInfoTypes, this.state.changes);
+    },
+    componentDidUpdate : function(){
+        if(this.state.newInfoTypes[this.state.selectedTypeID].name === "new info type"){
+            this.refs.nameRef.getDOMNode().focus();
+        }
     },
     onAddType: function(){
         var new_infoTypes = JSON.parse( JSON.stringify( this.state.newInfoTypes ));
@@ -131,6 +139,7 @@ var InfoTypes = React.createClass({
                     <input
                         className="sectionContent"
                         type="text"
+                        ref="nameRef"
                         id="typeName"
                         value={selectedType.name}
                         onChange={this.onNameEdit}
@@ -153,16 +162,15 @@ var InfoTypes = React.createClass({
         var viewButtons = [];
         for(var viewID in selectedType.views){
             viewButtons.push(
-                <span
+                <button
                     key={viewID}
                     className={"flexElemContHoriz button "+(this.state.mode===viewID?"buttonGood":"")}
                     onClick={this.setMode.bind(this, viewID)}>{"View "+viewID}
-                </span>
+                </button>
             );
         }
 
         var isChanged = JSON.stringify(this.props.infoTypes)===JSON.stringify(this.state.newInfoTypes);
-
         return (
             <div className="InfoTypes Component">
                 <div className="sectionContainer">
@@ -174,10 +182,10 @@ var InfoTypes = React.createClass({
                     />
 
                     <section className="sectionContent tabContainer">
-                        <span
+                        <button
                             className={"button "+(this.state.mode==="main"?"buttonGood":"")}
                             onClick={this.setMode.bind(this, "main")}>Main
-                        </span>
+                        </button>
                         {viewButtons}
                     </section>
 
@@ -185,11 +193,11 @@ var InfoTypes = React.createClass({
                     {mainSection}
 
                     <section className="sectionContent flexContHoriz">
-                        <span
+                        <button
                             className={"flexElemContHoriz button buttonGood "+ (isChanged?"disabled":"")}
                             onClick={this.onSave}>Save
-                        </span>
-                        <span className="flexElemContHoriz button" onClick={this.props.cancelEdit}>Cancel</span>
+                        </button>
+                        <button className="flexElemContHoriz button" onClick={this.props.cancelEdit}>Cancel</button>
                     </section>
 
 

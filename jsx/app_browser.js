@@ -164,7 +164,7 @@ var InfoBrowser = React.createClass({
                 <div className="browseControls">
                     <input type="text" placeholder="Quick filter..." value={this.state.filterText}
                         onChange={this.onFilterChange}/>
-                    <span className="button buttonGood" onClick={this.props.onNew}>New info</span>
+                    <button className="button buttonGood" onClick={this.props.onNew}>New info</button>
                 </div>
                 <table>
                     <thead>

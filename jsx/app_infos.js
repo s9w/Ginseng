@@ -67,6 +67,10 @@ var InfoEdit = React.createClass({
         newInfo.tags .push(nextTagStr);
         this.setState( {info: newInfo} );
     },
+    editType: function(){
+        //console.log("editType 2nd " + this.state.info.typeID);
+        this.props.editType(this.state.info.typeID)
+    },
     render: function() {
         var data_elements = [];
         for (var fieldIdx = 0; fieldIdx < this.state.info.fields.length; ++fieldIdx) {
@@ -112,6 +116,7 @@ var InfoEdit = React.createClass({
                         typeNames={this.props.typeNames}
                         selectedTypeID={this.state.info.typeID}
                         onTypeChange={this.onTypeChange}
+                        editType={this.editType}
                     />
                     {data_elements}
                     <section>
@@ -149,19 +154,31 @@ var ITypeSwitcher = React.createClass({
     render: function() {
         var typeNameOptions = [];
         for(var typeID in this.props.typeNames){
+            var editTypeEl = false;
+            if(this.props.editType){
+                editTypeEl = <button
+                    className={"button"+(this.props.selectedTypeID===typeID?"":" invisible")}
+                    key="new"
+                    onClick={this.props.editType}>Edit</button>;
+            }
             typeNameOptions.push(
-                <span
-                    className={"button"+(this.props.selectedTypeID===typeID?" buttonGood":"")}
+                <div
                     key={typeID}
-                    onClick={this.onTypeChange.bind(this, typeID)}>{this.props.typeNames[typeID]}</span>
+                    style={{margin: "1px"}}
+                    className="CombiButton">
+                    <button
+                        className={"button"+(this.props.selectedTypeID===typeID?" buttonGood":"")}
+                        onClick={this.onTypeChange.bind(this, typeID)}>{this.props.typeNames[typeID]}</button>
+                    {editTypeEl}
+                </div>
             );
         }
         if(this.props.onAddType) {
             typeNameOptions.push(
-                <span
+                <button
                     className="button"
                     key="new"
-                    onClick={this.props.onAddType}>New..</span>
+                    onClick={this.props.onAddType}>New..</button>
             );
         }
 

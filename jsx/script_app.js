@@ -10,6 +10,7 @@ var App = React.createClass({
             infoTypes: init_data.infoTypes,
             ginseng_settings: init_data.settings,
             activeMode: "status",
+            selectedTypeID: false,
             selectedInfoIndex: 0,
             dropBoxStatus: "off",
             lastSaved: "never"
@@ -170,6 +171,12 @@ var App = React.createClass({
         }
         return true;
     },
+    editType: function(typeID){
+        this.setState({
+            activeMode: "types",
+            selectedTypeID: typeID
+        })
+    },
     render: function () {
         //React.addons.Perf.start();
 
@@ -218,6 +225,7 @@ var App = React.createClass({
                 onSave={onSave}
                 cancelEdit={this.clickNav.bind(this, "browse")}
                 onDelete={onDelete}
+                editType={this.editType}
             />
         }
 
@@ -316,6 +324,7 @@ var App = React.createClass({
                 infoTypes={this.state.infoTypes}
                 cancelEdit={this.clickNav.bind(this, "browse")}
                 onSave={this.onTypesEdit}
+                selectedTypeID={this.state.selectedTypeID}
             />;
         }
 
@@ -323,7 +332,7 @@ var App = React.createClass({
         //React.addons.Perf.printInclusive();
         return (
             <div className="app">
-                <div className="navBar">
+                <div className="navBar unselectable">
                     <div
                         className={this.state.activeMode == "status" ? "active" : "inactive"}
                         onClick={this.clickNav.bind(this, "status")}>Status
@@ -370,9 +379,9 @@ var Status = React.createClass({
 
                     </div>
                     <div className={"flexContHoriz"}>
-                        <span className={"button buttonGood "+(this.props.dropBoxStatus === "logged in!"?"disabled":"")} onClick={this.props.onDBAuth}>auth Dropbox</span>
-                        <span className={"button " + (this.props.dropBoxStatus === "logged in!"?"":"invisible")} onClick={this.props.onDbLoad}>load from Dropbox</span>
-                        <span className={"button " + (this.props.dropBoxStatus === "logged in!"?"":"invisible")} onClick={this.props.onDbSave}>save to Dropbox</span>
+                        <button className={"button buttonGood "+(this.props.dropBoxStatus === "logged in!"?"disabled":"")} onClick={this.props.onDBAuth}>auth Dropbox</button>
+                        <button className={"button " + (this.props.dropBoxStatus === "logged in!"?"":"invisible")} onClick={this.props.onDbLoad}>load from Dropbox</button>
+                        <button className={"button " + (this.props.dropBoxStatus === "logged in!"?"":"invisible")} onClick={this.props.onDbSave}>save to Dropbox</button>
                     </div>
                 </div>
             ) } else{

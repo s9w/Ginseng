@@ -279,15 +279,9 @@ $danger-red: #d9534f;
   cursor: pointer;
 }
 
-#reviewStage{
+#reviewStage {
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-
-#reviewToolbar{
-  display: flex;
-//  justify-content: space-between;
   align-items: center;
 }
 
@@ -307,4 +301,8 @@ input, select, textarea{
 .tabContainer{
   display: flex;
   justify-content: flex-start;
+}
+
+.CombiButton > button{
+  margin: 0;
 }

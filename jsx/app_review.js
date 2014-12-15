@@ -33,7 +33,8 @@ var Review = React.createClass({
         this.refs.flipButton.getDOMNode().focus();
     },
     componentDidUpdate : function(){
-        this.refs.flipButton.getDOMNode().focus();
+        if(this.state.progressState === "frontSide")
+            this.refs.flipButton.getDOMNode().focus();
     },
     flip: function(){
         this.setState({progressState: "backSide"});
@@ -62,6 +63,7 @@ var Review = React.createClass({
             flipButton =
                 <div style={{textAlign: "center"}}>
                     <button
+                    tabIndex="1"
                     ref="flipButton"
                     className={"button buttonGood "+ (this.state.progressState === "frontSide"?"":"invisible")}
                     onClick={this.flip} >Show backside
@@ -70,10 +72,11 @@ var Review = React.createClass({
         return (
             <div className="Review Component">
                 <div>
-                    <span
+                    <button
                         className="button"
+                        tabIndex="2"
                         onClick={this.gotoEdit}
-                    >Edit Info</span>
+                    >Edit Info</button>
                     <span>{"Due count: "+this.props.dueCount}</span>
                 </div>
 

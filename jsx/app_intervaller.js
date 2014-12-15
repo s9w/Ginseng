@@ -109,6 +109,7 @@ var Intervaller = React.createClass({
                 </div>
                 <div>Old interval: {getPreciseIntervalStr( this.props.reviewInterval )}</div>
                 <div>New interval: {getPreciseIntervalStr( this.getNewInterval() )}</div>
+                <div>Due on: {moment().add(moment.duration(this.getNewInterval())).format("dddd, YYYY-MM-DD, HH:mm") }</div>
             </div>
         );
     }
