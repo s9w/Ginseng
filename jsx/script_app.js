@@ -103,11 +103,9 @@ var App = React.createClass({
         var newInfos = JSON.parse( JSON.stringify( this.state.infos ));
         newInfos.push(newInfo_copy);
 
-        var new_settings = JSON.parse( JSON.stringify( this.state.ginseng_settings ));
         this.setState( {
             infos: newInfos,
-            ginseng_settings: new_settings,
-            activeMode: "browse"
+            activeMode: "new"
         } );
     },
     //getITypeIndex: function(types, nameS){
@@ -202,7 +200,7 @@ var App = React.createClass({
         if(["new", "edit"].indexOf(this.state.activeMode) !== -1){
             var editInfo, onSave, onDelete, saveButtonStr;
             if (this.state.activeMode == "new") {
-                editInfo = {typeID: this.state.infos[this.state.infos.length-1].typeID};
+                editInfo = this.state.infos[this.state.infos.length-1].typeID;
                 onSave = this.addInfo;
                 onDelete = false;
                 saveButtonStr = "add";

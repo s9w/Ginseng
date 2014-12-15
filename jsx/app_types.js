@@ -148,7 +148,7 @@ var InfoTypes = React.createClass({
             );
             mainSection.push(
                 <section key={1}>
-                    <h3>Entries <span className="button" onClick={this.onFieldsResize.bind(this, -1)}>+</span></h3>
+                    <h3>Entries <span className="button buttonPlain" onClick={this.onFieldsResize.bind(this, -1)}>+</span></h3>
                     {iType_elements}
                 </section>
             );

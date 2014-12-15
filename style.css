@@ -190,6 +190,11 @@ tbody > tr > td {
     background: #6ac44a; }
     .button.buttonGood:hover {
       outline: 2px solid #478f2f; }
+  .button.buttonPlain {
+    background: #FFF; }
+    .button.buttonPlain:hover {
+      color: red;
+      outline: none; }
   .button.buttonDanger {
     background: #d9534f; }
     .button.buttonDanger:hover {

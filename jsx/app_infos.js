@@ -8,18 +8,11 @@
 
 var InfoEdit = React.createClass({
     getInitialState: function() {
-        var infoNew = JSON.parse( JSON.stringify( this.props.info ));
-        if(Object.keys(infoNew).length === 1){
-            var fields = [];
-            var reviews = {};
-            for (var i = 0; i < this.props.types[this.props.info.typeID].fieldNames.length; ++i) {
-                fields.push("");
-                reviews[i] = [];
-            }
-            infoNew.fields = fields;
-            infoNew.reviews = reviews;
-            infoNew.tags = [];
-            infoNew.creationDate = moment().format();
+        var infoNew;
+        if(typeof this.props.info === "string"){
+            infoNew = this.getNewInfo(this.props.info);
+        }else{
+            infoNew = JSON.parse( JSON.stringify( this.props.info ));
         }
         return {
             info: infoNew
@@ -28,8 +21,25 @@ var InfoEdit = React.createClass({
     componentDidMount: function(){
         this.refs.firstTextbox.getDOMNode().focus();
     },
-    componentWillUpdate: function(nextProps, nextState){
-        //console.log("UPDATE");
+    componentWillReceiveProps: function(nextProps){
+        if(typeof this.props.info === "string"){
+            this.setState({info: this.getNewInfo(nextProps.info)});
+        }
+
+    },
+    getNewInfo: function(typeID){
+        var infoNew = {typeID: typeID};
+        var fields = [];
+        var reviews = {};
+        for (var i = 0; i < this.props.types[typeID].fieldNames.length; ++i) {
+            fields.push("");
+            reviews[i] = [];
+        }
+        infoNew.fields = fields;
+        infoNew.reviews = reviews;
+        infoNew.tags = [];
+        infoNew.creationDate = moment().format();
+        return infoNew;
     },
     onTypeChange: function(newTypeID){
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));

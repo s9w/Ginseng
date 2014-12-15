@@ -257,6 +257,13 @@ $danger-red: #d9534f;
   &.buttonGood{
     @include hoverDark($base-green);
   }
+  &.buttonPlain{
+    background: #FFF;
+    &:hover{
+      color: red;
+      outline: none;
+    }
+  }
   &.buttonDanger{
     @include hoverDark($danger-red);
   }
