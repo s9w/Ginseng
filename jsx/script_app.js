@@ -32,7 +32,7 @@ var App = React.createClass({
         });
     },
     saveDB: function(){
-        this.setState({lastSavedStr:"loading"});
+        this.setState({lastSavedStr: "saving"});
         var thisApp = this;
         var writeData = {
             infos: this.state.infos,
@@ -52,7 +52,7 @@ var App = React.createClass({
         });
     },
     loadDB: function() {
-        this.setState({lastLoadedStr:"loading"});
+        this.setState({lastLoadedStr: "loading"});
         var thisApp = this;
         client.readFile("ginseng_data.txt", function (error, data) {
             if (error) {
@@ -65,12 +65,6 @@ var App = React.createClass({
                 ginseng_settings: js.settings,
                 lastLoadedStr: moment().format("LTS")
             });
-        });
-    },
-    onRowSelect: function(index_selected) {
-        this.setState({
-            selectedInfoIndex: index_selected,
-            activeMode: "edit"
         });
     },
     gotoEdit: function(infoIndex){
@@ -195,7 +189,7 @@ var App = React.createClass({
             compBrowser = <InfoBrowser
                 infos={this.state.infos}
                 types={this.state.infoTypes}
-                onRowSelect={this.onRowSelect}
+                onRowSelect={this.gotoEdit}
                 onNew={this.clickNav.bind(this, "new")}
                 selections={this.state.ginseng_selections}
             />
@@ -284,7 +278,7 @@ var Status = React.createClass({
             }
             return (
                 <div className="Status Component">
-                    <div>Infos loaded: {this.props.infoCount}</div>
+                    <div>Infos loaded: {this.props.lastLoadedStr === "loading"?"loading":this.props.infoCount}</div>
                     <div>Dropbox Status: {this.props.dropBoxStatus}</div>
                     <div>Last save: {this.props.lastSavedStr}</div>
                     <div>Last load: {this.props.lastLoadedStr}</div>
