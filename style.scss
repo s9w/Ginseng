@@ -269,7 +269,7 @@ $danger-red: #d9534f;
   }
   &.disabled{
     color: graytext;
-    background: hsl(hue($base-green), 17%, 87%);
+    background: scale-color(lightgray, $lightness: +50%);
     cursor: default;
     outline: 0 !important;
   }

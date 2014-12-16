@@ -13,7 +13,8 @@ var App = React.createClass({
             selectedTypeID: false,
             selectedInfoIndex: 0,
             dropBoxStatus: "off",
-            lastSaved: "never"
+            lastLoadedStr: "never",
+            lastSavedStr: "never"
         };
     },
     clickNav: function(mode) {
@@ -31,6 +32,7 @@ var App = React.createClass({
         });
     },
     saveDB: function(){
+        this.setState({lastSavedStr:"loading"});
         var thisApp = this;
         var writeData = {
             infos: this.state.infos,
@@ -43,24 +45,27 @@ var App = React.createClass({
             }
             else {
                 console.log("file saved with revision " + stat.versionTag);
-                thisApp.setState({lastSaved: moment().format("LTS")});
+                thisApp.setState({
+                    lastSavedStr: moment().format("LTS")
+                });
             }
         });
     },
     loadDB: function() {
+        this.setState({lastLoadedStr:"loading"});
         var thisApp = this;
         client.readFile("ginseng_data.txt", function (error, data) {
             if (error) {
-                return showError(error);  // Something went wrong.
+                return showError(error);
             }
             var js = JSON.parse(data);
             thisApp.setState({
                 infos: js.infos,
                 infoTypes: js.infoTypes,
-                ginseng_settings: js.settings
+                ginseng_settings: js.settings,
+                lastLoadedStr: moment().format("LTS")
             });
         });
-
     },
     onRowSelect: function(index_selected) {
         this.setState({
@@ -74,7 +79,6 @@ var App = React.createClass({
             activeMode: "edit"
         })
     },
-
 
     onInfoEdit: function(newInfo) {
         var newInfos = this.state.infos.slice();
@@ -246,7 +250,8 @@ var App = React.createClass({
                     dropBoxStatus={this.state.dropBoxStatus}
                     onDBAuth={this.authDB}
                     onDbSave={this.saveDB}
-                    lastSaved={this.state.lastSaved}
+                    lastSavedStr={this.state.lastSavedStr}
+                    lastLoadedStr={this.state.lastLoadedStr}
                     onDbLoad={this.loadDB}/>
                 {compEdit}
                 {compBrowser}
@@ -255,7 +260,6 @@ var App = React.createClass({
 
             </div>);
             }
-
 });
 
 var Status = React.createClass({
@@ -266,26 +270,43 @@ var Status = React.createClass({
 ////...
 //            <a download="ginseng.json" href={url}>download JSON</a>
 
+            var loadButtonClassName, saveButtonClassName;
+            loadButtonClassName = saveButtonClassName = "button";
+            if(this.props.dropBoxStatus === "logged in!"){
+                loadButtonClassName += " invisible;";
+                saveButtonClassName += " invisible;"
+            }
+            if(this.props.lastLoadedStr === "loading"){
+                loadButtonClassName += " disabled";
+            }
+            if(this.props.lastSavedStr === "loading"){
+                saveButtonClassName += " disabled";
+            }
             return (
                 <div className="Status Component">
                     <div>Infos loaded: {this.props.infoCount}</div>
                     <div>Dropbox Status: {this.props.dropBoxStatus}</div>
-                    <div>Last save: {this.props.lastSaved} (local time)</div>
+                    <div>Last save: {this.props.lastSavedStr}</div>
+                    <div>Last load: {this.props.lastLoadedStr}</div>
 
-                    <div>
-
-                    </div>
                     <div className={"flexContHoriz"}>
-                        <button className={"button buttonGood "+(this.props.dropBoxStatus === "logged in!"?"disabled":"")} onClick={this.props.onDBAuth}>auth Dropbox</button>
-                        <button className={"button " + (this.props.dropBoxStatus === "logged in!"?"":"invisible")} onClick={this.props.onDbLoad}>load from Dropbox</button>
-                        <button className={"button " + (this.props.dropBoxStatus === "logged in!"?"":"invisible")} onClick={this.props.onDbSave}>save to Dropbox</button>
+                        <button
+                            className={"button buttonGood "+(this.props.dropBoxStatus === "logged in!"?"disabled":"")}
+                            onClick={this.props.onDBAuth}>auth Dropbox</button>
+                        <button
+                            className={loadButtonClassName}
+                            onClick={this.props.onDbLoad}>load from Dropbox</button>
+                        <button
+                            className={saveButtonClassName}
+                            onClick={this.props.onDbSave}>save to Dropbox</button>
                     </div>
                 </div>
-            ) } else{
-            return(
-                <div className="Status Component"></div>
-        )} } });
-
+            )
+        } else{
+            return(<div className="Status Component"></div>)
+        }
+    }
+});
 
 React.render(
     <App />, document.getElementById('content')
