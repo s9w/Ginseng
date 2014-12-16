@@ -1,26 +1,3 @@
-//function getSelected(infos, selectionStr){
-//    if(selectionStr === "")
-//        return infos;
-//    console.log("selectionStr: " + selectionStr);
-//    var selectedInfos = [];
-//    var selectionStr_new = selectionStr.replace(/ /g, "");
-//    selectionStr_new = selectionStr_new.split(" OR ").map(function(el){
-//        return el.split(",").map(function(fc){
-//            fc = fc.replace(/tag:(\w+)/, 'infos[i].tags.indexOf("$1") !== -1');
-//            return fc;
-//        }).join(" && ")
-//    }).join(" || ");
-//    console.log("selectionStr_new: " + selectionStr_new);
-//
-//    for (var i = 0; i < infos.length; ++i) {
-//        if( eval(selectionStr_new) ){
-//            selectedInfos.push(infos[i]);
-//        }
-//    }
-//    console.log("selectedInfos: " + JSON.stringify( selectedInfos) );
-//    return selectedInfos;
-//}
-
 var Review = React.createClass({
     getInitialState: function() {
         return {
@@ -31,7 +8,7 @@ var Review = React.createClass({
         this.refs.flipButton.getDOMNode().focus();
     },
     componentDidUpdate : function(){
-        if(this.state.progressState === "frontSide")
+        if(this.state.progressState === "frontSide" && "flipButton" in this.refs)
             this.refs.flipButton.getDOMNode().focus();
     },
     flip: function(){
@@ -90,7 +67,6 @@ var Review = React.createClass({
                 </div>;
 
         // filter due cards and chose the next
-        var filteredInfos = this.props.infos;
         var urgency;
         var dueCount = 0;
         var actualIntervalMs;
@@ -100,8 +76,8 @@ var Review = React.createClass({
             viewID: 0,
             realInterval: 0
         };
-        for (var infoIndex = 0; infoIndex < filteredInfos.length; ++infoIndex) {
-            var info = filteredInfos[infoIndex];
+        for (var infoIndex = 0; infoIndex < this.props.infos.length; ++infoIndex) {
+            var info = this.props.infos[infoIndex];
             for(var viewID in info.reviews){
                 if( !(this.filterInfo(this.props.types[info.typeID].views[viewID].condition, info))){
                     continue;
