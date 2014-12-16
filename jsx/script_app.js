@@ -213,7 +213,7 @@ var App = React.createClass({
         var compTypes = false;
         if(this.state.activeMode=="types"){
             compTypes = <InfoTypes
-                infoTypes={this.state.infoTypes}
+                types={this.state.infoTypes}
                 cancelEdit={this.clickNav.bind(this, "browse")}
                 onSave={this.onTypesEdit}
                 selectedTypeID={this.state.selectedTypeID}
@@ -242,8 +242,12 @@ var App = React.createClass({
 
                 <Status
                     show={this.state.activeMode=="status"}
-                    infoCount={this.state.infos.length} dropBoxStatus={this.state.dropBoxStatus} onDBAuth={this.authDB}
-                    onDbSave={this.saveDB} lastSaved={this.state.lastSaved} onDbLoad={this.loadDB}/>
+                    infoCount={this.state.infos.length}
+                    dropBoxStatus={this.state.dropBoxStatus}
+                    onDBAuth={this.authDB}
+                    onDbSave={this.saveDB}
+                    lastSaved={this.state.lastSaved}
+                    onDbLoad={this.loadDB}/>
                 {compEdit}
                 {compBrowser}
                 {compTypes}
