@@ -28,6 +28,10 @@ h3 {
   margin-top: 0;
   margin-bottom: 0; }
 
+p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em; }
+
 .sectionContent {
   margin-left: 10px;
   display: flex;
@@ -211,7 +215,14 @@ tbody > tr > td {
     background: #6ac44a; }
 
 .microbutton {
-  cursor: pointer; }
+  width: 2em;
+  padding: 0px;
+  margin-bottom: 0;
+  margin-top: 0;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
 
 #reviewStage {
   display: flex;
@@ -224,6 +235,9 @@ input, select, textarea {
   font-family: inherit;
   border-radius: 4px; }
 
+@media (max-device-width: 400px) {
+  input, textarea {
+    line-height: 1.7; } }
 .unselectable {
   -moz-user-select: none;
   -webkit-user-select: none;

@@ -121,7 +121,7 @@ var InfoTypes = React.createClass({
                         onChange={this.onFieldNameEdit.bind(this, i)}
                     />
                     <span
-                        className={"button buttonDanger sectionContentElFixed"+(selectedType.fieldNames.length<=2?" invisible":"")}
+                        className={"button buttonDanger microbutton sectionContentElFixed"+(selectedType.fieldNames.length<=2?" invisible":"")}
                         onClick={this.onFieldsResize.bind(this, i)
                             }>✖</span>
                 </div>
