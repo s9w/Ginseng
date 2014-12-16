@@ -5,7 +5,8 @@ var Review = React.createClass({
         };
     },
     componentDidMount: function(){
-        this.refs.flipButton.getDOMNode().focus();
+        if("flipButton" in this.refs)
+            this.refs.flipButton.getDOMNode().focus();
     },
     componentDidUpdate : function(){
         if(this.state.progressState === "frontSide" && "flipButton" in this.refs)
