@@ -1,35 +1,16 @@
 var Intervaller = React.createClass({
     getInitialState: function() {
-        console.log("construct intervalChoiceGroups");
-
-        // construct intervalChoiceGroups
-        var intervalChoiceGroups = [], intervalChoiceGroup=[];
-        var timeframeNameDict = ["Minutes","Hours", "Days", "Weeks", "Months", "Relative"];
-        for (var intervalGroupIndex = 0; intervalGroupIndex < this.props.timeIntervalChoices.length; ++intervalGroupIndex) {
-            if(this.props.timeIntervalChoices[intervalGroupIndex].length===0)
-                continue;
-            intervalChoiceGroup = [];
-            for (var typeIndex = 0; typeIndex < this.props.timeIntervalChoices[intervalGroupIndex].length; ++typeIndex) {
-                intervalChoiceGroup.push(this.props.timeIntervalChoices[intervalGroupIndex][typeIndex]);
-            }
-            intervalChoiceGroups.push({
-                label: timeframeNameDict[intervalGroupIndex],
-                members: intervalChoiceGroup.slice()
-            });
-        }
-
         return {
             modifyType: "change", // change, set
             changeType: "minutes", // minutes, hours, weeks, relative
             modifyAmount: 10,
-            activeKeyIndex: 0,
-            intervalChoiceGroups: intervalChoiceGroups
+            activeKeyIndex: 0
         };
     },
     onModeChange: function(newModeStr){
         if(newModeStr !== this.state.modifyType) {
             var newActiveKeyIndex = this.state.activeKeyIndex;
-            if(newModeStr === "set" && this.state.changeType==="relative")
+            if(newModeStr === "set" && this.state.changeType==="percent")
                 newActiveKeyIndex = 0;
             this.setState({modifyType: newModeStr, activeKeyIndex: newActiveKeyIndex});
         }
@@ -37,7 +18,7 @@ var Intervaller = React.createClass({
     getNewInterval: function(){
         var intervalDiff;
         if(this.state.modifyType === "change") {
-            if (this.state.changeType === "relative") {
+            if (this.state.changeType === "percent") {
                 intervalDiff = this.props.reviewInterval * this.state.modifyAmount/100.0;
                 return intervalDiff + this.props.reviewInterval;
             } else {
@@ -49,7 +30,7 @@ var Intervaller = React.createClass({
             return moment.duration(this.state.modifyAmount, this.state.changeType.toLowerCase()).asMilliseconds();
         }
     },
-    onIntervalChoice: function(modifyAmount, keyIndex, changeType, event){
+    onIntervalChoice: function(modifyAmount, keyIndex, changeType){
         if(this.state.activeKeyIndex === keyIndex){
             this.props.applyInterval(this.getNewInterval());
         }
@@ -60,36 +41,39 @@ var Intervaller = React.createClass({
         });
     },
     render: function(){
-        var toolbarConents = [];
-        var groupConents;
+        var intervals = [];
         var amount;
         var keyIndex = 0;
-        for (var i = 0; i < this.state.intervalChoiceGroups.length; ++i) {
-            groupConents = [];
-            for (var j = 0; j < this.state.intervalChoiceGroups[i].members.length; ++j) {
+        var timeframeNumber = 0;
+        for (var timeframeKey in this.props.timeIntervalChoices) {
+            if(this.props.timeIntervalChoices[timeframeKey].length > 0){
+                timeframeNumber++;
+            }
+            for (var j = 0; j < this.props.timeIntervalChoices[timeframeKey].length; ++j) {
                 var buttonClassName = "button unselectable";
-                buttonClassName += " interval"+(i%2);
-                buttonClassName += keyIndex === this.state.activeKeyIndex ? " buttonSelected" : "";
+                buttonClassName += " interval"+timeframeNumber%2;
+                if(keyIndex === this.state.activeKeyIndex)
+                    buttonClassName += " buttonSelected";
                 var plusEL = <span className={this.state.modifyType==="change"?"":"invisible"}>+</span>;
-                amount = this.state.intervalChoiceGroups[i].members[j];
+                amount = this.props.timeIntervalChoices[timeframeKey][j];
                 var buttonStr = amount;
-                if(this.state.intervalChoiceGroups[i].label==="Relative")
+                if(timeframeKey === "Percent")
                     buttonStr += "%";
                 else
-                    buttonStr += this.state.intervalChoiceGroups[i].label.slice(0,1).toLowerCase();
+                    buttonStr += timeframeKey.slice(0,1).toLowerCase();
                 var labelElement = false;
                 if(j===0){
-                    labelElement = <div>{this.state.intervalChoiceGroups[i].label}</div>;
+                    labelElement = <div>{timeframeKey}</div>;
                 }
-                var isSetAndRelative = this.state.intervalChoiceGroups[i].label==="Relative" && this.state.modifyType==="set" ;
-                toolbarConents.push(
+                var isSetAndRelative = timeframeKey==="Percent" && this.state.modifyType==="set" ;
+                intervals.push(
                     <span
                         key={keyIndex}
                         className={isSetAndRelative?"invisible":""}>
                         {labelElement}
                         <div
                             className={buttonClassName}
-                            onClick={this.onIntervalChoice.bind(this, amount, keyIndex, this.state.intervalChoiceGroups[i].label.toLowerCase())}>{plusEL} {buttonStr}
+                            onClick={this.onIntervalChoice.bind(this, amount, keyIndex, timeframeKey.toLowerCase())}>{plusEL} {buttonStr}
                         </div>
                     </span>
                 );
@@ -105,7 +89,7 @@ var Intervaller = React.createClass({
                         <div className={"button "+ (this.state.modifyType==="change"?"buttonGood":"")} onClick={this.onModeChange.bind(this, "change")}>change</div>
                     </span>
                     <span className={"button "+ (this.state.modifyType==="set"?"buttonGood":"")} onClick={this.onModeChange.bind(this, "set")}>set</span>
-                    {toolbarConents}
+                    {intervals}
                 </div>
                 <div>Old interval: {getPreciseIntervalStr( this.props.reviewInterval )}</div>
                 <div>New interval: {getPreciseIntervalStr( this.getNewInterval() )}</div>

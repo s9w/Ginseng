@@ -87,31 +87,31 @@ var init_data = {
         },
         "settings": {
             "lastInfoType": "Front and back",
-            "timeIntervalChoices": [
-                [
+            "timeIntervalChoices": {
+                "Minutes": [
                     10,
                     30
                 ],
-                [
+                "Hours": [
                     1,
                     5,
                     10
                 ],
-                [
+                "Days": [
                     1,
                     2,
                     3,
                     4
                 ],
-                [1, 2],
-                [],
-                [
+                "Weeks": [1, 2],
+                "Months": [],
+                "Percent": [
                     0,
                     10,
                     20,
                     30
                 ]
-            ]
+            }
         }
     }
     ;

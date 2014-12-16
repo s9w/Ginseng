@@ -108,14 +108,6 @@ var App = React.createClass({
             activeMode: "new"
         } );
     },
-    //getITypeIndex: function(types, nameS){
-    //    for(var i = 0; i < types.length; i += 1) {
-    //        if(types[i].name === nameS) {
-    //            return i;
-    //        }
-    //    }
-    //},
-
     onTypesEdit: function(newTypes, changes){
         var newTypes_copy = JSON.parse( JSON.stringify( newTypes ));
         var new_infos = JSON.parse( JSON.stringify( this.state.infos ));
@@ -145,30 +137,11 @@ var App = React.createClass({
             "reviewTime": moment().format(),
             "dueTime": moment().add(moment.duration(newInterval)).format()
         });
-        this.setState( {
+        this.setState({
             infos: newInfos
-        } );
+        });
     },
-    filterInfo: function(filterStr, info){
-        if(filterStr===""){
-            return true
-        }
-        var filterStrNew = filterStr.replace(/ /g, "");
-        var filters = filterStrNew.split(",");
-        for (var i = 0; i < filters.length; ++i) {
-            if(filters[i] === ""){
-                console.log("   empty?");
-            }
-            else if(filters[i] === "tag:reverse"){
-                if(info.tags.indexOf("reverse") === -1){
-                    return false;
-                }
-            }else{
-                console.log("other filter, eek");
-            }
-        }
-        return true;
-    },
+
     editType: function(typeID){
         this.setState({
             activeMode: "types",
@@ -187,7 +160,6 @@ var App = React.createClass({
                 }
             }
         }
-
 
         // general helper
         var typeNames = {}; // = this.state.infoTypes.map(function(type){ return type.name;});
@@ -214,7 +186,6 @@ var App = React.createClass({
 
             compEdit = <InfoEdit
                 typeNames={typeNames}
-                //fieldNames={this.state.ginseng_infoTypes[this.getITypeIndex(this.state.ginseng_infoTypes, editInfo.type)].fieldNames}
                 types={this.state.infoTypes}
                 info={editInfo}
                 saveButtonStr={saveButtonStr}
@@ -242,77 +213,13 @@ var App = React.createClass({
         // Review
         var comp_review = <div/>;
         if(this.state.activeMode === "review") {
-            var thisApp = this;
-            (function() {
-                var dueItems = [];
-                var infoIndex, info;
-                var filteredInfos = thisApp.state.infos;
-                var urgency;
-                for (infoIndex = 0; infoIndex < filteredInfos.length; ++infoIndex) {
-                    info = filteredInfos[infoIndex];
-                    for(var reviewKey in info.reviews){
-                        if( !(thisApp.filterInfo(thisApp.state.infoTypes[info.typeID].views[reviewKey].condition, info))){
-                            console.log("out due filter: " + info.fields[0].slice(0,10) + ", reviewKey: " + reviewKey);
-                            continue;
-                        }
-                        if(info.reviews[reviewKey].length > 0) {
-                            var lastDueTimeStr = info.reviews[reviewKey][info.reviews[reviewKey].length - 1].dueTime;
-                            var lastReviewTimeStr = info.reviews[reviewKey][info.reviews[reviewKey].length - 1].reviewTime;
-                            var plannedIntervalMs = moment(lastDueTimeStr).diff(moment(lastReviewTimeStr));
-                            var actualIntervalMs = moment().diff(moment(lastReviewTimeStr));
-                            urgency = actualIntervalMs/plannedIntervalMs;
-                            if( urgency>=1.0 ){
-                                console.log("in due urgency: " + info.fields[0].slice(0,10) + ", reviewKey: " + reviewKey + ", urgency: " + urgency);
-                                dueItems.push([actualIntervalMs, infoIndex, reviewKey, urgency]);
-                            }else{
-                                console.log("out due urgency: " + info.fields[0].slice(0,10) + ", reviewKey: " + reviewKey + ", urgency: " + urgency);
-                            }
-                        }else{
-                            dueItems.push([0, infoIndex, reviewKey, 1.1]);
-                            console.log("in because new: " + info.fields[0].slice(0,10) + ", reviewKey: " + reviewKey);
-                        }
-                    }                    
-                }
-
-                var dueCount = dueItems.length;
-                if(dueCount >0) {
-                    // find next due item
-                    var winnerActualInterval = 0;
-                    var winnerUrgency = 0;
-                    var nextInfoIndex = 0;
-                    var nextReviewID = 0;
-                    for (var index = 0; index < dueItems.length; ++index) {
-                        if (dueItems[index][3] >= winnerUrgency) {
-                            winnerActualInterval = dueItems[index][0];
-                            nextInfoIndex = dueItems[index][1];
-                            nextReviewID = dueItems[index][2];
-                            winnerUrgency = dueItems[index][3];
-                        }
-                    }
-                    var nextTypeID = thisApp.state.infos[nextInfoIndex].typeID;
-
-                    comp_review = <Review
-                        applyInterval={thisApp.applyInterval.bind(thisApp, nextInfoIndex, nextReviewID)}
-                        frontStr={
-                            thisApp.state.infoTypes[nextTypeID].views[nextReviewID].front.replace(
-                                /{(\w*)}/g, function(match, p1){
-                                    return thisApp.state.infos[nextInfoIndex].fields[ thisApp.state.infoTypes[nextTypeID].fieldNames.indexOf(p1) ];
-                                })
-                            }
-                        backStr={
-                            thisApp.state.infoTypes[nextTypeID].views[nextReviewID].back.replace(
-                                /{(\w*)}/g, function(match, p1){
-                                    return thisApp.state.infos[nextInfoIndex].fields[ thisApp.state.infoTypes[nextTypeID].fieldNames.indexOf(p1) ];
-                                })
-                            }
-                        dueCount={dueCount}
-                        reviewInterval={winnerActualInterval}
-                        timeIntervalChoices={thisApp.state.ginseng_settings.timeIntervalChoices}
-                        nextInfoIndex={nextInfoIndex}
-                        gotoEdit={thisApp.gotoEdit}
-                    />;
-                }
-            })();
+            comp_review = <Review
+                infos={this.state.infos}
+                types={this.state.infoTypes}
+                applyInterval={this.applyInterval}
+                timeIntervalChoices={this.state.ginseng_settings.timeIntervalChoices}
+                gotoEdit={this.gotoEdit}
+            />;
         }
 
         // Types
@@ -346,7 +253,8 @@ var App = React.createClass({
                     </div>
                 </div>
 
-                <Status      show={this.state.activeMode=="status"}
+                <Status
+                    show={this.state.activeMode=="status"}
                     infoCount={this.state.infos.length} dropBoxStatus={this.state.dropBoxStatus} onDBAuth={this.authDB}
                     onDbSave={this.saveDB} lastSaved={this.state.lastSaved} onDbLoad={this.loadDB}/>
                 {compEdit}
