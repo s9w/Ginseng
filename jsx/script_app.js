@@ -161,39 +161,26 @@ var App = React.createClass({
             }
         }
 
-        // general helper
-        var typeNames = {}; // = this.state.infoTypes.map(function(type){ return type.name;});
-        for(var key in this.state.infoTypes){
-            typeNames[key] = this.state.infoTypes[key].name;
-        }
-
         // Edit / New
         var compEdit = <div/>;
-        if(["new", "edit"].indexOf(this.state.activeMode) !== -1){
-            var editInfo, onSave, onDelete, saveButtonStr;
-            if (this.state.activeMode == "new") {
-                editInfo = this.state.infos[this.state.infos.length-1].typeID;
-                onSave = this.addInfo;
-                onDelete = false;
-                saveButtonStr = "add";
-            }
-            else {
-                editInfo = this.state.infos[this.state.selectedInfoIndex];
-                onSave = this.onInfoEdit;
-                onDelete = this.onInfoDelete;
-                saveButtonStr = "save";
-            }
-
+        if (this.state.activeMode == "new") {
             compEdit = <InfoEdit
-                typeNames={typeNames}
                 types={this.state.infoTypes}
-                info={editInfo}
-                saveButtonStr={saveButtonStr}
-
                 usedTags={usedTags}
-                onSave={onSave}
+                onSave={this.addInfo}
                 cancelEdit={this.clickNav.bind(this, "browse")}
-                onDelete={onDelete}
+                editType={this.editType}
+            />
+        }
+        else if (this.state.activeMode == "edit"){
+            compEdit = <InfoEdit
+                info={this.state.infos[this.state.selectedInfoIndex]}
+                onDelete={this.onInfoDelete}
+
+                types={this.state.infoTypes}
+                usedTags={usedTags}
+                onSave={this.onInfoEdit}
+                cancelEdit={this.clickNav.bind(this, "browse")}
                 editType={this.editType}
             />
         }
@@ -203,7 +190,7 @@ var App = React.createClass({
         if(this.state.activeMode === "browse"){
             compBrowser = <InfoBrowser
                 infos={this.state.infos}
-                typeNames={typeNames}
+                types={this.state.infoTypes}
                 onRowSelect={this.onRowSelect}
                 onNew={this.clickNav.bind(this, "new")}
                 selections={this.state.ginseng_selections}

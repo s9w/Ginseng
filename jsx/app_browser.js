@@ -99,7 +99,7 @@ var InfoBrowser = React.createClass({
                 thData = [
                     sortedInfos[i].fields[0],
                     sortedInfos[i].fields[1],
-                    this.props.typeNames[sortedInfos[i].typeID],
+                    this.props.types[sortedInfos[i].typeID].name,
                     sortedInfos[i].tags.join(", "),
                     getShortPreciseIntervalStr(age)
                 ];

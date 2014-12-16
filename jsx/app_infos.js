@@ -9,8 +9,12 @@
 var InfoEdit = React.createClass({
     getInitialState: function() {
         var infoNew;
-        if(typeof this.props.info === "string"){
-            infoNew = this.getNewInfo(this.props.info);
+        if(!("info" in this.props)){
+            var firstTypeID = "0";
+            while(!(firstTypeID in this.props.types)){
+                firstTypeID = (parseInt(firstTypeID, 10)+1).toString();
+            }
+            infoNew = this.getNewInfo(firstTypeID);
         }else{
             infoNew = JSON.parse( JSON.stringify( this.props.info ));
         }
@@ -22,10 +26,14 @@ var InfoEdit = React.createClass({
         this.refs.firstTextbox.getDOMNode().focus();
     },
     componentWillReceiveProps: function(nextProps){
-        if(typeof this.props.info === "string"){
-            this.setState({info: this.getNewInfo(nextProps.info)});
+        // Should always be "new"
+        if(!("info" in nextProps)){
+            var firstTypeID = "0";
+            while(!(firstTypeID in this.props.types)){
+                firstTypeID = (parseInt(firstTypeID, 10)+1).toString();
+            }
+            this.setState({info: this.getNewInfo(firstTypeID)});
         }
-
     },
     getNewInfo: function(typeID){
         var infoNew = {typeID: typeID};
@@ -119,11 +127,18 @@ var InfoEdit = React.createClass({
         }
 
         var isChanged = JSON.stringify(this.props.info)===JSON.stringify(this.state.info);
+
+        var deleteButton = false, saveButtonStr = "add";
+        if("onDelete" in this.props){
+            deleteButton = <span className="button buttonDanger" onClick={this.props.onDelete}>Delete</span>;
+            saveButtonStr = "save";
+        }
+
         return (
             <div className="InfoEdit Component">
                 <div className="sectionContainer">
                     <ITypeSwitcher
-                        typeNames={this.props.typeNames}
+                        types={this.props.types}
                         selectedTypeID={this.state.info.typeID}
                         onTypeChange={this.onTypeChange}
                         editType={this.editType}
@@ -148,10 +163,10 @@ var InfoEdit = React.createClass({
                 <div className="flexContHoriz">
                     <span
                         className={"button buttonGood "+ (isChanged?"disabled":"")}
-                        onClick={this.onSave}>{this.props.saveButtonStr}
+                        onClick={this.onSave}>{saveButtonStr}
                     </span>
                     <span className="button" onClick={this.props.cancelEdit}>Cancel</span>
-                    <span className={!(this.props.onDelete)?"invisible":"" + " button buttonDanger"} onClick={this.props.onDelete}>Delete</span>
+                    {deleteButton}
                 </div>
             </div>);
     }
@@ -163,7 +178,7 @@ var ITypeSwitcher = React.createClass({
     },
     render: function() {
         var typeNameOptions = [];
-        for(var typeID in this.props.typeNames){
+        for(var typeID in this.props.types){
             var editTypeEl = false;
             if(this.props.editType){
                 editTypeEl = <button
@@ -178,7 +193,7 @@ var ITypeSwitcher = React.createClass({
                     className="CombiButton">
                     <button
                         className={"button"+(this.props.selectedTypeID===typeID?" buttonGood":"")}
-                        onClick={this.onTypeChange.bind(this, typeID)}>{this.props.typeNames[typeID]}</button>
+                        onClick={this.onTypeChange.bind(this, typeID)}>{this.props.types[typeID].name}</button>
                     {editTypeEl}
                 </div>
             );
