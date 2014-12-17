@@ -1,11 +1,3 @@
-//function getITypeIndex(types, nameS){
-//    for(var i = 0; i < types.length; i++) {
-//        if(types[i].name === nameS) {
-//            return i;
-//        }
-//    }
-//}
-
 var InfoEdit = React.createClass({
     getInitialState: function() {
         var infoNew;
@@ -23,7 +15,10 @@ var InfoEdit = React.createClass({
         };
     },
     componentDidMount: function(){
-        this.refs.firstTextbox.getDOMNode().focus();
+        // Only focus first text field with new infos. Otherwise confusing/unwanted, especially on mobile
+        if(!("info" in this.props)) {
+            this.refs.firstTextbox.getDOMNode().focus();
+        }
     },
     componentWillReceiveProps: function(nextProps){
         // Should always be "new"
