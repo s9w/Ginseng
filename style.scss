@@ -8,6 +8,9 @@
 
 a{
   text-decoration: none;
+  &:hover{
+    text-decoration: underline;
+  }
 }
 
 
@@ -285,6 +288,18 @@ $danger-red: #d9534f;
   &:hover{
     background: $base-green;
   }
+}
+
+.popup{
+  background: lightgray;
+  padding: 10px;
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 10%;
+//  transform: translate(-50%, 0); //translate3d lead to blurry text sometimes
+//  width: 40%;
+  text-align: center;
 }
 
 .microbutton{

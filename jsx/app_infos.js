@@ -86,7 +86,6 @@ var InfoEdit = React.createClass({
         this.setState( {info: newInfo} );
     },
     editType: function(){
-        //console.log("editType 2nd " + this.state.info.typeID);
         this.props.editType(this.state.info.typeID)
     },
     render: function() {
@@ -134,15 +133,29 @@ var InfoEdit = React.createClass({
             saveButtonStr = "save";
         }
 
+        var infoTypeSection;
+        if("info" in this.props){ //edit
+            infoTypeSection =
+                <section>
+                    <h3>Info Type</h3>
+                    <div className="sectionContent">
+                        <a
+                            onClick={this.editType}
+                            href="#">{this.props.types[this.state.info.typeID].name}</a>
+                    </div>
+                </section>;
+        }else{ // new
+            infoTypeSection = <ITypeSwitcher
+                types={this.props.types}
+                selectedTypeID={this.state.info.typeID}
+                onTypeChange={this.onTypeChange}
+            />
+        }
+
         return (
             <div className="InfoEdit Component">
                 <div className="sectionContainer">
-                    <ITypeSwitcher
-                        types={this.props.types}
-                        selectedTypeID={this.state.info.typeID}
-                        onTypeChange={this.onTypeChange}
-                        editType={this.editType}
-                    />
+                    {infoTypeSection}
                     {data_elements}
                     <section>
                         <h3>Tags</h3>
@@ -172,6 +185,17 @@ var InfoEdit = React.createClass({
     }
 });
 
+var Popup = React.createClass({
+    render: function() {
+        return (
+            <div
+                className="popup">
+                <p>{this.props.text}</p>
+                {this.props.buttonContainer}
+            </div>);
+    }
+});
+
 var ITypeSwitcher = React.createClass({
     onTypeChange: function(typeID){
         this.props.onTypeChange(typeID);
@@ -179,13 +203,6 @@ var ITypeSwitcher = React.createClass({
     render: function() {
         var typeNameOptions = [];
         for(var typeID in this.props.types){
-            var editTypeEl = false;
-            if(this.props.editType){
-                editTypeEl = <button
-                    className={"button"+(this.props.selectedTypeID===typeID?"":" invisible")}
-                    key="new"
-                    onClick={this.props.editType}>Edit</button>;
-            }
             typeNameOptions.push(
                 <div
                     key={typeID}
@@ -194,7 +211,6 @@ var ITypeSwitcher = React.createClass({
                     <button
                         className={"button"+(this.props.selectedTypeID===typeID?" buttonGood":"")}
                         onClick={this.onTypeChange.bind(this, typeID)}>{this.props.types[typeID].name}</button>
-                    {editTypeEl}
                 </div>
             );
         }

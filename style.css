@@ -6,6 +6,8 @@
 
 a {
   text-decoration: none; }
+  a:hover {
+    text-decoration: underline; }
 
 html {
   font-family: proxima-nova,"Helvetica Neue",Helvetica,Roboto,Arial,sans-serif; }
@@ -213,6 +215,15 @@ tbody > tr > td {
   outline: 2px solid #000000; }
   .buttonSelected:hover {
     background: #6ac44a; }
+
+.popup {
+  background: lightgray;
+  padding: 10px;
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 10%;
+  text-align: center; }
 
 .microbutton {
   width: 2em;

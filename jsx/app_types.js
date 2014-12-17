@@ -173,7 +173,7 @@ var InfoTypes = React.createClass({
             <div className="Component">
                 <div className="sectionContainer">
                     <ITypeSwitcher
-                        types={this.props.types}
+                        types={this.state.types}
                         selectedTypeID={this.state.selectedTypeID}
                         onTypeChange={this.selectType}
                         onAddType={this.onAddType}

@@ -40,7 +40,7 @@ var App = React.createClass({
         });
         var thisApp = this;
         var newMeta = JSON.parse( JSON.stringify( this.state.meta));
-        newMeta.lastSaved = moment().format("LTS");
+        newMeta.lastSaved = moment().format();
         var writeData = {
             infos: this.state.infos,
             infoTypes: this.state.infoTypes,
@@ -289,6 +289,24 @@ var App = React.createClass({
 });
 
 var Status = React.createClass({
+    getInitialState: function() {
+        return {
+            showOverwriteWarning: false
+        };
+    },
+    componentWillReceiveProps: function(){
+        this.setState({showOverwriteWarning: false});
+    },
+    onSaveClick: function(){
+        if(this.props.lastLoadedStr === "never"){
+            this.setState({showOverwriteWarning: true});
+        }else{
+            this.props.onDbSave();
+        }
+    },
+    onCancelOverwrite: function(){
+        this.setState({showOverwriteWarning: false});
+    },
     render: function() {
         if(this.props.show) {
 //            var blob = new Blob([JSON.stringify(this.props.gData, null, '\t')], {type: "application/json"});
@@ -316,8 +334,27 @@ var Status = React.createClass({
             if( this.props.dropBoxStatus === "saving"){
                 lastSavedStr = "Last save: ...";
             }
+
+            var popupOverwrite = false;
+            if(this.state.showOverwriteWarning) {
+                var buttonContainer =
+                    <div className="flexContHoriz" >
+                        <button
+                            onClick={this.props.onDbSave}
+                            className="button buttonGood">Yes</button>
+                        <button
+                            onClick={this.onCancelOverwrite}
+                            className="button buttonGood">Oh god no</button>
+                    </div>;
+                popupOverwrite = <Popup
+                    text="You're about to save to your Dropbox without loading first. This will overwrite previous data in your Dropbox! Continue?"
+                    buttonContainer={buttonContainer}
+                />
+            }
+
             return (
                 <div className="Status Component">
+                    {popupOverwrite}
                     <div>Infos loaded: {this.props.dropBoxStatus === "loading"?"loading":this.props.infoCount}</div>
                     <div>Dropbox Status: {this.props.dropBoxStatus}</div>
                     <div>{lastSavedStr}</div>
@@ -330,10 +367,10 @@ var Status = React.createClass({
                             onClick={this.props.onDBAuth}>Log into Dropbox</button>
                         <button
                             className={loadButtonClassName}
-                            onClick={this.props.onDbLoad}>load from Dropbox</button>
+                            onClick={this.props.onDbLoad}>Load from Dropbox</button>
                         <button
                             className={saveButtonClassName}
-                            onClick={this.props.onDbSave}>save to Dropbox</button>
+                            onClick={this.onSaveClick}>Save to Dropbox</button>
                     </div>
                 </div>
             )
