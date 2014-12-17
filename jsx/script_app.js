@@ -92,7 +92,7 @@ var App = React.createClass({
                 infoTypes: sanitizedData.infoTypes,
                 ginseng_settings: sanitizedData.ginseng_settings,
                 meta: sanitizedData.meta,
-                lastLoadedStr: moment().format("LTS"),
+                lastLoadedStr: moment().format(),
                 dropBoxStatus: "loggedIn"
             });
         });
@@ -326,7 +326,13 @@ var Status = React.createClass({
             }
 
             var lastSavedStr = "Last save: "+ this.props.meta.lastSaved;
+            if(this.props.meta.lastSaved !== "never"){
+                lastSavedStr = "Last save: "+ moment(this.props.meta.lastSaved).fromNow();
+            }
             var lastLoadedStr = "Last load: "+ this.props.lastLoadedStr;
+            if(this.props.meta.lastSaved !== "never"){
+                lastLoadedStr = "Last load: "+ moment(this.props.lastLoadedStr).fromNow();
+            }
             if(this.props.dropBoxStatus === "loading" ){
                 lastSavedStr = "Last save: ...";
                 lastLoadedStr = "Last load: ...";

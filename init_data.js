@@ -115,7 +115,7 @@ var init_data = {
         },
         "meta": {
             "dataFormatVersion": "2014-12-17",
-            "lastSaved": "never (init)"
+            "lastSaved": "never"
         }
     }
     ;
