@@ -9,61 +9,91 @@ var App = React.createClass({
             infos: init_data.infos,
             infoTypes: init_data.infoTypes,
             ginseng_settings: init_data.settings,
+            meta: init_data.meta,
             activeMode: "status",
             selectedTypeID: false,
             selectedInfoIndex: 0,
-            dropBoxStatus: "off",
-            lastLoadedStr: "never",
-            lastSavedStr: "never"
+
+            conversionNote: false,
+            dropBoxStatus: "initial",
+            lastLoadedStr: "never"
         };
     },
     clickNav: function(mode) {
         this.setState({activeMode: mode});
     },
     authDB: function(){
+        this.setState({dropBoxStatus: "logging in..."});
         var thisApp = this;
         client.authenticate(function (error) {
             if (error) {
                 thisApp.setState({dropBoxStatus: "ERROR"});
             }
             else {
-                thisApp.setState({dropBoxStatus: "logged in!"});
+                thisApp.setState({dropBoxStatus: "loggedIn"});
             }
         });
     },
     saveDB: function(){
-        this.setState({lastSavedStr: "saving"});
+        this.setState({
+            dropBoxStatus: "saving"
+        });
         var thisApp = this;
+        var newMeta = JSON.parse( JSON.stringify( this.state.meta));
+        newMeta.lastSaved = moment().format("LTS");
         var writeData = {
             infos: this.state.infos,
             infoTypes: this.state.infoTypes,
-            settings: this.state.ginseng_settings
+            settings: this.state.ginseng_settings,
+            meta: newMeta
         };
         client.writeFile("ginseng_data.txt", JSON.stringify(writeData, null, '\t'), function(error, stat) {
             if (error) {
                 console.log("error: " + error);
             }
             else {
-                console.log("file saved with revision " + stat.versionTag);
                 thisApp.setState({
-                    lastSavedStr: moment().format("LTS")
+                    meta: newMeta,
+                    dropBoxStatus: "loggedIn",
+                    conversionNote: false
                 });
             }
         });
     },
+    loadJsonData: function(jsonData){
+        //this.setState({dropBoxStatus: "loading"});
+        var sanitizedData= {
+            infos: jsonData.infos,
+            infoTypes: jsonData.infoTypes,
+            ginseng_settings: jsonData.settings
+        };
+        if(!("meta" in jsonData)){
+            this.setState({conversionNote: "old data format from before 2014-12-17. Converted!"});
+            sanitizedData.meta = {
+                "dataFormatVersion": "2014-12-17",
+                "lastSaved": "never"
+            };
+        }else{
+            this.setState({conversionNote: false});
+            sanitizedData.meta = jsonData.meta;
+        }
+        return sanitizedData;
+    },
     loadDB: function() {
-        this.setState({lastLoadedStr: "loading"});
+        this.setState({dropBoxStatus: "loading"});
         var thisApp = this;
         client.readFile("ginseng_data.txt", function (error, data) {
             if (error) {
-                return showError(error);
+                console.log("ERROR: " + error);
             }
-            var js = JSON.parse(data);
+            var sanitizedData = thisApp.loadJsonData( JSON.parse(data) );
             thisApp.setState({
-                infos: js.infos,
-                infoTypes: js.infoTypes,
-                ginseng_settings: js.settings,
-                lastLoadedStr: moment().format("LTS")
+                infos: sanitizedData.infos,
+                infoTypes: sanitizedData.infoTypes,
+                ginseng_settings: sanitizedData.ginseng_settings,
+                meta: sanitizedData.meta,
+                lastLoadedStr: moment().format("LTS"),
+                dropBoxStatus: "loggedIn"
             });
         });
     },
@@ -244,9 +274,11 @@ var App = React.createClass({
                     dropBoxStatus={this.state.dropBoxStatus}
                     onDBAuth={this.authDB}
                     onDbSave={this.saveDB}
-                    lastSavedStr={this.state.lastSavedStr}
+                    meta={this.state.meta}
                     lastLoadedStr={this.state.lastLoadedStr}
-                    onDbLoad={this.loadDB}/>
+                    onDbLoad={this.loadDB}
+                    conversionNote={this.state.conversionNote}
+                />
                 {compEdit}
                 {compBrowser}
                 {compTypes}
@@ -266,27 +298,36 @@ var Status = React.createClass({
 
             var loadButtonClassName, saveButtonClassName;
             loadButtonClassName = saveButtonClassName = "button";
-            if(this.props.dropBoxStatus === "logged in!"){
-                loadButtonClassName += " invisible;";
-                saveButtonClassName += " invisible;"
-            }
-            if(this.props.lastLoadedStr === "loading"){
+            if(this.props.dropBoxStatus !== "loggedIn"){
                 loadButtonClassName += " disabled";
+                saveButtonClassName += " disabled"
             }
-            if(this.props.lastSavedStr === "loading"){
-                saveButtonClassName += " disabled";
+            var conversionNoteEl = false;
+            if(this.props.conversionNote){
+                conversionNoteEl = <div>{this.props.conversionNote}</div>
+            }
+
+            var lastSavedStr = "Last save: "+ this.props.meta.lastSaved;
+            var lastLoadedStr = "Last load: "+ this.props.lastLoadedStr;
+            if(this.props.dropBoxStatus === "loading" ){
+                lastSavedStr = "Last save: ...";
+                lastLoadedStr = "Last load: ...";
+            }
+            if( this.props.dropBoxStatus === "saving"){
+                lastSavedStr = "Last save: ...";
             }
             return (
                 <div className="Status Component">
-                    <div>Infos loaded: {this.props.lastLoadedStr === "loading"?"loading":this.props.infoCount}</div>
+                    <div>Infos loaded: {this.props.dropBoxStatus === "loading"?"loading":this.props.infoCount}</div>
                     <div>Dropbox Status: {this.props.dropBoxStatus}</div>
-                    <div>Last save: {this.props.lastSavedStr}</div>
-                    <div>Last load: {this.props.lastLoadedStr}</div>
+                    <div>{lastSavedStr}</div>
+                    <div>{lastLoadedStr}</div>
+                    {conversionNoteEl}
 
                     <div className={"flexContHoriz"}>
                         <button
-                            className={"button buttonGood "+(this.props.dropBoxStatus === "logged in!"?"disabled":"")}
-                            onClick={this.props.onDBAuth}>auth Dropbox</button>
+                            className={"button buttonGood "+(this.props.dropBoxStatus !== "initial"?"disabled":"")}
+                            onClick={this.props.onDBAuth}>Log into Dropbox</button>
                         <button
                             className={loadButtonClassName}
                             onClick={this.props.onDbLoad}>load from Dropbox</button>

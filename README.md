@@ -1,30 +1,34 @@
 # Ginseng
 
-Ginseng is a spaced repetition program/app. Like Anki, SuperMemo but different.
+Ginseng is a spaced repetition program/app. Like Anki or SuperMemo but different.
 - 100% in browser client-side Javascript
-- Data stored in JSON format, sync Dropbox
-- Repetition time can be freely chosen. Can be the classic spaced repetition way, or a fixed time intervals or anything you like
+- Data stored in JSON format, sync over Dropbox
+- Freedom over review intervals. Not strictly bound to "difficulty"
 - No fixed "deck" structure. Instead you can create filters that dynamically create reviews
-- native Markdown formatting and LaTeX support
+- native Markdown formatting and LaTeX support for content and templates
 
 ## Quickstart / Introduction
-What you want to learn/memorize is stored in an *info* which contains several *entries*. If you learn Spanish, an info could contain two entries with the english and spanish expressions.
+What you want to learn/memorize is stored in an *info* which contains several *entries*. If you learn Spanish, an info could contain two entries with the English and Spanish expressions.
 
 You then create a *view* on those infos, where each view can be thought of as a flashcard with a front and back side. In this case, the front could show the english word and vici versa.
 
-More than one view can be created from an info, for example if you want to test the reverse relation also. or any other template based on that info.
+More than one view can be created from an info, for example if you also want to test the reverse relation. Or you might want to include a note entry that gets displayed along.
 
-Views can be bound to a condition or filter so they only get generated when for example the information has a "reverse" tag.
+Views can be bound to a condition or filter so they only get generated when that condition is true. A typical example is the condition that the info has a "reverse" tag for generating a reverse template. The filter syntax is described below.
 
-The views are written in markdown code and you can access the info fields with curly braces. Example of a view-front:
+The views are written in markdown code and you can access the info fields with curly braces. Here's an (unncessary cluttered) example of a template front:
 ```
 This is my **front**:
 {front}
+
+And here's my notes: {notes}
 ```
+
+Infos have a type which defines the number of entries as well as the templates.
 
 ## Intervals
 
-### Selections
+## Selections
 There are no static "decks", but rather you can make a *selection* of views with this syntax:
 
 - Simple strings match info tags. So `tag: math` matches all views whose infos have a `math`tag.
@@ -41,8 +45,8 @@ There is no real android app, but the html should be very usable there.
 There is liberal use of HTML5 stuff, but the only part that isn't supported by android chrome is drag and drop, so you won't be able to rearrange your infotype fields on mobile. That's a pretty rare thing to do though, that cut feels reasonable.
 
 ## Philosophy / Goals
-This is designed to be as open and long-term as possible
-- All data is saved in a straightforward human-readable (and therefore hackable) JSON file.
-- The formatting is done markdown, which I think is better suited for this than full blown html
-- Dates/times are saved in ISO format. Time intervals are always calculated, never saved (no standard way)
-- Review ratings were abandoned in favor of just setting time intervals. Is Anki-like Interval modifier wanted?
+The App and the underlying data format are designed to be as open and robust as possible
+- All data is saved in a straightforward human-readable (and therefore hackable) JSON file
+- This means that syncing should be very easy to extend to other services like Google Drive, Firebase, MongoDB or really anything else
+- The formatting of the view entries and the templates is done Markdown with optional LaTeX. Currently [marked](https://github.com/chjj/marked) is used for Markdown and [KaTeX](https://github.com/Khan/KaTeX) for LaTeX converting.
+- Dates/times are saved in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)

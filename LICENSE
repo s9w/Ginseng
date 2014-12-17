@@ -1,0 +1,10 @@
+I don't know anything about software licenses. This software uses
+
+- React
+- moment.js
+- dropbox.js
+- KaTeX
+- marked
+- jsdiff
+
+All of those are under MIT or BSD linceses, so I think their use is OK. Please don't sue me.
