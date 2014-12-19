@@ -20,16 +20,6 @@ var Review = React.createClass({
         this.props.applyInterval(infoIndex, reviewKey, newInterval);
         this.setState({progressState: "frontSide"});
     },
-    getRenderedStr: function(str){
-        var latexStringBuffer = [];
-        var backStrNew = str.replace(/(\$.*?\$)/g, function(match, p1){
-            latexStringBuffer.push(p1.slice(1,-1));
-            return '$$';
-        });
-        return marked(backStrNew).replace(/\$\$/g, function(){
-            return katex.renderToString(latexStringBuffer.shift());
-        });
-    },
     gotoEdit: function(nextInfoIndex){
         this.props.gotoEdit(nextInfoIndex);
     },
@@ -74,6 +64,7 @@ var Review = React.createClass({
         var nextReview = {
             urgency: 1.0,
             infoIndex: 0,
+            info: false,
             viewID: 0,
             realInterval: 0
         };
@@ -97,6 +88,7 @@ var Review = React.createClass({
                     dueCount++;
                 if( urgency>nextReview.urgency ){
                     nextReview.urgency = urgency;
+                    nextReview.info = this.props.infos[infoIndex];
                     nextReview.infoIndex = infoIndex;
                     nextReview.viewID = viewID;
                     nextReview.realInterval = actualIntervalMs;
@@ -104,20 +96,7 @@ var Review = React.createClass({
             }
         }
 
-        var frontStr, backStr;
-        var thisReview = this;
         if (dueCount > 0) {
-            var nextTypeID = this.props.infos[nextReview.infoIndex].typeID;
-            frontStr = this.props.types[nextTypeID].views[nextReview.viewID].front.replace(
-                /{(\w*)}/g, function (match, p1) {
-                    return thisReview.props.infos[nextReview.infoIndex].fields[thisReview.props.types[nextTypeID].fieldNames.indexOf(p1)];
-                });
-
-            backStr = this.props.types[nextTypeID].views[nextReview.viewID].back.replace(
-                /{(\w*)}/g, function (match, p1) {
-                    return thisReview.props.infos[nextReview.infoIndex].fields[thisReview.props.types[nextTypeID].fieldNames.indexOf(p1)];
-                });
-
             return (
                 <div className="Review Component">
                     <div>
@@ -129,12 +108,12 @@ var Review = React.createClass({
                         <span>{"Due count: " + dueCount}</span>
                     </div>
 
-                    <div id="reviewStage">
-                        <div className="markdowned"
-                            dangerouslySetInnerHTML={{__html: this.getRenderedStr(frontStr)}}></div>
-                        <div className={"markdowned " + (this.state.progressState === "backSide" ? "" : "invisible")}
-                            dangerouslySetInnerHTML={{__html: this.getRenderedStr(backStr)}}></div>
-                    </div>
+                    <ReviewDisplay
+                        type={this.props.types[nextReview.info.typeID]}
+                        viewID={nextReview.viewID}
+                        info={nextReview.info}
+                        progressState={this.state.progressState}
+                    />
 
                     {flipButton}
                     <Intervaller
