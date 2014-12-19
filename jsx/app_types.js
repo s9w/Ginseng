@@ -83,7 +83,7 @@ var InfoTypes = React.createClass({
         newTypes[nextTypeID] = {
             "name": "new info type",
             "fieldNames": ["first field", "second field"],
-            "views": {
+            "templates": {
                 "0": {
                     "front": "{front}",
                     "back": "{back}",
@@ -131,7 +131,7 @@ var InfoTypes = React.createClass({
         var mainSection = [];
         if (this.state.mode !== "main") {
             mainSection =
-                <Views
+                <TemplateDetails
                     view={selectedType.views[this.state.mode]}
                     onViewChange={this.onViewChange}
                 />

@@ -50,7 +50,7 @@ var init_data = {
             "0": {
                 "name": "Front and back",
                 "fieldNames": ["front", "back"],
-                "views": {
+                "templates": {
                     "0": {
                         "front": "{front}",
                         "back": "{back}",
@@ -66,7 +66,7 @@ var init_data = {
             "1": {
                 "name": "Countries",
                 "fieldNames": ["Country", "Capital", "Language"],
-                "views": {
+                "templates": {
                     "0": {
                         "front": "Country: {Country}",
                         "back": "Capital: {Capital}",
