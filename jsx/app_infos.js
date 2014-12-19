@@ -11,7 +11,8 @@ var InfoEdit = React.createClass({
             infoNew = JSON.parse( JSON.stringify( this.props.info ));
         }
         return {
-            info: infoNew
+            info: infoNew,
+            previewID: false
         };
     },
     componentDidMount: function(){
@@ -83,6 +84,9 @@ var InfoEdit = React.createClass({
     editType: function(){
         this.props.editType(this.state.info.typeID)
     },
+    setPreview: function(newPreview){
+        this.setState({previewID: newPreview});
+    },
     render: function() {
         var data_elements = [];
         for (var fieldIdx = 0; fieldIdx < this.state.info.fields.length; ++fieldIdx) {
@@ -147,6 +151,33 @@ var InfoEdit = React.createClass({
             />
         }
 
+        var viewButtons = [];
+        viewButtons.push(
+            <button
+                key={"none"}
+                className={"flexElemContHoriz button " + (this.state.previewID ? "" : "buttonGood")}
+                onClick={this.setPreview.bind(this, false)}>{"None"}
+            </button>
+        );
+        for (var viewID in this.props.types[this.state.info.typeID].views) {
+            viewButtons.push(
+                <button
+                    key={viewID}
+                    className={"flexElemContHoriz button " + (this.state.previewID && this.state.previewID === viewID ? "buttonGood" : "")}
+                    onClick={this.setPreview.bind(this, viewID)}>{"View " + viewID}
+                </button>
+            );
+        }
+        var previewEl = false;
+        if(this.state.previewID){
+            previewEl = <ReviewDisplay
+                type={this.props.types[this.state.info.typeID]}
+                viewID={this.state.previewID}
+                info={this.state.info}
+                progressState="backSide"
+            />;
+        }
+
         return (
             <div className="InfoEdit Component">
                 <div className="sectionContainer">
@@ -165,8 +196,16 @@ var InfoEdit = React.createClass({
                             used: {usedTagEls}
                         </div>
                     </section>
-
                 </div>
+
+                <section>
+                    <h3>Preview</h3>
+                    <div className="sectionContent tabContainer">
+                        {viewButtons}
+                    </div>
+                </section>
+
+                {previewEl}
 
                 <div className="flexContHoriz">
                     <span
