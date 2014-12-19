@@ -12,10 +12,6 @@ a {
 html {
   font-family: proxima-nova,"Helvetica Neue",Helvetica,Roboto,Arial,sans-serif; }
 
-.sectionContainer {
-  display: flex;
-  flex-direction: column; }
-
 section {
   flex: 0 1 auto;
   /*margin: 5px 10px;*/
@@ -173,6 +169,18 @@ tbody > tr > td {
 .flexElem {
   flex: 0 1 auto; }
 
+button {
+  background: lightgray;
+  border: 0;
+  padding: 4px 6px;
+  cursor: pointer;
+  margin: 1px;
+  white-space: nowrap;
+  font-size: inherit;
+  text-align: center; }
+  button:hover {
+    outline: 2px solid #949494; }
+
 .button {
   background: lightgray;
   border: 0;
@@ -184,32 +192,38 @@ tbody > tr > td {
   text-align: center; }
   .button:hover {
     outline: 2px solid #949494; }
-  .button.interval0 {
-    background: #66CCFF; }
-    .button.interval0:hover {
-      outline: 2px solid #00a7fa; }
-  .button.interval1 {
-    background: #3399FF; }
-    .button.interval1:hover {
-      outline: 2px solid #006bd6; }
-  .button.buttonGood {
-    background: #6ac44a; }
-    .button.buttonGood:hover {
-      outline: 2px solid #478f2f; }
-  .button.buttonPlain {
-    background: #FFF; }
-    .button.buttonPlain:hover {
-      color: red;
-      outline: none; }
-  .button.buttonDanger {
-    background: #d9534f; }
-    .button.buttonDanger:hover {
-      outline: 2px solid #aa2925; }
-  .button.disabled {
-    color: graytext;
-    background: #e9e9e9;
-    cursor: default;
-    outline: 0 !important; }
+
+.buttonGood {
+  background: #6ac44a; }
+  .buttonGood:hover {
+    outline: 2px solid #478f2f; }
+
+.interval0 {
+  background: #66CCFF; }
+  .interval0:hover {
+    outline: 2px solid #00a7fa; }
+
+.interval1 {
+  background: #3399FF; }
+  .interval1:hover {
+    outline: 2px solid #006bd6; }
+
+.buttonPlain {
+  background: #FFF; }
+  .buttonPlain:hover {
+    color: red;
+    outline: none; }
+
+.buttonDanger {
+  background: #d9534f; }
+  .buttonDanger:hover {
+    outline: 2px solid #aa2925; }
+
+button:disabled {
+  color: graytext;
+  background: #e9e9e9;
+  cursor: default;
+  outline: 0 !important; }
 
 .buttonSelected {
   outline: 2px solid #000000; }
@@ -257,8 +271,5 @@ input, select, textarea {
 .tabContainer {
   display: flex;
   justify-content: flex-start; }
-
-.CombiButton > button {
-  margin: 0; }
 
 /*# sourceMappingURL=style.css.map */

@@ -70,13 +70,13 @@ var Review = React.createClass({
         };
         for (var infoIndex = 0; infoIndex < this.props.infos.length; ++infoIndex) {
             var info = this.props.infos[infoIndex];
-            for(var viewID in info.reviews){
-                if( !(this.filterInfo(this.props.types[info.typeID].views[viewID].condition, info))){
+            for(var templateID in info.reviews){
+                if( !(this.filterInfo(this.props.types[info.typeID].templates[templateID].condition, info))){
                     continue;
                 }
-                if(info.reviews[viewID].length > 0) {
-                    var lastDueTimeStr = info.reviews[viewID][info.reviews[viewID].length - 1].dueTime;
-                    var lastReviewTimeStr = info.reviews[viewID][info.reviews[viewID].length - 1].reviewTime;
+                if(info.reviews[templateID].length > 0) {
+                    var lastDueTimeStr = info.reviews[templateID][info.reviews[templateID].length - 1].dueTime;
+                    var lastReviewTimeStr = info.reviews[templateID][info.reviews[templateID].length - 1].reviewTime;
                     var plannedIntervalMs = moment(lastDueTimeStr).diff(moment(lastReviewTimeStr));
                     actualIntervalMs = moment().diff(moment(lastReviewTimeStr));
                     urgency = actualIntervalMs / plannedIntervalMs;
@@ -90,7 +90,7 @@ var Review = React.createClass({
                     nextReview.urgency = urgency;
                     nextReview.info = this.props.infos[infoIndex];
                     nextReview.infoIndex = infoIndex;
-                    nextReview.viewID = viewID;
+                    nextReview.viewID = templateID;
                     nextReview.realInterval = actualIntervalMs;
                 }
             }

@@ -145,9 +145,9 @@ var App = React.createClass({
                 if(new_infos[infoIdx].typeID === changes.typeResizes[resizeIdx].id){
                     var fieldNameIndex = changes.typeResizes[resizeIdx].fieldNameIndex;
                     if(fieldNameIndex === -1){
-                        new_infos[infoIdx].fields.push("");
+                        new_infos[infoIdx].entries.push("");
                     }else{
-                        new_infos[infoIdx].fields.splice(fieldNameIndex, 1);
+                        new_infos[infoIdx].entries.splice(fieldNameIndex, 1);
                     }
                 }
             }
@@ -309,36 +309,25 @@ var Status = React.createClass({
     },
     render: function() {
         if(this.props.show) {
-//            var blob = new Blob([JSON.stringify(this.props.gData, null, '\t')], {type: "application/json"});
-//            var url  = URL.createObjectURL(blob);
-////...
-//            <a download="ginseng.json" href={url}>download JSON</a>
-
-            var loadButtonClassName, saveButtonClassName;
-            loadButtonClassName = saveButtonClassName = "button";
-            if(this.props.dropBoxStatus !== "loggedIn"){
-                loadButtonClassName += " disabled";
-                saveButtonClassName += " disabled"
-            }
             var conversionNoteEl = false;
             if(this.props.conversionNote){
                 conversionNoteEl = <div>{this.props.conversionNote}</div>
             }
 
-            var lastSavedStr = "Last save: "+ this.props.meta.lastSaved;
+            var lastSavedStr  = this.props.meta.lastSaved;
+            var lastLoadedStr = this.props.lastLoadedStr;
             if(this.props.meta.lastSaved !== "never"){
-                lastSavedStr = "Last save: "+ moment(this.props.meta.lastSaved).fromNow();
+                lastSavedStr = moment(this.props.meta.lastSaved).fromNow();
             }
-            var lastLoadedStr = "Last load: "+ this.props.lastLoadedStr;
-            if(this.props.meta.lastSaved !== "never"){
-                lastLoadedStr = "Last load: "+ moment(this.props.lastLoadedStr).fromNow();
+            if(this.props.lastLoadedStr !== "never"){
+                lastLoadedStr = moment(this.props.lastLoadedStr).fromNow();
             }
             if(this.props.dropBoxStatus === "loading" ){
-                lastSavedStr = "Last save: ...";
-                lastLoadedStr = "Last load: ...";
+                lastSavedStr = "...";
+                lastLoadedStr = "...";
             }
             if( this.props.dropBoxStatus === "saving"){
-                lastSavedStr = "Last save: ...";
+                lastSavedStr = "...";
             }
 
             var popupOverwrite = false;
@@ -363,19 +352,20 @@ var Status = React.createClass({
                     {popupOverwrite}
                     <div>Infos loaded: {this.props.dropBoxStatus === "loading"?"loading":this.props.infoCount}</div>
                     <div>Dropbox Status: {this.props.dropBoxStatus}</div>
-                    <div>{lastSavedStr}</div>
-                    <div>{lastLoadedStr}</div>
+                    <div>{"Last save: " + lastSavedStr}</div>
+                    <div>{"Last load: " + lastLoadedStr}</div>
                     {conversionNoteEl}
 
                     <div className={"flexContHoriz"}>
                         <button
-                            className={"button buttonGood "+(this.props.dropBoxStatus !== "initial"?"disabled":"")}
+                            disabled={this.props.dropBoxStatus !== "initial"}
+                            className="buttonGood"
                             onClick={this.props.onDBAuth}>Log into Dropbox</button>
                         <button
-                            className={loadButtonClassName}
+                            disabled={this.props.dropBoxStatus !== "loggedIn"}
                             onClick={this.props.onDbLoad}>Load from Dropbox</button>
                         <button
-                            className={saveButtonClassName}
+                            disabled={this.props.dropBoxStatus !== "loggedIn"}
                             onClick={this.onSaveClick}>Save to Dropbox</button>
                     </div>
                 </div>

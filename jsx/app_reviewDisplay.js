@@ -19,14 +19,14 @@ var ReviewDisplay = React.createClass({
     },
     render: function(){
         var thisOuter = this;
-        var frontStr = this.props.type.views[this.props.viewID].front.replace(
+        var frontStr = this.props.type.templates[this.props.viewID].front.replace(
             /{(\w*)}/g, function (match, p1) {
-                return thisOuter.props.info.fields[thisOuter.props.type.fieldNames.indexOf(p1)];
+                return thisOuter.props.info.entries[thisOuter.props.type.entryNames.indexOf(p1)];
             });
 
-        var backStr = this.props.type.views[this.props.viewID].back.replace(
+        var backStr = this.props.type.templates[this.props.viewID].back.replace(
             /{(\w*)}/g, function (match, p1) {
-                return thisOuter.props.info.fields[thisOuter.props.type.fieldNames.indexOf(p1)];
+                return thisOuter.props.info.entries[thisOuter.props.type.entryNames.indexOf(p1)];
             });
         return(
             <div id="reviewStage">

@@ -18,10 +18,6 @@ html {
   font-family: proxima-nova,"Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
 }
 
-.sectionContainer {
-  display: flex;
-  flex-direction: column; }
-
 section{
   flex: 0 1 auto;
   /*margin: 5px 10px;*/
@@ -57,6 +53,7 @@ p{
 .sectionContentEl{
   flex: 1 1 auto;
 }
+
 .sectionContentElFixed{
   flex: 0 0  auto;
 }
@@ -146,9 +143,6 @@ p{
 //  display: flex;
 //  flex-direction: column;
 }
-
-
-
 
 $base-green: scale-color(#5cb83c, $lightness: 10%);
 table{
@@ -243,7 +237,7 @@ tbody>tr>td{
 }
 
 $danger-red: #d9534f;
-.button {
+button{
   //border: 2px solid transparent;
   @include hoverDark(lightgray);
   border: 0;
@@ -253,42 +247,51 @@ $danger-red: #d9534f;
   white-space: nowrap;
   font-size: inherit;
   text-align: center;
-//  button {
-//    border: 1px solid #ccc;
-//  }
-  &.interval0{
-    @include hoverDark(#66CCFF);
-  }
-  &.interval1{
-    @include hoverDark(#3399FF);
-  }
-  &.buttonGood{
-    @include hoverDark($base-green);
-  }
-  &.buttonPlain{
-    background: #FFF;
-    &:hover{
-      color: red;
-      outline: none;
-    }
-  }
-  &.buttonDanger{
-    @include hoverDark($danger-red);
-  }
-  &.disabled{
-    color: graytext;
-    background: scale-color(lightgray, $lightness: +50%);
-    cursor: default;
-    outline: 0 !important;
+}
+.button{
+  //border: 2px solid transparent;
+  @include hoverDark(lightgray);
+  border: 0;
+  padding: 4px 6px;
+  cursor: pointer;
+  margin: 1px;
+  white-space: nowrap;
+  font-size: inherit;
+  text-align: center;
+}
+.buttonGood{
+  @include hoverDark($base-green);
+}
+.interval0{
+  @include hoverDark(#66CCFF);
+}
+.interval1{
+  @include hoverDark(#3399FF);
+}
+.buttonPlain{
+  background: #FFF;
+  &:hover{
+    color: red;
+    outline: none;
   }
 }
+.buttonDanger{
+  @include hoverDark($danger-red);
+}
 
+button:disabled{
+  color: graytext;
+  background: scale-color(lightgray, $lightness: +50%);
+  cursor: default;
+  outline: 0 !important;
+}
 .buttonSelected{
   outline: 2px solid #000000;
   &:hover{
     background: $base-green;
   }
 }
+
 
 .popup{
   background: lightgray;
@@ -343,6 +346,3 @@ input, select, textarea{
   justify-content: flex-start;
 }
 
-.CombiButton > button{
-  margin: 0;
-}

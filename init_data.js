@@ -2,7 +2,7 @@ var init_data = {
         "infos": [
             {
                 "typeID": "0",
-                "fields": [
+                "entries": [
                     "Weihnachten",
                     "aa $\\rac a$ bb $x^2$"
                 ],
@@ -17,7 +17,7 @@ var init_data = {
             },
             {
                 "typeID": "0",
-                "fields": [
+                "entries": [
                     "Tree",
                     "Baum"
                 ],
@@ -32,7 +32,7 @@ var init_data = {
             },
             {
                 "typeID": "0",
-                "fields": [
+                "entries": [
                     "Standardnormalverteilung",
                     "$\\frac{1}{\\sqrt{2\\pi}}e^{-\\frac{x^2}{2}}$"
                 ],
@@ -49,7 +49,7 @@ var init_data = {
         "infoTypes": {
             "0": {
                 "name": "Front and back",
-                "fieldNames": ["front", "back"],
+                "entryNames": ["front", "back"],
                 "templates": {
                     "0": {
                         "front": "{front}",
@@ -65,7 +65,7 @@ var init_data = {
             },
             "1": {
                 "name": "Countries",
-                "fieldNames": ["Country", "Capital", "Language"],
+                "entryNames": ["Country", "Capital", "Language"],
                 "templates": {
                     "0": {
                         "front": "Country: {Country}",

@@ -60,16 +60,16 @@ var InfoBrowser = React.createClass({
         var sortedInfos = this.props.infos.sort(function(a, b){
             switch (thisBrowser.state.sortOrder) {
                 case "1":
-                    return a.fields[0].localeCompare(b.fields[0]);
+                    return a.entries[0].localeCompare(b.entries[0]);
                     break;
                 case "1r":
-                    return -(a.fields[0].localeCompare(b.fields[0]));
+                    return -(a.entries[0].localeCompare(b.entries[0]));
                     break;
                 case "2":
-                    return a.fields[1].localeCompare(b.fields[1]);
+                    return a.entries[1].localeCompare(b.entries[1]);
                     break;
                 case "2r":
-                    return -(a.fields[1].localeCompare(b.fields[1]));
+                    return -(a.entries[1].localeCompare(b.entries[1]));
                     break;
                 case "a":
                     return (moment(a.creationDate).isBefore(b.creationDate))?1:-1;
@@ -93,12 +93,12 @@ var InfoBrowser = React.createClass({
         }
         for (var i = 0; i < sortedInfos.length; ++i) {
             age = moment().diff(moment(sortedInfos[i].creationDate));
-            if( sortedInfos[i].fields[0].toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1 ||
-                sortedInfos[i].fields[1].toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1) {
+            if( sortedInfos[i].entries[0].toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1 ||
+                sortedInfos[i].entries[1].toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1) {
                 var ds=[];
                 thData = [
-                    sortedInfos[i].fields[0],
-                    sortedInfos[i].fields[1],
+                    sortedInfos[i].entries[0],
+                    sortedInfos[i].entries[1],
                     this.props.types[sortedInfos[i].typeID].name,
                     sortedInfos[i].tags.join(", "),
                     getShortPreciseIntervalStr(age)

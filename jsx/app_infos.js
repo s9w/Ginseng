@@ -16,12 +16,14 @@ var InfoEdit = React.createClass({
         };
     },
     componentDidMount: function(){
+        console.log(" xa");
         // Only focus first text field with new infos. Otherwise confusing/unwanted, especially on mobile
         if(!("info" in this.props)) {
             this.refs.firstTextbox.getDOMNode().focus();
         }
     },
     componentWillReceiveProps: function(nextProps){
+        console.log(" xb");
         // Should always be "new"
         if(!("info" in nextProps)){
             var firstTypeID = "0";
@@ -33,13 +35,13 @@ var InfoEdit = React.createClass({
     },
     getNewInfo: function(typeID){
         var infoNew = {typeID: typeID};
-        var fields = [];
+        var entries = [];
         var reviews = {};
-        for (var i = 0; i < this.props.types[typeID].fieldNames.length; ++i) {
-            fields.push("");
+        for (var i = 0; i < this.props.types[typeID].entryNames.length; ++i) {
+            entries.push("");
             reviews[i] = [];
         }
-        infoNew.fields = fields;
+        infoNew.entries = entries;
         infoNew.reviews = reviews;
         infoNew.tags = [];
         infoNew.creationDate = moment().format();
@@ -48,20 +50,20 @@ var InfoEdit = React.createClass({
     onTypeChange: function(newTypeID){
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
         newInfo.typeID = newTypeID;
-        var newFieldsLength = this.props.types[newTypeID].fieldNames.length;
-        var sizeDiff = newFieldsLength - this.state.info.fields.length;
+        var newEntriesLength = this.props.types[newTypeID].entryNames.length;
+        var sizeDiff = newEntriesLength - this.state.info.entries.length;
         if( sizeDiff > 0 ){
             for(var i=0; i<sizeDiff; i++){
-                newInfo.fields.push("");
+                newInfo.entries.push("");
             }
         } else if(sizeDiff < 0){
-            newInfo.fields = newInfo.fields.slice(0, newFieldsLength);
+            newInfo.entries = newInfo.entries.slice(0, newEntriesLength);
         }
         this.setState({info: newInfo});
     },
     onFieldEdit: function(fieldIndex, e) {
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
-        newInfo.fields[fieldIndex] = e.target.value;
+        newInfo.entries[fieldIndex] = e.target.value;
         this.setState( {info: newInfo} );
     },
     onTagsEdit: function(event) {
@@ -88,50 +90,7 @@ var InfoEdit = React.createClass({
         this.setState({previewID: newPreview});
     },
     render: function() {
-        var data_elements = [];
-        for (var fieldIdx = 0; fieldIdx < this.state.info.fields.length; ++fieldIdx) {
-            var element_name = this.props.types[this.state.info.typeID].fieldNames[fieldIdx];
-            var refString = false;
-            if(fieldIdx===0){
-                refString = "firstTextbox";
-            }
-            data_elements.push(
-                <section key={fieldIdx}>
-                    <h3>Entry: {element_name}</h3>
-                    <textarea
-                        className="sectionContent"
-                        ref={refString}
-                        value={this.state.info.fields[fieldIdx]}
-                        onChange={this.onFieldEdit.bind(this, fieldIdx)}
-                        rows={(this.state.info.fields[fieldIdx].match(/\n/g) || []).length+1}
-                    />
-                </section>
-            );
-        }
-
-        // used Tags
-        var usedTagEls = [];
-        var seperator;
-        for (var index = 0; index < this.props.usedTags.length; ++index) {
-            if( this.state.info.tags.indexOf(this.props.usedTags[index]) === -1 ){
-                if(usedTagEls.length===0)
-                    seperator = "";
-                else
-                    seperator = ", ";
-                usedTagEls.push(
-                    <a key={index} onClick={this.addUsedTag.bind(this, this.props.usedTags[index])} href="#">{seperator+this.props.usedTags[index]}</a>
-                );
-            }
-        }
-
-        var isChanged = JSON.stringify(this.props.info)===JSON.stringify(this.state.info);
-
-        var deleteButton = false, saveButtonStr = "add";
-        if("onDelete" in this.props){
-            deleteButton = <span className="button buttonDanger" onClick={this.props.onDelete}>Delete</span>;
-            saveButtonStr = "save";
-        }
-
+        // Typename
         var infoTypeSection;
         if("info" in this.props){ //edit
             infoTypeSection =
@@ -151,20 +110,66 @@ var InfoEdit = React.createClass({
             />
         }
 
-        var viewButtons = [];
-        viewButtons.push(
+        // the entries
+        var entrySections = [];
+        for (var entryIdx = 0; entryIdx < this.state.info.entries.length; ++entryIdx) {
+            var element_name = this.props.types[this.state.info.typeID].entryNames[entryIdx];
+            var refString = false;
+            if(entryIdx===0){
+                refString = "firstTextbox";
+            }
+            entrySections.push(
+                <section key={entryIdx}>
+                    <h3>Entry: {element_name}</h3>
+                    <textarea
+                        className="sectionContent"
+                        ref={refString}
+                        value={this.state.info.entries[entryIdx]}
+                        onChange={this.onFieldEdit.bind(this, entryIdx)}
+                        rows={(this.state.info.entries[entryIdx].match(/\n/g) || []).length+1}
+                    />
+                </section>
+            );
+        }
+
+        // used Tags
+        var usedTagEls = [];
+        var seperator;
+        for (var index = 0; index < this.props.usedTags.length; ++index) {
+            if( this.state.info.tags.indexOf(this.props.usedTags[index]) === -1 ){
+                if(usedTagEls.length===0)
+                    seperator = "";
+                else
+                    seperator = ", ";
+                usedTagEls.push(
+                    <a key={index}
+                        onClick={this.addUsedTag.bind(this, this.props.usedTags[index])}
+                        href="#">{seperator + this.props.usedTags[index]}</a>
+                );
+            }
+        }
+
+        var deleteButton = false;
+        var saveButtonStr = "add";
+        if("onDelete" in this.props){
+            deleteButton = <button className="buttonDanger" onClick={this.props.onDelete}>Delete</button>;
+            saveButtonStr = "save";
+        }
+
+        var templateButtons = [];
+        templateButtons.push(
             <button
                 key={"none"}
                 className={"flexElemContHoriz button " + (this.state.previewID ? "" : "buttonGood")}
                 onClick={this.setPreview.bind(this, false)}>{"None"}
             </button>
         );
-        for (var viewID in this.props.types[this.state.info.typeID].views) {
-            viewButtons.push(
+        for (var templateID in this.props.types[this.state.info.typeID].templates) {
+            templateButtons.push(
                 <button
-                    key={viewID}
-                    className={"flexElemContHoriz button " + (this.state.previewID && this.state.previewID === viewID ? "buttonGood" : "")}
-                    onClick={this.setPreview.bind(this, viewID)}>{"View " + viewID}
+                    key={templateID}
+                    className={"flexElemContHoriz button " + (this.state.previewID && this.state.previewID === templateID ? "buttonGood" : "")}
+                    onClick={this.setPreview.bind(this, templateID)}>{"Template " + templateID}
                 </button>
             );
         }
@@ -178,41 +183,41 @@ var InfoEdit = React.createClass({
             />;
         }
 
+        var isChanged = JSON.stringify(this.props.info)!==JSON.stringify(this.state.info);
+
         return (
             <div className="InfoEdit Component">
-                <div className="sectionContainer">
-                    {infoTypeSection}
-                    {data_elements}
-                    <section>
-                        <h3>Tags</h3>
-                        <textarea
-                            className="sectionContent"
-                            rows={1}
-                            type="text"
-                            value={this.state.info.tags.join(", ")}
-                            onChange={this.onTagsEdit}
-                        />
-                        <div className="sectionContent">
-                            used: {usedTagEls}
-                        </div>
-                    </section>
-                </div>
+                {infoTypeSection}
+                {entrySections}
+                <section>
+                    <h3>Tags</h3>
+                    <textarea
+                        className="sectionContent"
+                        rows={1}
+                        type="text"
+                        value={this.state.info.tags.join(", ")}
+                        onChange={this.onTagsEdit}
+                    />
+                    <div className="sectionContent">
+                        used: {usedTagEls}
+                    </div>
+                </section>
 
                 <section>
                     <h3>Preview</h3>
                     <div className="sectionContent tabContainer">
-                        {viewButtons}
+                        {templateButtons}
                     </div>
                 </section>
 
                 {previewEl}
 
                 <div className="flexContHoriz">
-                    <span
-                        className={"button buttonGood "+ (isChanged?"disabled":"")}
-                        onClick={this.onSave}>{saveButtonStr}
-                    </span>
-                    <span className="button" onClick={this.props.cancelEdit}>Cancel</span>
+                    <button
+                        disabled={!isChanged}
+                        className="buttonGood"
+                        onClick={this.onSave}>{saveButtonStr}</button>
+                    <button onClick={this.props.cancelEdit}>Cancel</button>
                     {deleteButton}
                 </div>
             </div>);
