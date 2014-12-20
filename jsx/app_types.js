@@ -174,7 +174,7 @@ var InfoTypes = React.createClass({
                 <button
                     key={templateID}
                     className={"flexElemContHoriz button "+(this.state.mode===templateID?"buttonGood":"")}
-                    onClick={this.setMode.bind(this, templateID)}>{"View "+templateID}
+                    onClick={this.setMode.bind(this, templateID)}>{"Template "+templateID}
                 </button>
             );
         }

@@ -12,16 +12,16 @@ var InfoEdit = React.createClass({
         }
         return {
             info: infoNew,
-            previewID: false
+            previewID: false,
+            scrollHeights: {}
         };
     },
-    componentDidMount: function(){
-        console.log(" xa");
+    //componentDidMount: function(){
         // Only focus first text field with new infos. Otherwise confusing/unwanted, especially on mobile
-        if(!("info" in this.props)) {
-            this.refs.firstTextbox.getDOMNode().focus();
-        }
-    },
+        //if(!("info" in this.props)) {
+        //    this.refs.firstTextbox.getDOMNode().focus();
+        //}
+    //},
     componentWillReceiveProps: function(nextProps){
         console.log(" xb");
         // Should always be "new"
@@ -61,10 +61,15 @@ var InfoEdit = React.createClass({
         }
         this.setState({info: newInfo});
     },
-    onFieldEdit: function(fieldIndex, e) {
+    onEntryEdit: function(entryIndex, event) {
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
-        newInfo.entries[fieldIndex] = e.target.value;
-        this.setState( {info: newInfo} );
+        var scrollHeights = JSON.parse( JSON.stringify( this.state.scrollHeights ));
+        scrollHeights[entryIndex] = this.refs[entryIndex].getDOMNode().scrollHeight;
+        newInfo.entries[entryIndex] = event.target.value;
+        this.setState({
+            info: newInfo,
+            scrollHeights: scrollHeights
+        });
     },
     onTagsEdit: function(event) {
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
@@ -114,21 +119,20 @@ var InfoEdit = React.createClass({
         var entrySections = [];
         for (var entryIdx = 0; entryIdx < this.state.info.entries.length; ++entryIdx) {
             var element_name = this.props.types[this.state.info.typeID].entryNames[entryIdx];
-            var refString = false;
-            if(entryIdx===0){
-                refString = "firstTextbox";
+            var ss = {"overflow": "hidden"};
+            if(entryIdx in this.state.scrollHeights){
+                ss = {"overflow": "hidden", "height": this.state.scrollHeights[entryIdx]-4+"px"}
             }
             entrySections.push(
-                <section key={entryIdx}>
-                    <h3>Entry: {element_name}</h3>
-                    <textarea
-                        className="sectionContent"
-                        ref={refString}
-                        value={this.state.info.entries[entryIdx]}
-                        onChange={this.onFieldEdit.bind(this, entryIdx)}
-                        rows={(this.state.info.entries[entryIdx].match(/\n/g) || []).length+1}
-                    />
-                </section>
+                <textarea
+                    key={entryIdx}
+                    value = {this.state.info.entries[entryIdx]}
+                    placeholder={element_name}
+                    className= "sectionContent"
+                    style={ss}
+                    onChange={this.onEntryEdit.bind(this, entryIdx)}
+                    ref={entryIdx}
+                />
             );
         }
 
@@ -188,7 +192,11 @@ var InfoEdit = React.createClass({
         return (
             <div className="InfoEdit Component">
                 {infoTypeSection}
-                {entrySections}
+                <section>
+                    <h3>Entries</h3>
+                    {entrySections}
+                </section>
+
                 <section>
                     <h3>Tags</h3>
                     <textarea
