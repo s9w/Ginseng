@@ -104,11 +104,16 @@ var InfoEdit = React.createClass({
                     <span className="sectionContent">{this.props.types[this.state.info.typeID].name}</span>
                 </section>;
         }else{ // new
-            infoTypeSection = <ITypeSwitcher
-                types={this.props.types}
-                selectedTypeID={this.state.info.typeID}
-                onTypeChange={this.onTypeChange}
-            />
+            infoTypeSection =
+                <section>
+                    <h3>Info Type</h3>
+                    <ITypeSwitcher
+                        className="sectionContent"
+                        types={this.props.types}
+                        selectedTypeID={this.state.info.typeID}
+                        onTypeChange={this.onTypeChange}
+                    />
+                </section>;
         }
 
         // the entries
@@ -246,14 +251,10 @@ var ITypeSwitcher = React.createClass({
         var typeNameOptions = [];
         for(var typeID in this.props.types){
             typeNameOptions.push(
-                <div
+                <button
                     key={typeID}
-                    style={{margin: "1px"}}
-                    className="CombiButton">
-                    <button
-                        className={"button"+(this.props.selectedTypeID===typeID?" buttonGood":"")}
-                        onClick={this.onTypeChange.bind(this, typeID)}>{this.props.types[typeID].name}</button>
-                </div>
+                    className={"button"+(this.props.selectedTypeID===typeID?" buttonGood":"")}
+                    onClick={this.onTypeChange.bind(this, typeID)}>{this.props.types[typeID].name}</button>
             );
         }
         if(this.props.onAddType) {

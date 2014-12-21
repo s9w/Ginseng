@@ -182,12 +182,16 @@ var InfoTypes = React.createClass({
         var isChanged = JSON.stringify(this.props.types)!==JSON.stringify(this.state.types);
         return (
             <div className="Component">
-                <ITypeSwitcher
-                    types={this.state.types}
-                    selectedTypeID={this.state.selectedTypeID}
-                    onTypeChange={this.selectType}
-                    onAddType={this.onAddType}
-                />
+                <section>
+                    <h3>Info Type</h3>
+                    <ITypeSwitcher
+                        className="sectionContent"
+                        types={this.state.types}
+                        selectedTypeID={this.state.selectedTypeID}
+                        onTypeChange={this.selectType}
+                        onAddType={this.onAddType}
+                    />
+                </section>
 
                 <section className="sectionContent tabContainer">
                     <button

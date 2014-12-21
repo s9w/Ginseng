@@ -144,7 +144,7 @@ var App = React.createClass({
             for (var resizeIdx = 0; resizeIdx < changes.typeResizes.length; ++resizeIdx) {
                 if(new_infos[infoIdx].typeID === changes.typeResizes[resizeIdx].id){
                     var fieldNameIndex = changes.typeResizes[resizeIdx].fieldNameIndex;
-                    if(fieldNameIndex === -1){
+                    if(fieldNameIndex === "add"){
                         new_infos[infoIdx].entries.push("");
                     }else{
                         new_infos[infoIdx].entries.splice(fieldNameIndex, 1);
