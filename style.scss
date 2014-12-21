@@ -247,27 +247,34 @@ button{
   white-space: nowrap;
   font-size: inherit;
   text-align: center;
-}
-.button{
-  //border: 2px solid transparent;
-  @include hoverDark(lightgray);
-  border: 0;
-  padding: 4px 6px;
-  cursor: pointer;
-  margin: 1px;
-  white-space: nowrap;
-  font-size: inherit;
-  text-align: center;
+  @media (max-device-width: 400px) {
+    min-width: 50px;
+    min-height: 30px;
+    margin-bottom: 5px;
+  }
 }
 .buttonGood{
   @include hoverDark($base-green);
 }
-.interval0{
-  @include hoverDark(#66CCFF);
+
+$intervalRed: #FF3300;
+$intervalYellow: #d0d000;
+.intervalMinutes{
+  @include hoverDark(mix($intervalRed, $intervalYellow, 100%));
 }
-.interval1{
-  @include hoverDark(#3399FF);
+.intervalHours{
+  @include hoverDark(mix($intervalRed, $intervalYellow, 75%));
 }
+.intervalDays{
+  @include hoverDark(mix($intervalRed, $intervalYellow, 50%));
+}
+.intervalWeeks{
+  @include hoverDark(mix($intervalRed, $intervalYellow, 25%));
+}
+.intervalMonths{
+  @include hoverDark(mix($intervalRed, $intervalYellow, 0%));
+}
+
 .buttonPlain{
   background: #FFF;
   &:hover{
@@ -310,7 +317,6 @@ button:disabled{
   padding: 0;
   margin-bottom: 0;
   margin-top: 0;
-  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -326,7 +332,6 @@ input, select, textarea{
   font-size: inherit;
   border: 1px solid #ccc;
   font-family: inherit;
-  border-radius: 4px;
 }
 
 @media (max-device-width: 400px)  {

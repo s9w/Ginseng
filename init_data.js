@@ -85,6 +85,16 @@ var init_data = {
                 }
             }
         },
+        "reviewModes":{
+            "0":{
+                "name": "All",
+                "condition": ""
+            },
+            "1":{
+                "name": "Uni",
+                "condition": "tag: math, tag: physik"
+            }
+        },
         "settings": {
             "lastInfoType": "Front and back",
             "timeIntervalChoices": {

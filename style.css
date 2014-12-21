@@ -180,33 +180,41 @@ button {
   text-align: center; }
   button:hover {
     outline: 2px solid #949494; }
-
-.button {
-  background: lightgray;
-  border: 0;
-  padding: 4px 6px;
-  cursor: pointer;
-  margin: 1px;
-  white-space: nowrap;
-  font-size: inherit;
-  text-align: center; }
-  .button:hover {
-    outline: 2px solid #949494; }
+  @media (max-device-width: 400px) {
+    button {
+      min-width: 50px;
+      min-height: 30px;
+      margin-bottom: 5px; } }
 
 .buttonGood {
   background: #6ac44a; }
   .buttonGood:hover {
     outline: 2px solid #478f2f; }
 
-.interval0 {
-  background: #66CCFF; }
-  .interval0:hover {
-    outline: 2px solid #00a7fa; }
+.intervalMinutes {
+  background: #ff3300; }
+  .intervalMinutes:hover {
+    outline: 2px solid #b32400; }
 
-.interval1 {
-  background: #3399FF; }
-  .interval1:hover {
-    outline: 2px solid #006bd6; }
+.intervalHours {
+  background: #f35a00; }
+  .intervalHours:hover {
+    outline: 2px solid #aa3f00; }
+
+.intervalDays {
+  background: #e78100; }
+  .intervalDays:hover {
+    outline: 2px solid #a25a00; }
+
+.intervalWeeks {
+  background: #dba800; }
+  .intervalWeeks:hover {
+    outline: 2px solid #997600; }
+
+.intervalMonths {
+  background: #d0d000; }
+  .intervalMonths:hover {
+    outline: 2px solid #929200; }
 
 .buttonPlain {
   background: #FFF; }
@@ -244,7 +252,6 @@ button:disabled {
   padding: 0;
   margin-bottom: 0;
   margin-top: 0;
-  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center; }
@@ -257,8 +264,7 @@ button:disabled {
 input, select, textarea {
   font-size: inherit;
   border: 1px solid #ccc;
-  font-family: inherit;
-  border-radius: 4px; }
+  font-family: inherit; }
 
 @media (max-device-width: 400px) {
   input, textarea {
