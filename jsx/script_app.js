@@ -41,8 +41,16 @@ var App = React.createClass({
         var thisApp = this;
         var newMeta = JSON.parse( JSON.stringify( this.state.meta));
         newMeta.lastSaved = moment().format();
+        var writeInfos = JSON.parse( JSON.stringify( this.state.infos));
+        for(var i=0; i<writeInfos.length; i++){
+            var info = writeInfos[i];
+            for(var reviewKey in info.reviews)
+            if(info.reviews[reviewKey].length > this.state.ginseng_settings.reviewHistoryLength){
+                info.reviews[reviewKey] = info.reviews[reviewKey].slice(-2);
+            }
+        }
         var writeData = {
-            infos: this.state.infos,
+            infos: writeInfos,
             infoTypes: this.state.infoTypes,
             settings: this.state.ginseng_settings,
             meta: newMeta

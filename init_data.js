@@ -121,7 +121,8 @@ var init_data = {
                     20,
                     30
                 ]
-            }
+            },
+            "reviewHistoryLength": 2
         },
         "meta": {
             "dataFormatVersion": "2014-12-17",

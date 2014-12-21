@@ -16,14 +16,13 @@ var InfoEdit = React.createClass({
             scrollHeights: {}
         };
     },
-    //componentDidMount: function(){
-        // Only focus first text field with new infos. Otherwise confusing/unwanted, especially on mobile
-        //if(!("info" in this.props)) {
-        //    this.refs.firstTextbox.getDOMNode().focus();
-        //}
-    //},
+    componentDidMount: function(){
+        //Only focus first text field with new infos. Otherwise confusing/unwanted, especially on mobile
+        if(!("info" in this.props)) {
+            this.refs[0].getDOMNode().focus();
+        }
+    },
     componentWillReceiveProps: function(nextProps){
-        console.log(" xb");
         // Should always be "new"
         if(!("info" in nextProps)){
             var firstTypeID = "0";
