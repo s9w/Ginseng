@@ -101,11 +101,7 @@ var InfoEdit = React.createClass({
             infoTypeSection =
                 <section>
                     <h3>Info Type</h3>
-                    <div className="sectionContent">
-                        <a
-                            onClick={this.editType}
-                            href="#">{this.props.types[this.state.info.typeID].name}</a>
-                    </div>
+                    <span className="sectionContent">{this.props.types[this.state.info.typeID].name}</span>
                 </section>;
         }else{ // new
             infoTypeSection = <ITypeSwitcher
@@ -118,7 +114,6 @@ var InfoEdit = React.createClass({
         // the entries
         var entrySections = [];
         for (var entryIdx = 0; entryIdx < this.state.info.entries.length; ++entryIdx) {
-            var element_name = this.props.types[this.state.info.typeID].entryNames[entryIdx];
             var ss = {"overflow": "hidden"};
             if(entryIdx in this.state.scrollHeights){
                 ss = {"overflow": "hidden", "height": this.state.scrollHeights[entryIdx]-4+"px"}
@@ -127,7 +122,7 @@ var InfoEdit = React.createClass({
                 <textarea
                     key={entryIdx}
                     value = {this.state.info.entries[entryIdx]}
-                    placeholder={element_name}
+                    placeholder={this.props.types[this.state.info.typeID].entryNames[entryIdx]}
                     className= "sectionContent"
                     style={ss}
                     onChange={this.onEntryEdit.bind(this, entryIdx)}
@@ -271,11 +266,9 @@ var ITypeSwitcher = React.createClass({
         }
 
         return (
-            <section>
-                <h3>Info type</h3>
-                <div className="sectionContent wrap">
-                    {typeNameOptions}
-                </div>
-            </section>);
+            <div className="sectionContent wrap">
+                {typeNameOptions}
+            </div>
+        );
     }
 });

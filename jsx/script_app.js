@@ -257,7 +257,7 @@ var App = React.createClass({
                         className={this.state.activeMode == "status" ? "active" : "inactive"}
                         onClick={this.clickNav.bind(this, "status")}>Status
                     </div>
-                    <div className={this.state.activeMode === "browse" ? "active" : "inactive" }
+                    <div className={["browse", "new", "edit"].indexOf(this.state.activeMode)!==-1 ? "active" : "inactive" }
                         onClick={this.clickNav.bind(this, "browse")}>Infos
                     </div>
                     <div className={this.state.activeMode == "types" ? "active" : "inactive"}
