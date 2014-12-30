@@ -1,10 +1,10 @@
 var Review = React.createClass({
-    getInitialState: function() {
+    getInitialState() {
         return {
             progressState: "frontSide"
         };
     },
-    componentDidMount: function(){
+    componentDidMount(){
         if("flipButton" in this.refs)
             this.refs.flipButton.getDOMNode().focus();
     },
@@ -12,18 +12,14 @@ var Review = React.createClass({
         if(this.state.progressState === "frontSide" && "flipButton" in this.refs)
             this.refs.flipButton.getDOMNode().focus();
     },
-    flip: function(){
+    flip(){
         this.setState({progressState: "backSide"});
-
     },
-    applyInterval: function(infoIndex, reviewKey, newInterval){
+    applyInterval(infoIndex, reviewKey, newInterval){
         this.props.applyInterval(infoIndex, reviewKey, newInterval);
         this.setState({progressState: "frontSide"});
     },
-    gotoEdit: function(nextInfoIndex){
-        this.props.gotoEdit(nextInfoIndex);
-    },
-    filterInfo: function(filterStr, info){
+    filterInfo(filterStr, info){
         if(filterStr===""){
             return true
         }
@@ -43,7 +39,7 @@ var Review = React.createClass({
         }
         return true;
     },
-    render: function() {
+    render() {
         // flip button
         var flipButton= false;
         if(this.state.progressState === "frontSide")
@@ -103,7 +99,7 @@ var Review = React.createClass({
                         <button
                             className="button"
                             tabIndex="2"
-                            onClick={this.gotoEdit.bind(this, nextReview.infoIndex)}
+                            onClick={this.props.gotoEdit.bind(null, nextReview.infoIndex)}
                         >Edit Info</button>
                         <span>{"Due count: " + dueCount}</span>
                     </div>

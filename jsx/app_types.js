@@ -1,5 +1,5 @@
 var InfoTypes = React.createClass({
-    getInitialState: function() {
+    getInitialState() {
         var chosenTypeID = 0;
         while(!(chosenTypeID in this.props.types)){
             chosenTypeID++;
@@ -17,7 +17,7 @@ var InfoTypes = React.createClass({
             mode: "main"
         };
     },
-    onFieldNameEdit: function(fieldNameIndex, event) {
+    onFieldNameEdit(fieldNameIndex, event) {
         var newTypes = JSON.parse( JSON.stringify( this.state.types ));
         newTypes[this.state.selectedTypeID].entryNames[fieldNameIndex] = event.target.value;
         var newchanges = JSON.parse( JSON.stringify( this.state.changes ));
@@ -27,13 +27,13 @@ var InfoTypes = React.createClass({
             changes: newchanges
         });
     },
-    selectType: function(newID){
+    selectType(newID){
         this.setState({
             selectedTypeID: newID,
             mode: "main"
         });
     },
-    onNameEdit: function(event) {
+    onNameEdit(event) {
         var newTypes = JSON.parse( JSON.stringify( this.state.types ));
         newTypes[this.state.selectedTypeID].name = event.target.value;
         var newchanges = JSON.parse( JSON.stringify( this.state.changes ));
@@ -43,7 +43,7 @@ var InfoTypes = React.createClass({
             changes: newchanges
         });
     },
-    onFieldsResize: function(fieldNameIndex){
+    onFieldsResize(fieldNameIndex){
         // resize the type
         var newTypes = JSON.parse( JSON.stringify( this.state.types ));
         if(fieldNameIndex === "add"){
@@ -61,15 +61,12 @@ var InfoTypes = React.createClass({
             changes: newchanges
         });
     },
-    onSave: function(){
-        this.props.onSave(this.state.types, this.state.changes);
-    },
     componentDidUpdate : function(){
         if(this.state.types[this.state.selectedTypeID].name === "new info type"){
             this.refs.nameRef.getDOMNode().focus();
         }
     },
-    onAddType: function(){
+    onAddType(){
         var newTypes = JSON.parse( JSON.stringify( this.state.types ));
         // get next type ID
         var nextTypeID = "0";
@@ -101,15 +98,16 @@ var InfoTypes = React.createClass({
             selectedTypeID: nextTypeID
         });
     },
-    setMode: function(modeStr){
+    setMode(modeStr){
         this.setState({mode: modeStr});
     },
-    onViewChange: function(type, newContent){
+    onViewChange(type, newContent){
         var newTypes = JSON.parse( JSON.stringify( this.state.types ));
         newTypes[this.state.selectedTypeID].templates[this.state.mode][type] = newContent;
         this.setState({types: newTypes});
     },
-    render: function() {
+    render() {
+        console.log("render types");
         var selectedType = this.state.types[this.state.selectedTypeID];
 
         // render the typenames
@@ -207,7 +205,7 @@ var InfoTypes = React.createClass({
                     <button
                         disabled={!isChanged}
                         className="flexElemContHoriz buttonGood"
-                        onClick={this.onSave}>Save
+                        onClick={this.props.onSave.bind(null, this.state.types, this.state.changes)}>Save
                     </button>
                     <button className="flexElemContHoriz" onClick={this.props.cancelEdit}>Cancel</button>
                 </section>

@@ -4,7 +4,7 @@ client.authDriver(new Dropbox.AuthDriver.Popup({receiverUrl: "https://leastactio
 
 
 var App = React.createClass({
-    getInitialState: function() {
+    getInitialState() {
         return {
             infos: init_data.infos,
             infoTypes: init_data.infoTypes,
@@ -19,10 +19,10 @@ var App = React.createClass({
             lastLoadedStr: "never"
         };
     },
-    clickNav: function(mode) {
+    clickNav(mode) {
         this.setState({activeMode: mode});
     },
-    authDB: function(){
+    authDB(){
         this.setState({dropBoxStatus: "logging in..."});
         var thisApp = this;
         client.authenticate(function (error) {
@@ -34,7 +34,7 @@ var App = React.createClass({
             }
         });
     },
-    saveDB: function(){
+    saveDB(){
         this.setState({
             dropBoxStatus: "saving"
         });
@@ -68,7 +68,7 @@ var App = React.createClass({
             }
         });
     },
-    loadJsonData: function(jsonData){
+    loadJsonData(jsonData){
         //this.setState({dropBoxStatus: "loading"});
         var sanitizedData= {
             infos: jsonData.infos,
@@ -87,7 +87,7 @@ var App = React.createClass({
         }
         return sanitizedData;
     },
-    loadDB: function() {
+    loadDB() {
         this.setState({dropBoxStatus: "loading"});
         var thisApp = this;
         client.readFile("ginseng_data.txt", function (error, data) {
@@ -105,14 +105,14 @@ var App = React.createClass({
             });
         });
     },
-    gotoEdit: function(infoIndex){
+    gotoEdit(infoIndex){
         this.setState({
             selectedInfoIndex: infoIndex,
             activeMode: "edit"
         })
     },
 
-    onInfoEdit: function(newInfo) {
+    onInfoEdit(newInfo) {
         var newInfos = this.state.infos.slice();
         newInfos[this.state.selectedInfoIndex] = newInfo;
 
@@ -125,7 +125,7 @@ var App = React.createClass({
             activeMode: "browse"
         } );
     },
-    onInfoDelete: function(){
+    onInfoDelete(){
         var newInfos = JSON.parse( JSON.stringify( this.state.infos ));
         console.log("ondelete, this.state.selectedInfoIndex: " + this.state.selectedInfoIndex);
         newInfos.splice(this.state.selectedInfoIndex, 1);
@@ -134,7 +134,7 @@ var App = React.createClass({
             activeMode: "browse"
         } );
     },
-    addInfo: function(newInfo){
+    addInfo(newInfo){
         var newInfo_copy = JSON.parse( JSON.stringify( newInfo ));
         var newInfos = JSON.parse( JSON.stringify( this.state.infos ));
         newInfos.push(newInfo_copy);
@@ -144,7 +144,7 @@ var App = React.createClass({
             activeMode: "new"
         } );
     },
-    onTypesEdit: function(newTypes, changes){
+    onTypesEdit(newTypes, changes){
         var newTypes_copy = JSON.parse( JSON.stringify( newTypes ));
         var new_infos = JSON.parse( JSON.stringify( this.state.infos ));
 
@@ -167,7 +167,7 @@ var App = React.createClass({
             activeMode: "browse"
         });
     },
-    applyInterval: function(infoIndex, reviewKey, newInterval){
+    applyInterval(infoIndex, reviewKey, newInterval){
         var newInfos = JSON.parse( JSON.stringify( this.state.infos ));
         newInfos[infoIndex].reviews[reviewKey].push({
             "reviewTime": moment().format(),
@@ -178,13 +178,14 @@ var App = React.createClass({
         });
     },
 
-    editType: function(typeID){
+    editType(typeID){
         this.setState({
             activeMode: "types",
             selectedTypeID: typeID
         })
     },
     render: function () {
+        console.log("render main");
         //React.addons.Perf.start();
 
         // get used Tags
@@ -221,41 +222,6 @@ var App = React.createClass({
             />
         }
 
-        // Info browser
-        var compBrowser = <div/>;
-        if(this.state.activeMode === "browse"){
-            compBrowser = <InfoBrowser
-                infos={this.state.infos}
-                types={this.state.infoTypes}
-                onRowSelect={this.gotoEdit}
-                onNew={this.clickNav.bind(this, "new")}
-                selections={this.state.ginseng_selections}
-            />
-        }
-
-        // Review
-        var comp_review = <div/>;
-        if(this.state.activeMode === "review") {
-            comp_review = <Review
-                infos={this.state.infos}
-                types={this.state.infoTypes}
-                applyInterval={this.applyInterval}
-                timeIntervalChoices={this.state.ginseng_settings.timeIntervalChoices}
-                gotoEdit={this.gotoEdit}
-            />;
-        }
-
-        // Types
-        var compTypes = false;
-        if(this.state.activeMode=="types"){
-            compTypes = <InfoTypes
-                types={this.state.infoTypes}
-                cancelEdit={this.clickNav.bind(this, "browse")}
-                onSave={this.onTypesEdit}
-                selectedTypeID={this.state.selectedTypeID}
-            />;
-        }
-
         //React.addons.Perf.stop();
         //React.addons.Perf.printInclusive();
         return (
@@ -276,111 +242,136 @@ var App = React.createClass({
                     </div>
                 </div>
 
-                <Status
-                    show={this.state.activeMode=="status"}
-                    infoCount={this.state.infos.length}
-                    dropBoxStatus={this.state.dropBoxStatus}
-                    onDBAuth={this.authDB}
-                    onDbSave={this.saveDB}
-                    meta={this.state.meta}
-                    lastLoadedStr={this.state.lastLoadedStr}
-                    onDbLoad={this.loadDB}
-                    conversionNote={this.state.conversionNote}
-                />
+                {this.state.activeMode === "status" &&
+                    <Status
+                        infoCount={this.state.infos.length}
+                        dropBoxStatus={this.state.dropBoxStatus}
+                        onDBAuth={this.authDB}
+                        onDbSave={this.saveDB}
+                        meta={this.state.meta}
+                        lastLoadedStr={this.state.lastLoadedStr}
+                        onDbLoad={this.loadDB}
+                        conversionNote={this.state.conversionNote}
+                    />
+                }
+
+
                 {compEdit}
-                {compBrowser}
-                {compTypes}
-                {comp_review}
+
+                {this.state.activeMode === "browse" &&
+                    <InfoBrowser
+                        infos={this.state.infos}
+                        types={this.state.infoTypes}
+                        onRowSelect={this.gotoEdit}
+                        onNew={this.clickNav.bind(this, "new")}
+                        selections={this.state.ginseng_selections}
+                    />
+                }
+
+                {this.state.activeMode==="types" &&
+                    <InfoTypes
+                        types={this.state.infoTypes}
+                        cancelEdit={this.clickNav.bind(this, "browse")}
+                        onSave={this.onTypesEdit}
+                        selectedTypeID={this.state.selectedTypeID}
+                    />
+                }
+
+                {this.state.activeMode === "review" &&
+                    <Review
+                        infos={this.state.infos}
+                        types={this.state.infoTypes}
+                        applyInterval={this.applyInterval}
+                        timeIntervalChoices={this.state.ginseng_settings.timeIntervalChoices}
+                        gotoEdit={this.gotoEdit}
+                    />
+                }
 
             </div>);
             }
 });
 
 var Status = React.createClass({
-    getInitialState: function() {
+    getInitialState() {
         return {
             showOverwriteWarning: false
         };
     },
-    componentWillReceiveProps: function(){
+    componentWillReceiveProps(){
         this.setState({showOverwriteWarning: false});
     },
-    onSaveClick: function(){
+    onSaveClick(){
         if(this.props.lastLoadedStr === "never"){
             this.setState({showOverwriteWarning: true});
         }else{
             this.props.onDbSave();
         }
     },
-    onCancelOverwrite: function(){
+    onCancelOverwrite(){
         this.setState({showOverwriteWarning: false});
     },
-    render: function() {
-        if(this.props.show) {
-            var conversionNoteEl = false;
-            if(this.props.conversionNote){
-                conversionNoteEl = <div>{this.props.conversionNote}</div>
-            }
-
-            var lastSavedStr  = this.props.meta.lastSaved;
-            var lastLoadedStr = this.props.lastLoadedStr;
-            if(this.props.meta.lastSaved !== "never"){
-                lastSavedStr = moment(this.props.meta.lastSaved).fromNow();
-            }
-            if(this.props.lastLoadedStr !== "never"){
-                lastLoadedStr = moment(this.props.lastLoadedStr).fromNow();
-            }
-            if(this.props.dropBoxStatus === "loading" ){
-                lastSavedStr = "...";
-                lastLoadedStr = "...";
-            }
-            if( this.props.dropBoxStatus === "saving"){
-                lastSavedStr = "...";
-            }
-
-            var popupOverwrite = false;
-            if(this.state.showOverwriteWarning) {
-                var buttonContainer =
-                    <div className="flexContHoriz" >
-                        <button
-                            onClick={this.props.onDbSave}
-                            className="button buttonGood">Yes</button>
-                        <button
-                            onClick={this.onCancelOverwrite}
-                            className="button buttonGood">Oh god no</button>
-                    </div>;
-                popupOverwrite = <Popup
-                    text="You're about to save to your Dropbox without loading first. This will overwrite previous data in your Dropbox! Continue?"
-                    buttonContainer={buttonContainer}
-                />
-            }
-
-            return (
-                <div className="Status Component">
-                    {popupOverwrite}
-                    <div>Infos loaded: {this.props.dropBoxStatus === "loading"?"loading":this.props.infoCount}</div>
-                    <div>Dropbox Status: {this.props.dropBoxStatus}</div>
-                    <div>{"Last save: " + lastSavedStr}</div>
-                    <div>{"Last load: " + lastLoadedStr}</div>
-                    {conversionNoteEl}
-
-                    <div className={"flexContHoriz"}>
-                        <button
-                            disabled={this.props.dropBoxStatus !== "initial"}
-                            className="buttonGood"
-                            onClick={this.props.onDBAuth}>Log into Dropbox</button>
-                        <button
-                            disabled={this.props.dropBoxStatus !== "loggedIn"}
-                            onClick={this.props.onDbLoad}>Load from Dropbox</button>
-                        <button
-                            disabled={this.props.dropBoxStatus !== "loggedIn"}
-                            onClick={this.onSaveClick}>Save to Dropbox</button>
-                    </div>
-                </div>
-            )
-        } else{
-            return(<div className="Status Component"></div>)
+    render() {
+        var conversionNoteEl = false;
+        if(this.props.conversionNote){
+            conversionNoteEl = <div>{this.props.conversionNote}</div>
         }
+
+        var lastSavedStr  = this.props.meta.lastSaved;
+        var lastLoadedStr = this.props.lastLoadedStr;
+        if(this.props.meta.lastSaved !== "never"){
+            lastSavedStr = moment(this.props.meta.lastSaved).fromNow();
+        }
+        if(this.props.lastLoadedStr !== "never"){
+            lastLoadedStr = moment(this.props.lastLoadedStr).fromNow();
+        }
+        if(this.props.dropBoxStatus === "loading" ){
+            lastSavedStr = "...";
+            lastLoadedStr = "...";
+        }
+        if( this.props.dropBoxStatus === "saving"){
+            lastSavedStr = "...";
+        }
+
+        var popupOverwrite = false;
+        if(this.state.showOverwriteWarning) {
+            var buttonContainer =
+                <div className="flexContHoriz" >
+                    <button
+                        onClick={this.props.onDbSave}
+                        className="button buttonGood">Yes</button>
+                    <button
+                        onClick={this.onCancelOverwrite}
+                        className="button buttonGood">Oh god no</button>
+                </div>;
+            popupOverwrite = <Popup
+                text="You're about to save to your Dropbox without loading first. This will overwrite previous data in your Dropbox! Continue?"
+                buttonContainer={buttonContainer}
+            />
+        }
+
+        return (
+            <div className="Status Component">
+                {popupOverwrite}
+                <div>Infos loaded: {this.props.dropBoxStatus === "loading"?"loading":this.props.infoCount}</div>
+                <div>Dropbox Status: {this.props.dropBoxStatus}</div>
+                <div>{"Last save: " + lastSavedStr}</div>
+                <div>{"Last load: " + lastLoadedStr}</div>
+                {conversionNoteEl}
+
+                <div className={"flexContHoriz"}>
+                    <button
+                        disabled={this.props.dropBoxStatus !== "initial"}
+                        className="buttonGood"
+                        onClick={this.props.onDBAuth}>Log into Dropbox</button>
+                    <button
+                        disabled={this.props.dropBoxStatus !== "loggedIn"}
+                        onClick={this.props.onDbLoad}>Load from Dropbox</button>
+                    <button
+                        disabled={this.props.dropBoxStatus !== "loggedIn"}
+                        onClick={this.onSaveClick}>Save to Dropbox</button>
+                </div>
+            </div>
+        )
     }
 });
 

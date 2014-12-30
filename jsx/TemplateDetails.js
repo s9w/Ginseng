@@ -1,8 +1,8 @@
 var TemplateDetails = React.createClass({
-    onViewChange: function(type, event){
+    onViewChange(type, event){
         this.props.onViewChange(type, event.target.value);
     },
-    render: function(){
+    render(){
         return(
             <div>
                 <section>

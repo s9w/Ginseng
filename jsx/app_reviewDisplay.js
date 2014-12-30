@@ -1,5 +1,5 @@
 var ReviewDisplay = React.createClass({
-    renderMarkdown: function(str){
+    renderMarkdown(str){
         var latexStringBuffer = [];
         // replace math with $$
         var backStrNew = str.replace(/(\$.*?\$)/g, function(match, p1){
@@ -17,7 +17,7 @@ var ReviewDisplay = React.createClass({
             }
         });
     },
-    render: function(){
+    render(){
         var thisOuter = this;
         var frontStr = this.props.type.templates[this.props.viewID].front.replace(
             /{(\w*)}/g, function (match, p1) {

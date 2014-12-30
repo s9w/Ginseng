@@ -1,5 +1,5 @@
 var InfoEdit = React.createClass({
-    getInitialState: function() {
+    getInitialState() {
         var infoNew;
         if(!("info" in this.props)){
             var firstTypeID = "0";
@@ -16,13 +16,13 @@ var InfoEdit = React.createClass({
             scrollHeights: {}
         };
     },
-    componentDidMount: function(){
+    componentDidMount(){
         //Only focus first text field with new infos. Otherwise confusing/unwanted, especially on mobile
         if(!("info" in this.props)) {
             this.refs[0].getDOMNode().focus();
         }
     },
-    componentWillReceiveProps: function(nextProps){
+    componentWillReceiveProps(nextProps){
         // Should always be "new"
         if(!("info" in nextProps)){
             var firstTypeID = "0";
@@ -32,7 +32,7 @@ var InfoEdit = React.createClass({
             this.setState({info: this.getNewInfo(firstTypeID)});
         }
     },
-    getNewInfo: function(typeID){
+    getNewInfo(typeID){
         var infoNew = {typeID: typeID};
         var entries = [];
         var reviews = {};
@@ -46,7 +46,7 @@ var InfoEdit = React.createClass({
         infoNew.creationDate = moment().format();
         return infoNew;
     },
-    onTypeChange: function(newTypeID){
+    onTypeChange(newTypeID){
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
         newInfo.typeID = newTypeID;
         var newEntriesLength = this.props.types[newTypeID].entryNames.length;
@@ -60,7 +60,7 @@ var InfoEdit = React.createClass({
         }
         this.setState({info: newInfo});
     },
-    onEntryEdit: function(entryIndex, event) {
+    onEntryEdit(entryIndex, event) {
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
         var scrollHeights = JSON.parse( JSON.stringify( this.state.scrollHeights ));
         scrollHeights[entryIndex] = this.refs[entryIndex].getDOMNode().scrollHeight;
@@ -70,7 +70,7 @@ var InfoEdit = React.createClass({
             scrollHeights: scrollHeights
         });
     },
-    onTagsEdit: function(event) {
+    onTagsEdit(event) {
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
         if(event.target.value === ""){
             newInfo.tags = [];
@@ -79,21 +79,18 @@ var InfoEdit = React.createClass({
         }
         this.setState( {info: newInfo} );
     },
-    onSave: function(){
-        this.props.onSave(this.state.info);
-    },
-    addUsedTag: function (nextTagStr) {
+    addUsedTag(nextTagStr) {
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
         newInfo.tags .push(nextTagStr);
         this.setState( {info: newInfo} );
     },
-    editType: function(){
+    editType(){
         this.props.editType(this.state.info.typeID)
     },
-    setPreview: function(newPreview){
+    setPreview(newPreview){
         this.setState({previewID: newPreview});
     },
-    render: function() {
+    render() {
         // Typename
         var infoTypeSection;
         if("info" in this.props){ //edit
@@ -223,7 +220,7 @@ var InfoEdit = React.createClass({
                     <button
                         disabled={!isChanged}
                         className="buttonGood"
-                        onClick={this.onSave}>{saveButtonStr}</button>
+                        onClick={this.props.onSave.bind(null, this.state.info)}>{saveButtonStr}</button>
                     <button onClick={this.props.cancelEdit}>Cancel</button>
                     {deleteButton}
                 </div>
@@ -232,7 +229,7 @@ var InfoEdit = React.createClass({
 });
 
 var Popup = React.createClass({
-    render: function() {
+    render() {
         return (
             <div
                 className="popup">
@@ -243,10 +240,10 @@ var Popup = React.createClass({
 });
 
 var ITypeSwitcher = React.createClass({
-    onTypeChange: function(typeID){
+    onTypeChange(typeID){
         this.props.onTypeChange(typeID);
     },
-    render: function() {
+    render() {
         var typeNameOptions = [];
         for(var typeID in this.props.types){
             typeNameOptions.push(

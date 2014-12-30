@@ -1,5 +1,5 @@
 var Intervaller = React.createClass({
-    getInitialState: function() {
+    getInitialState() {
         return {
             modifyType: "change", // change, set
             changeType: "minutes", // minutes, hours, weeks, relative
@@ -7,7 +7,7 @@ var Intervaller = React.createClass({
             activeKeyIndex: 0
         };
     },
-    onModeChange: function(newModeStr){
+    onModeChange(newModeStr){
         if(newModeStr !== this.state.modifyType) {
             var newActiveKeyIndex = this.state.activeKeyIndex;
             if(newModeStr === "set" && this.state.changeType==="percent")
@@ -15,7 +15,10 @@ var Intervaller = React.createClass({
             this.setState({modifyType: newModeStr, activeKeyIndex: newActiveKeyIndex});
         }
     },
-    getNewInterval: function(){
+    componentWillMount(){
+        console.log("intervaller mount");
+    },
+    getNewInterval(){
         var intervalDiff;
         if(this.state.modifyType === "change") {
             if (this.state.changeType === "percent") {
@@ -30,7 +33,7 @@ var Intervaller = React.createClass({
             return moment.duration(this.state.modifyAmount, this.state.changeType.toLowerCase()).asMilliseconds();
         }
     },
-    onIntervalChoice: function(modifyAmount, keyIndex, changeType){
+    onIntervalChoice(modifyAmount, keyIndex, changeType){
         if(this.state.activeKeyIndex === keyIndex){
             this.props.applyInterval(this.getNewInterval());
         }
@@ -40,7 +43,8 @@ var Intervaller = React.createClass({
             modifyAmount: modifyAmount
         });
     },
-    render: function(){
+    render(){
+        console.log("render intervaller");
         var cx = React.addons.classSet;
         var intervals = [];
         var amount;

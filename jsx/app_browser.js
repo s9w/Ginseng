@@ -35,26 +35,25 @@ function getShortPreciseIntervalStr(interval){
 }
 
 var InfoBrowser = React.createClass({
-    getInitialState: function() {
+    getInitialState() {
         return {
             filterText: "",
             sortOrder: "1"
         };
     },
-    onFilterChange: function(event) {
+    onFilterChange(event) {
         this.setState({filterText: event.target.value});
     },
-    onRowSelect: function(index){
-        this.props.onRowSelect(index);
-    },
-    changeSortOrder: function(order){
+    changeSortOrder(order){
         var newOrder = order;
         if(this.state.sortOrder === order){
             newOrder += "r";
         }
         this.setState({sortOrder: newOrder})
     },
-    render: function(){
+    render(){
+        console.log("render browse");
+
         // sort
         var thisBrowser = this;
         var sortedInfos = this.props.infos.sort(function(a, b){
@@ -127,7 +126,7 @@ var InfoBrowser = React.createClass({
                     }
                 }
                 tableRows.push(
-                    <tr key={i} onClick={this.onRowSelect.bind(this, i)}>
+                    <tr key={i} onClick={this.props.onRowSelect.bind(null, i)}>
                         {ds}
                     </tr>
                 );
