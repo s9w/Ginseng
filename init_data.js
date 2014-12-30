@@ -4,7 +4,7 @@ var init_data = {
                 "typeID": "0",
                 "entries": [
                     "Weihnachten",
-                    "aa $\\rac a$ bb $x^2$"
+                    "Christmas"
                 ],
                 "tags": [
                     "englisch"

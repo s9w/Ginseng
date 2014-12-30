@@ -62,7 +62,7 @@ var InfoTypes = React.createClass({
         });
     },
     componentDidUpdate : function(){
-        if(this.state.types[this.state.selectedTypeID].name === "new info type"){
+        if(this.state.types[this.state.selectedTypeID].name === "New info type"){
             this.refs.nameRef.getDOMNode().focus();
         }
     },
@@ -78,7 +78,7 @@ var InfoTypes = React.createClass({
         nextTypeID = (parseInt(nextTypeID, 10)+1).toString();
 
         newTypes[nextTypeID] = {
-            "name": "new info type",
+            "name": "New info type",
             "entryNames": ["first field", "second field"],
             "templates": {
                 "0": {
@@ -110,34 +110,7 @@ var InfoTypes = React.createClass({
         console.log("render types");
         var selectedType = this.state.types[this.state.selectedTypeID];
 
-        // render the typenames
-        var entrynameRows = [];
-        for (var i = 0; i < selectedType.entryNames.length; ++i) {
-            entrynameRows.push(
-                <div key={i} className="sectionContent">
-                    <input
-                        className="sectionContentEl"
-                        value={selectedType.entryNames[i]}
-                        onChange={this.onFieldNameEdit.bind(this, i)}
-                    />
-                    <button
-                        className={"buttonDanger microbutton sectionContentElFixed"+(selectedType.entryNames.length<=2?" invisible":"")}
-                        onClick={this.onFieldsResize.bind(this, i)
-                            }>✖</button>
-                </div>
-            )
-        }
-        entrynameRows.push(
-            <div
-                key="add"
-                className="sectionContent">
-                <button
-                    className="buttonGood"
-                    onClick={this.onFieldsResize.bind(this, "add")}>Add entry</button>
-            </div>
-        );
-
-        var mainSection = [];
+        var mainSection;
         if (this.state.mode !== "main") {
             mainSection =
                 <TemplateDetails
@@ -145,7 +118,7 @@ var InfoTypes = React.createClass({
                     onViewChange={this.onViewChange}
                 />
         } else {
-            mainSection.push(
+            mainSection=[
                 <section key={0}>
                     <h3>Name</h3>
                     <input
@@ -156,25 +129,31 @@ var InfoTypes = React.createClass({
                         value={selectedType.name}
                         onChange={this.onNameEdit}
                     />
-                </section>
-            );
-            mainSection.push(
+                </section>,
                 <section key={1}>
                     <h3>Entries</h3>
-                    {entrynameRows}
+                    {selectedType.entryNames.map((entryName, i) =>
+                        <div key={i} className="sectionContent">
+                            <input
+                                className="sectionContentEl"
+                                value={entryName}
+                                onChange={this.onFieldNameEdit.bind(this, i)}
+                            />
+                            <button
+                                className={"buttonDanger microbutton sectionContentElFixed" + (selectedType.entryNames.length <= 2 ? " invisible" : "")}
+                                onClick={this.onFieldsResize.bind(this, i)}>✖
+                            </button>
+                        </div>
+                    )}
+                    <div
+                        className="sectionContent">
+                        <button
+                            className="buttonGood"
+                            onClick={this.onFieldsResize.bind(this, "add")}>Add entry
+                        </button>
+                    </div>
                 </section>
-            );
-        }
-
-        var viewButtons = [];
-        for(var templateID in selectedType.templates){
-            viewButtons.push(
-                <button
-                    key={templateID}
-                    className={"flexElemContHoriz button "+(this.state.mode===templateID?"buttonGood":"")}
-                    onClick={this.setMode.bind(this, templateID)}>{"Template "+templateID}
-                </button>
-            );
+            ]
         }
 
         var isChanged = JSON.stringify(this.props.types)!==JSON.stringify(this.state.types);
@@ -193,10 +172,17 @@ var InfoTypes = React.createClass({
 
                 <section className="sectionContent tabContainer">
                     <button
-                        className={"button "+(this.state.mode==="main"?"buttonGood":"")}
-                        onClick={this.setMode.bind(this, "main")}>Details
+                        className={this.state.mode==="main"?"buttonGood":""}
+                        onClick={this.setMode.bind(this, "main")}>Type
                     </button>
-                    {viewButtons}
+
+                    {Object.keys(selectedType.templates).map(templateID =>
+                        <button
+                            key={templateID}
+                            className={"flexElemContHoriz button "+(this.state.mode===templateID?"buttonGood":"")}
+                            onClick={this.setMode.bind(this, templateID)}>{"Template "+templateID}
+                        </button>
+                    )}
                 </section>
 
                 {mainSection}

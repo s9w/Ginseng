@@ -94,7 +94,7 @@ var Review = React.createClass({
 
         if (dueCount > 0) {
             return (
-                <div className="Review Component">
+                <div className="Component">
                     <div>
                         <button
                             className="button"
@@ -121,8 +121,13 @@ var Review = React.createClass({
                 </div>
             );
         }
-        else{
-            return(<div></div>)
+        else {
+            return (
+                <div
+                    className="Component"
+                    style={{textAlign: "center"}}>No due reviews
+                </div>
+            )
         }
     }
 });
