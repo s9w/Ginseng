@@ -59,13 +59,11 @@ var App = React.createClass({
             if (error) {
                 console.log("error: " + error);
             }
-            else {
-                thisApp.setState({
-                    meta: newMeta,
-                    dropBoxStatus: "loggedIn",
-                    conversionNote: false
-                });
-            }
+            thisApp.setState({
+                meta: newMeta,
+                dropBoxStatus: "loggedIn",
+                conversionNote: false
+            });
         });
     },
     loadJsonData(jsonData){
@@ -90,14 +88,6 @@ var App = React.createClass({
     loadDB() {
         this.setState({dropBoxStatus: "loading"});
         var thisApp = this;
-
-        var xhrListener = function(dbXhr) {
-            dbXhr.xhr.addEventListener("progress", function(event) {
-                console.log("Download Progress: " + event.loaded + "/" + event.total);
-            });
-            return true; // otherwise, the XMLHttpRequest is canceled
-        };
-        client.onXhr.addListener(xhrListener);
         client.readFile("ginseng_data.txt", function (error, data, stat) {
             if (error) {
                 console.log("ERROR: " + error);
@@ -112,7 +102,6 @@ var App = React.createClass({
                 dropBoxStatus: "loggedIn"
             });
         });
-        client.onXhr.removeListener(xhrListener);
     },
     gotoEdit(infoIndex){
         this.setState({
