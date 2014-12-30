@@ -350,3 +350,8 @@ input, select, textarea{
   display: flex;
   justify-content: flex-start;
 }
+
+form{
+  display: flex;
+  flex-direction: column;
+}

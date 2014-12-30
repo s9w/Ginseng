@@ -26,16 +26,6 @@ var InfoEdit = React.createClass({
         }
         this.setState({info: newInfo});
     },
-    onEntryEdit(entryIndex, event) {
-        var newInfo = JSON.parse( JSON.stringify( this.state.info ));
-        var scrollHeights = JSON.parse( JSON.stringify( this.state.scrollHeights ));
-        scrollHeights[entryIndex] = this.refs[entryIndex].getDOMNode().scrollHeight;
-        newInfo.entries[entryIndex] = event.target.value;
-        this.setState({
-            info: newInfo,
-            scrollHeights: scrollHeights
-        });
-    },
     onTagsEdit(event) {
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
         if(event.target.value === ""){
@@ -52,6 +42,18 @@ var InfoEdit = React.createClass({
     },
     setPreview(newPreview){
         this.setState({previewID: newPreview});
+    },
+    onEntryEdit(event){
+        console.log("name: " + event.target.name + ", value: " + event.target.value);
+
+        var newInfo = JSON.parse( JSON.stringify( this.state.info ));
+        var scrollHeights = JSON.parse( JSON.stringify( this.state.scrollHeights ));
+        scrollHeights[event.target.name] = this.refs[event.target.name].getDOMNode().scrollHeight;
+        newInfo.entries[event.target.name] = event.target.value;
+        this.setState({
+            info: newInfo,
+            scrollHeights: scrollHeights
+        });
     },
     render() {
         // Typename
@@ -89,7 +91,7 @@ var InfoEdit = React.createClass({
                     placeholder={this.props.types[this.state.info.typeID].entryNames[entryIdx]}
                     className= "sectionContent"
                     style={ss}
-                    onChange={this.onEntryEdit.bind(this, entryIdx)}
+                    name={entryIdx}
                     ref={entryIdx}
                 />
             );
@@ -135,7 +137,9 @@ var InfoEdit = React.createClass({
 
                 <section>
                     <h3>Entries</h3>
-                    {entrySections}
+                    <form onChange={this.onEntryEdit}>
+                        {entrySections}
+                    </form>
                 </section>
 
                 <section>
