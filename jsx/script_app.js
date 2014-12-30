@@ -67,7 +67,6 @@ var App = React.createClass({
         });
     },
     loadJsonData(jsonData){
-        //this.setState({dropBoxStatus: "loading"});
         var sanitizedData= {
             infos: jsonData.infos,
             infoTypes: jsonData.infoTypes,
