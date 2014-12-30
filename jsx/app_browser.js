@@ -90,7 +90,7 @@ var InfoBrowser = React.createClass({
                 maxAge = age;
             }
         }
-        for (var i = 0; i < sortedInfos.length; ++i) {
+        for (let i = 0; i < sortedInfos.length; ++i) {
             age = moment().diff(moment(sortedInfos[i].creationDate));
             if( sortedInfos[i].entries[0].toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1 ||
                 sortedInfos[i].entries[1].toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1) {
@@ -102,7 +102,7 @@ var InfoBrowser = React.createClass({
                     sortedInfos[i].tags.join(", "),
                     getShortPreciseIntervalStr(age)
                 ];
-                for (var j = 0; j < thData.length; ++j) {
+                for (let j = 0; j < thData.length; ++j) {
                     var content;
                     var shortenLen = (j===2?5:15);
                     if(thData[j].length > shortenLen){

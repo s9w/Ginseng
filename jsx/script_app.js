@@ -169,7 +169,7 @@ var App = React.createClass({
         }
         var entries = [];
         var reviews = {};
-        for (i = 0; i < this.state.infoTypes[firstTypeID].entryNames.length; ++i) {
+        for (let i = 0; i < this.state.infoTypes[firstTypeID].entryNames.length; ++i) {
             entries.push("");
             reviews[i] = [];
         }

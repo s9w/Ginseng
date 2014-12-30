@@ -18,14 +18,20 @@ var ReviewDisplay = React.createClass({
             }
         });
     },
+    shouldComponentUpdate: function (nextProps, nextState) {
+        return nextProps.info.typeID !== this.props.info.typeID ||
+            JSON.stringify(nextProps.info.entries) !== JSON.stringify(this.props.info.entries) ||
+            nextProps.progressState !== this.props.progressState;
+    },
     render(){
+        console.log("render ReviewDisplay");
         var thisOuter = this;
-        var frontStr = this.props.type.templates[this.props.viewID].front.replace(
+        var frontStr = this.props.type.templates[this.props.templateID].front.replace(
             /{(\w*)}/g, function (match, p1) {
                 return thisOuter.props.info.entries[thisOuter.props.type.entryNames.indexOf(p1)];
             });
 
-        var backStr = this.props.type.templates[this.props.viewID].back.replace(
+        var backStr = this.props.type.templates[this.props.templateID].back.replace(
             /{(\w*)}/g, function (match, p1) {
                 return thisOuter.props.info.entries[thisOuter.props.type.entryNames.indexOf(p1)];
             });

@@ -50,7 +50,7 @@ var Intervaller = React.createClass({
         var amount;
         var keyIndex = 0;
         for (var timeframeKey in this.props.timeIntervalChoices) {
-            for (var j = 0; j < this.props.timeIntervalChoices[timeframeKey].length; ++j) {
+            for (let i = 0; i < this.props.timeIntervalChoices[timeframeKey].length; ++i) {
                 var buttonClasses = cx({
                     'unselectable': true,
                     "intervalMinutes": timeframeKey==="Minutes",
@@ -63,7 +63,7 @@ var Intervaller = React.createClass({
                     "invisible": timeframeKey==="Percent" && this.state.modifyType==="set"
                 });
                 var plusEL = <span className={this.state.modifyType==="change"?"":"invisible"}>+</span>;
-                amount = this.props.timeIntervalChoices[timeframeKey][j];
+                amount = this.props.timeIntervalChoices[timeframeKey][i];
                 var buttonStr = amount;
                 if(timeframeKey === "Percent")
                     buttonStr += "%";

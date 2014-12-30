@@ -409,7 +409,7 @@ var Intervaller = React.createClass({
     var amount;
     var keyIndex = 0;
     for (var timeframeKey in this.props.timeIntervalChoices) {
-      for (var j = 0; j < this.props.timeIntervalChoices[timeframeKey].length; ++j) {
+      for (var i = 0; i < this.props.timeIntervalChoices[timeframeKey].length; ++i) {
         var buttonClasses = cx({
           unselectable: true,
           intervalMinutes: timeframeKey === "Minutes",
@@ -424,7 +424,7 @@ var Intervaller = React.createClass({
         var plusEL = React.createElement("span", {
           className: this.state.modifyType === "change" ? "" : "invisible"
         }, "+");
-        amount = this.props.timeIntervalChoices[timeframeKey][j];
+        amount = this.props.timeIntervalChoices[timeframeKey][i];
         var buttonStr = amount;
         if (timeframeKey === "Percent") buttonStr += "%";else buttonStr += timeframeKey.slice(0, 1).toLowerCase();
         intervals.push(React.createElement("button", {
@@ -510,7 +510,7 @@ var Review = React.createClass({
       urgency: 1,
       infoIndex: 0,
       info: false,
-      viewID: 0,
+      templateID: 0,
       realInterval: 0
     };
     for (var infoIndex = 0; infoIndex < this.props.infos.length; ++infoIndex) {
@@ -534,7 +534,7 @@ var Review = React.createClass({
           nextReview.urgency = urgency;
           nextReview.info = this.props.infos[infoIndex];
           nextReview.infoIndex = infoIndex;
-          nextReview.viewID = templateID;
+          nextReview.templateID = templateID;
           nextReview.realInterval = actualIntervalMs;
         }
       }
@@ -549,13 +549,13 @@ var Review = React.createClass({
         onClick: this.props.gotoEdit.bind(null, nextReview.infoIndex)
       }, "Edit Info"), React.createElement("span", null, "Due count: " + dueCount)), React.createElement(ReviewDisplay, {
         type: this.props.types[nextReview.info.typeID],
-        viewID: nextReview.viewID,
+        templateID: nextReview.templateID,
         info: nextReview.info,
         progressState: this.state.progressState
       }), flipButton, React.createElement(Intervaller, {
         show: this.state.progressState === "backSide",
         reviewInterval: nextReview.realInterval,
-        applyInterval: this.applyInterval.bind(this, nextReview.infoIndex, nextReview.viewID),
+        applyInterval: this.applyInterval.bind(this, nextReview.infoIndex, nextReview.templateID),
         timeIntervalChoices: this.props.timeIntervalChoices
       }));
     } else {
@@ -589,13 +589,17 @@ var ReviewDisplay = React.createClass({
       }
     });
   },
+  shouldComponentUpdate: function (nextProps, nextState) {
+    return nextProps.info.typeID !== this.props.info.typeID || JSON.stringify(nextProps.info.entries) !== JSON.stringify(this.props.info.entries) || nextProps.progressState !== this.props.progressState;
+  },
   render: function () {
+    console.log("render ReviewDisplay");
     var thisOuter = this;
-    var frontStr = this.props.type.templates[this.props.viewID].front.replace(/{(\w*)}/g, function (match, p1) {
+    var frontStr = this.props.type.templates[this.props.templateID].front.replace(/{(\w*)}/g, function (match, p1) {
       return thisOuter.props.info.entries[thisOuter.props.type.entryNames.indexOf(p1)];
     });
 
-    var backStr = this.props.type.templates[this.props.viewID].back.replace(/{(\w*)}/g, function (match, p1) {
+    var backStr = this.props.type.templates[this.props.templateID].back.replace(/{(\w*)}/g, function (match, p1) {
       return thisOuter.props.info.entries[thisOuter.props.type.entryNames.indexOf(p1)];
     });
     return React.createElement("div", {
@@ -967,7 +971,7 @@ var App = React.createClass({
     }
     var entries = [];
     var reviews = {};
-    for (i = 0; i < this.state.infoTypes[firstTypeID].entryNames.length; ++i) {
+    for (var i = 0; i < this.state.infoTypes[firstTypeID].entryNames.length; ++i) {
       entries.push("");
       reviews[i] = [];
     }

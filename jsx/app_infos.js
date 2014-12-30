@@ -79,7 +79,7 @@ var InfoEdit = React.createClass({
 
         // the entries
         var entrySections = [];
-        for (var entryIdx = 0; entryIdx < this.state.info.entries.length; ++entryIdx) {
+        for (let entryIdx = 0; entryIdx < this.state.info.entries.length; ++entryIdx) {
             var ss = {"overflow": "hidden"};
             if(entryIdx in this.state.scrollHeights){
                 ss = {"overflow": "hidden", "height": this.state.scrollHeights[entryIdx]-4+"px"}

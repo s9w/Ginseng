@@ -61,7 +61,7 @@ var Review = React.createClass({
             urgency: 1.0,
             infoIndex: 0,
             info: false,
-            viewID: 0,
+            templateID: 0,
             realInterval: 0
         };
         for (var infoIndex = 0; infoIndex < this.props.infos.length; ++infoIndex) {
@@ -86,7 +86,7 @@ var Review = React.createClass({
                     nextReview.urgency = urgency;
                     nextReview.info = this.props.infos[infoIndex];
                     nextReview.infoIndex = infoIndex;
-                    nextReview.viewID = templateID;
+                    nextReview.templateID = templateID;
                     nextReview.realInterval = actualIntervalMs;
                 }
             }
@@ -106,7 +106,7 @@ var Review = React.createClass({
 
                     <ReviewDisplay
                         type={this.props.types[nextReview.info.typeID]}
-                        viewID={nextReview.viewID}
+                        templateID={nextReview.templateID}
                         info={nextReview.info}
                         progressState={this.state.progressState}
                     />
@@ -115,7 +115,7 @@ var Review = React.createClass({
                     <Intervaller
                         show={this.state.progressState === "backSide"}
                         reviewInterval={nextReview.realInterval}
-                        applyInterval={this.applyInterval.bind(this, nextReview.infoIndex, nextReview.viewID)}
+                        applyInterval={this.applyInterval.bind(this, nextReview.infoIndex, nextReview.templateID)}
                         timeIntervalChoices={this.props.timeIntervalChoices}
                     />
                 </div>
