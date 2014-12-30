@@ -1,51 +1,17 @@
 var InfoEdit = React.createClass({
     getInitialState() {
-        var infoNew;
-        if(!("info" in this.props)){
-            var firstTypeID = "0";
-            while(!(firstTypeID in this.props.types)){
-                firstTypeID = (parseInt(firstTypeID, 10)+1).toString();
-            }
-            infoNew = this.getNewInfo(firstTypeID);
-        }else{
-            infoNew = JSON.parse( JSON.stringify( this.props.info ));
-        }
         return {
-            info: infoNew,
+            info: JSON.parse( JSON.stringify( this.props.info )),
             previewID: false,
             scrollHeights: {}
         };
     },
-    componentDidMount(){
-        //Only focus first text field with new infos. Otherwise confusing/unwanted, especially on mobile
-        if(!("info" in this.props)) {
-            this.refs[0].getDOMNode().focus();
-        }
-    },
-    componentWillReceiveProps(nextProps){
-        // Should always be "new"
-        if(!("info" in nextProps)){
-            var firstTypeID = "0";
-            while(!(firstTypeID in this.props.types)){
-                firstTypeID = (parseInt(firstTypeID, 10)+1).toString();
-            }
-            this.setState({info: this.getNewInfo(firstTypeID)});
-        }
-    },
-    getNewInfo(typeID){
-        var infoNew = {typeID: typeID};
-        var entries = [];
-        var reviews = {};
-        for (var i = 0; i < this.props.types[typeID].entryNames.length; ++i) {
-            entries.push("");
-            reviews[i] = [];
-        }
-        infoNew.entries = entries;
-        infoNew.reviews = reviews;
-        infoNew.tags = [];
-        infoNew.creationDate = moment().format();
-        return infoNew;
-    },
+    //componentDidMount(){
+    //    //Only focus first text field with new infos. Otherwise confusing/unwanted, especially on mobile
+    //    if(!("info" in this.props)) {
+    //        this.refs[0].getDOMNode().focus();
+    //    }
+    //},
     onTypeChange(newTypeID){
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
         newInfo.typeID = newTypeID;
@@ -83,9 +49,6 @@ var InfoEdit = React.createClass({
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
         newInfo.tags .push(nextTagStr);
         this.setState( {info: newInfo} );
-    },
-    editType(){
-        this.props.editType(this.state.info.typeID)
     },
     setPreview(newPreview){
         this.setState({previewID: newPreview});
@@ -149,45 +112,27 @@ var InfoEdit = React.createClass({
             }
         }
 
-        var deleteButton = false;
-        var saveButtonStr = "add";
-        if("onDelete" in this.props){
-            deleteButton = <button className="buttonDanger" onClick={this.props.onDelete}>Delete</button>;
-            saveButtonStr = "save";
-        }
-
-        var templateButtons = [];
-        templateButtons.push(
+        var templateButtons = [
             <button
                 key={"none"}
-                className={"flexElemContHoriz button " + (this.state.previewID ? "" : "buttonGood")}
+                className={"flexElemContHoriz" + (this.state.previewID ? "" : " buttonGood")}
                 onClick={this.setPreview.bind(this, false)}>{"None"}
             </button>
-        );
+        ];
         for (var templateID in this.props.types[this.state.info.typeID].templates) {
             templateButtons.push(
                 <button
                     key={templateID}
-                    className={"flexElemContHoriz button " + (this.state.previewID && this.state.previewID === templateID ? "buttonGood" : "")}
-                    onClick={this.setPreview.bind(this, templateID)}>{"Template " + templateID}
+                    className={"flexElemContHoriz" + (this.state.previewID === templateID ? " buttonGood" : "")}
+                    onClick={this.setPreview.bind(this, templateID)}>{"Templ. " + templateID}
                 </button>
             );
         }
-        var previewEl = false;
-        if(this.state.previewID){
-            previewEl = <ReviewDisplay
-                type={this.props.types[this.state.info.typeID]}
-                viewID={this.state.previewID}
-                info={this.state.info}
-                progressState="backSide"
-            />;
-        }
-
-        var isChanged = JSON.stringify(this.props.info)!==JSON.stringify(this.state.info);
 
         return (
             <div className="InfoEdit Component">
                 {infoTypeSection}
+
                 <section>
                     <h3>Entries</h3>
                     {entrySections}
@@ -214,15 +159,26 @@ var InfoEdit = React.createClass({
                     </div>
                 </section>
 
-                {previewEl}
+                {this.state.previewID &&
+                    <ReviewDisplay
+                        type={this.props.types[this.state.info.typeID]}
+                        viewID={this.state.previewID}
+                        info={this.state.info}
+                        progressState="backSide"
+                    />
+                }
 
                 <div className="flexContHoriz">
                     <button
-                        disabled={!isChanged}
+                        disabled={JSON.stringify(this.props.info) === JSON.stringify(this.state.info)}
                         className="buttonGood"
-                        onClick={this.props.onSave.bind(null, this.state.info)}>{saveButtonStr}</button>
+                        onClick={this.props.onSave.bind(null, this.state.info)}>{this.props.onDelete?"save":"add"}</button>
+
                     <button onClick={this.props.cancelEdit}>Cancel</button>
-                    {deleteButton}
+
+                    {this.props.onDelete &&
+                        <button className="buttonDanger" onClick={this.props.onDelete}>Delete</button>
+                    }
                 </div>
             </div>);
     }

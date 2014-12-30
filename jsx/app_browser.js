@@ -70,10 +70,10 @@ var InfoBrowser = React.createClass({
                 case "2r":
                     return -(a.entries[1].localeCompare(b.entries[1]));
                     break;
-                case "a":
+                case "age":
                     return (moment(a.creationDate).isBefore(b.creationDate))?1:-1;
                     break;
-                case "ar":
+                case "ager":
                     return (moment(a.creationDate).isBefore(b.creationDate))?-1:1;
                     break;
             }
@@ -150,10 +150,10 @@ var InfoBrowser = React.createClass({
             case "2r":
                 th_2 += "↑";
                 break;
-            case "a":
+            case "age":
                 th_age += "↓";
                 break;
-            case "ar":
+            case "ager":
                 th_age += "↑";
                 break;
         }
@@ -172,7 +172,7 @@ var InfoBrowser = React.createClass({
                             <th onClick={this.changeSortOrder.bind(this, "2")}>{th_2}</th>
                             <th>Type</th>
                             <th>Tags</th>
-                            <th onClick={this.changeSortOrder.bind(this, "a")}>{th_age}</th>
+                            <th onClick={this.changeSortOrder.bind(this, "age")}>{th_age}</th>
                         </tr>
                     </thead>
                     <tbody>

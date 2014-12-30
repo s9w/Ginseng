@@ -12,7 +12,7 @@ var App = React.createClass({
             meta: init_data.meta,
             activeMode: "status",
             selectedTypeID: false,
-            selectedInfoIndex: 0,
+            selectedInfoIndex: false,
 
             conversionNote: false,
             dropBoxStatus: "initial",
@@ -111,15 +111,13 @@ var App = React.createClass({
             activeMode: "edit"
         })
     },
-
     onInfoEdit(newInfo) {
         var newInfos = this.state.infos.slice();
-        newInfos[this.state.selectedInfoIndex] = newInfo;
-
-        //var updIndex = 0;
-        //var newInfos = React.addons.update(this.state.infos, {
-        //    updIndex: {$set: newInfo}
-        //});
+        if(this.state.activeMode === "edit") {
+            newInfos[this.state.selectedInfoIndex] = newInfo;
+        }else{
+            newInfos.push(newInfo);
+        }
         this.setState({
             infos: newInfos,
             activeMode: "browse"
@@ -132,16 +130,6 @@ var App = React.createClass({
         this.setState({
             infos: newInfos,
             activeMode: "browse"
-        } );
-    },
-    addInfo(newInfo){
-        var newInfo_copy = JSON.parse( JSON.stringify( newInfo ));
-        var newInfos = JSON.parse( JSON.stringify( this.state.infos ));
-        newInfos.push(newInfo_copy);
-
-        this.setState( {
-            infos: newInfos,
-            activeMode: "new"
         } );
     },
     onTypesEdit(newTypes, changes){
@@ -177,12 +165,24 @@ var App = React.createClass({
             infos: newInfos
         });
     },
-
-    editType(typeID){
-        this.setState({
-            activeMode: "types",
-            selectedTypeID: typeID
-        })
+    getNewInfo(){
+        var firstTypeID = "0";
+        while(!(firstTypeID in this.state.infoTypes)){
+            firstTypeID = (parseInt(firstTypeID, 10)+1).toString();
+        }
+        var entries = [];
+        var reviews = {};
+        for (i = 0; i < this.state.infoTypes[firstTypeID].entryNames.length; ++i) {
+            entries.push("");
+            reviews[i] = [];
+        }
+        return {
+            typeID: firstTypeID,
+            entries: entries,
+            reviews: reviews,
+            tags: [],
+            creationDate: moment().format()
+        }
     },
     render: function () {
         console.log("render main");
@@ -196,30 +196,6 @@ var App = React.createClass({
                     usedTags.push( this.state.infos[i].tags[j] );
                 }
             }
-        }
-
-        // Edit / New
-        var compEdit = <div/>;
-        if (this.state.activeMode == "new") {
-            compEdit = <InfoEdit
-                types={this.state.infoTypes}
-                usedTags={usedTags}
-                onSave={this.addInfo}
-                cancelEdit={this.clickNav.bind(this, "browse")}
-                editType={this.editType}
-            />
-        }
-        else if (this.state.activeMode == "edit"){
-            compEdit = <InfoEdit
-                info={this.state.infos[this.state.selectedInfoIndex]}
-                onDelete={this.onInfoDelete}
-
-                types={this.state.infoTypes}
-                usedTags={usedTags}
-                onSave={this.onInfoEdit}
-                cancelEdit={this.clickNav.bind(this, "browse")}
-                editType={this.editType}
-            />
         }
 
         //React.addons.Perf.stop();
@@ -255,8 +231,16 @@ var App = React.createClass({
                     />
                 }
 
-
-                {compEdit}
+                {[ "new", "edit"].indexOf(this.state.activeMode) !== -1 &&
+                    <InfoEdit
+                        info={this.state.activeMode === "new"?this.getNewInfo():this.state.infos[this.state.selectedInfoIndex]}
+                        onDelete={this.state.activeMode === "edit"?this.onInfoDelete:false}
+                        types={this.state.infoTypes}
+                        usedTags={usedTags}
+                        onSave={this.onInfoEdit}
+                        cancelEdit={this.clickNav.bind(this, "browse")}
+                    />
+                }
 
                 {this.state.activeMode === "browse" &&
                     <InfoBrowser
