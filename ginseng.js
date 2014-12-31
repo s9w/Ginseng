@@ -302,7 +302,7 @@ var InfoEdit = React.createClass({
       className: "sectionContent tabContainer"
     }, templateButtons)), this.state.previewID && React.createElement(ReviewDisplay, {
       type: this.props.types[this.state.info.typeID],
-      viewID: this.state.previewID,
+      templateID: this.state.previewID,
       info: this.state.info,
       progressState: "backSide"
     }), React.createElement("div", {
@@ -594,7 +594,7 @@ var ReviewDisplay = React.createClass({
     });
   },
   shouldComponentUpdate: function (nextProps, nextState) {
-    return nextProps.info.typeID !== this.props.info.typeID || JSON.stringify(nextProps.info.entries) !== JSON.stringify(this.props.info.entries) || nextProps.progressState !== this.props.progressState;
+    return nextProps.info.typeID !== this.props.info.templateID || JSON.stringify(nextProps.info.entries) !== JSON.stringify(this.props.info.entries) || nextProps.progressState !== this.props.progressState;
   },
   render: function () {
     console.log("render ReviewDisplay");

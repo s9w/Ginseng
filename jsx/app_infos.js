@@ -166,7 +166,7 @@ var InfoEdit = React.createClass({
                 {this.state.previewID &&
                     <ReviewDisplay
                         type={this.props.types[this.state.info.typeID]}
-                        viewID={this.state.previewID}
+                        templateID={this.state.previewID}
                         info={this.state.info}
                         progressState="backSide"
                     />

@@ -19,7 +19,7 @@ var ReviewDisplay = React.createClass({
         });
     },
     shouldComponentUpdate: function (nextProps, nextState) {
-        return nextProps.info.typeID !== this.props.info.typeID ||
+        return nextProps.info.typeID !== this.props.info.templateID ||
             JSON.stringify(nextProps.info.entries) !== JSON.stringify(this.props.info.entries) ||
             nextProps.progressState !== this.props.progressState;
     },
