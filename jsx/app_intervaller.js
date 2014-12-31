@@ -4,15 +4,15 @@ var Intervaller = React.createClass({
             modifyType: "change", // change, set
             changeType: "minutes", // minutes, hours, weeks, relative
             modifyAmount: 10,
-            activeKeyIndex: 0
+            activeKeyIndex: false
         };
+    },
+    componentWillReceiveProps(nextProps){
+        this.setState({activeKeyIndex: false});
     },
     onModeChange(newModeStr){
         if(newModeStr !== this.state.modifyType) {
-            var newActiveKeyIndex = this.state.activeKeyIndex;
-            if(newModeStr === "set" && this.state.changeType==="percent")
-                newActiveKeyIndex = 0;
-            this.setState({modifyType: newModeStr, activeKeyIndex: newActiveKeyIndex});
+            this.setState({modifyType: newModeStr, activeKeyIndex: false});
         }
     },
     componentWillMount(){
@@ -47,7 +47,6 @@ var Intervaller = React.createClass({
         console.log("render intervaller");
         var cx = React.addons.classSet;
         var intervals = [];
-        var amount;
         var keyIndex = 0;
         for (var timeframeKey in this.props.timeIntervalChoices) {
             for (let i = 0; i < this.props.timeIntervalChoices[timeframeKey].length; ++i) {
@@ -63,7 +62,7 @@ var Intervaller = React.createClass({
                     "invisible": timeframeKey==="Percent" && this.state.modifyType==="set"
                 });
                 var plusEL = <span className={this.state.modifyType==="change"?"":"invisible"}>+</span>;
-                amount = this.props.timeIntervalChoices[timeframeKey][i];
+                var amount = this.props.timeIntervalChoices[timeframeKey][i];
                 var buttonStr = amount;
                 if(timeframeKey === "Percent")
                     buttonStr += "%";
@@ -92,8 +91,8 @@ var Intervaller = React.createClass({
                     {intervals}
                 </div>
                 <div>Old interval: {getPreciseIntervalStr( this.props.reviewInterval )}</div>
-                <div>New interval: {getPreciseIntervalStr( this.getNewInterval() )}</div>
-                <div>Due on: {moment().add(moment.duration(this.getNewInterval())).format("dddd, YYYY-MM-DD, HH:mm") }</div>
+                <div className={this.state.activeKeyIndex?"":"invisible"}>New interval: {getPreciseIntervalStr( this.getNewInterval() )}</div>
+                <div className={this.state.activeKeyIndex?"":"invisible"}>Due on: {moment().add(moment.duration(this.getNewInterval())).format("dddd, YYYY-MM-DD, HH:mm") }</div>
             </div>
         );
     }

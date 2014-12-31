@@ -365,14 +365,15 @@ var Intervaller = React.createClass({
       modifyType: "change", // change, set
       changeType: "minutes", // minutes, hours, weeks, relative
       modifyAmount: 10,
-      activeKeyIndex: 0
+      activeKeyIndex: false
     };
+  },
+  componentWillReceiveProps: function (nextProps) {
+    this.setState({ activeKeyIndex: false });
   },
   onModeChange: function (newModeStr) {
     if (newModeStr !== this.state.modifyType) {
-      var newActiveKeyIndex = this.state.activeKeyIndex;
-      if (newModeStr === "set" && this.state.changeType === "percent") newActiveKeyIndex = 0;
-      this.setState({ modifyType: newModeStr, activeKeyIndex: newActiveKeyIndex });
+      this.setState({ modifyType: newModeStr, activeKeyIndex: false });
     }
   },
   componentWillMount: function () {
@@ -406,7 +407,6 @@ var Intervaller = React.createClass({
     console.log("render intervaller");
     var cx = React.addons.classSet;
     var intervals = [];
-    var amount;
     var keyIndex = 0;
     for (var timeframeKey in this.props.timeIntervalChoices) {
       for (var i = 0; i < this.props.timeIntervalChoices[timeframeKey].length; ++i) {
@@ -424,7 +424,7 @@ var Intervaller = React.createClass({
         var plusEL = React.createElement("span", {
           className: this.state.modifyType === "change" ? "" : "invisible"
         }, "+");
-        amount = this.props.timeIntervalChoices[timeframeKey][i];
+        var amount = this.props.timeIntervalChoices[timeframeKey][i];
         var buttonStr = amount;
         if (timeframeKey === "Percent") buttonStr += "%";else buttonStr += timeframeKey.slice(0, 1).toLowerCase();
         intervals.push(React.createElement("button", {
@@ -446,7 +446,11 @@ var Intervaller = React.createClass({
       onClick: this.onModeChange.bind(this, "set")
     }, "set"), React.createElement("div", {
       className: "intervalButtonCont"
-    }, intervals), React.createElement("div", null, "Old interval: ", getPreciseIntervalStr(this.props.reviewInterval)), React.createElement("div", null, "New interval: ", getPreciseIntervalStr(this.getNewInterval())), React.createElement("div", null, "Due on: ", moment().add(moment.duration(this.getNewInterval())).format("dddd, YYYY-MM-DD, HH:mm")));
+    }, intervals), React.createElement("div", null, "Old interval: ", getPreciseIntervalStr(this.props.reviewInterval)), React.createElement("div", {
+      className: this.state.activeKeyIndex ? "" : "invisible"
+    }, "New interval: ", getPreciseIntervalStr(this.getNewInterval())), React.createElement("div", {
+      className: this.state.activeKeyIndex ? "" : "invisible"
+    }, "Due on: ", moment().add(moment.duration(this.getNewInterval())).format("dddd, YYYY-MM-DD, HH:mm")));
   }
 });
 "use strict";

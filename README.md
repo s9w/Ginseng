@@ -46,10 +46,9 @@ The App and the underlying data format are designed to be as open and robust as 
 
 ## Roadmap / issues
 - I'm quite happy with the JSON format as it's so clean. But it tends to grow pretty quickly. Especially upload times may be come a problem with slower connections and bigger datasets. Ideas:
-    - The review data is about 50% of the size in my dataset, maybe offer an option to only keep the last n reviews?
-    - Remove whitespace? But that would severely limit the human-readable part
-    - Better compression?
+    - The review data is about 50% of the size in my dataset. This has been cut to only keep two reviews by default, so reviews are no longer a growth factor, only number of infos.
+    - Better compression? My test with LZ-String yielded a compression down to 13%, which is impressive. But it'll limit the human-readable nature and simplicity of the format.
     - A "proper" solution would probably mean only transferring the diffs. But that would mean having some kind of backend and everything that comes with it (overhead, another program to write/maintain, transfer limits/costs, making it reliable)
 - KaTeX is very fast but currently doesn't even support `\mathbb` fonts, let alone ams etc. Add Mathjax as an option?
 - Use browsers local storage to provide offline/cached access? But that'll open Pandoras box of conflicting versions
-- Write an Anki converter? The format is borderline unusable, but I'll try the python package
+- Write an Anki converter? The Anki data format is borderline unusable, but I'll try the python package
