@@ -479,20 +479,25 @@ var Review = React.createClass({
     if (filterStr === "") {
       return true;
     }
-    var filterStrNew = filterStr.replace(/ /g, "");
-    var filters = filterStrNew.split(",");
-    for (var i = 0; i < filters.length; ++i) {
-      if (filters[i] === "") {
-        console.log("   empty?");
-      } else if (filters[i] === "tag:reverse") {
-        if (info.tags.indexOf("reverse") === -1) {
+
+    var filtersOr = filterStr.split(" or ");
+    for (var i = 0; i < filtersOr.length; ++i) {
+      var filterElements = filtersOr[i].split(" and ");
+      for (var j = 0; j < filterElements.length; ++j) {
+        var innerTruth = true;
+        var matches;
+        if ((matches = /tag: ?(\w+)/.exec(filterElements[j])) != null) {
+          if (info.tags.indexOf(matches[1]) === -1) {
+            innerTruth = false;
+          }
+        } else {
+          console.log("Error, unknown filter: " + filterElements[j]);
           return false;
         }
-      } else {
-        console.log("other filter, eek");
       }
+      if (innerTruth) return true;
     }
-    return true;
+    return false;
   },
   render: function () {
     // flip button
@@ -509,7 +514,7 @@ var Review = React.createClass({
     // filter due cards and chose the next
     var urgency;
     var dueCount = 0;
-    var actualIntervalMs;
+    var realInterval;
     var nextReview = {
       urgency: 1,
       infoIndex: 0,
@@ -520,26 +525,27 @@ var Review = React.createClass({
     for (var infoIndex = 0; infoIndex < this.props.infos.length; ++infoIndex) {
       var info = this.props.infos[infoIndex];
       for (var templateID in info.reviews) {
-        if (!this.filterInfo(this.props.types[info.typeID].templates[templateID].condition, info)) {
-          continue;
-        }
-        if (info.reviews[templateID].length > 0) {
-          var lastDueTimeStr = info.reviews[templateID][info.reviews[templateID].length - 1].dueTime;
-          var lastReviewTimeStr = info.reviews[templateID][info.reviews[templateID].length - 1].reviewTime;
-          var plannedIntervalMs = moment(lastDueTimeStr).diff(moment(lastReviewTimeStr));
-          actualIntervalMs = moment().diff(moment(lastReviewTimeStr));
-          urgency = actualIntervalMs / plannedIntervalMs;
-        } else {
-          urgency = 1.1;
-          actualIntervalMs = 0;
-        }
-        if (urgency >= 1) dueCount++;
-        if (urgency > nextReview.urgency) {
-          nextReview.urgency = urgency;
-          nextReview.info = this.props.infos[infoIndex];
-          nextReview.infoIndex = infoIndex;
-          nextReview.templateID = templateID;
-          nextReview.realInterval = actualIntervalMs;
+        if (this.filterInfo(this.props.types[info.typeID].templates[templateID].condition, info)) {
+          if (info.reviews[templateID].length > 0) {
+            var lastReview = info.reviews[templateID][info.reviews[templateID].length - 1];
+            realInterval = moment().diff(moment(lastReview.reviewTime));
+            urgency = realInterval / moment(lastReview.dueTime).diff(moment(lastReview.reviewTime));
+          } else {
+            // new info, no review data
+            urgency = 1.1;
+            realInterval = 0;
+          }
+
+          if (urgency >= 1) {
+            dueCount++;
+            if (urgency > nextReview.urgency) {
+              nextReview.urgency = urgency;
+              nextReview.info = info;
+              nextReview.infoIndex = infoIndex;
+              nextReview.templateID = templateID;
+              nextReview.realInterval = realInterval;
+            }
+          }
         }
       }
     }

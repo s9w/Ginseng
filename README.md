@@ -21,12 +21,14 @@ Note that there are no fixed groups (or "decks" as in Anki) for infos. Instead t
 - only newly created
 - generate even if not due (aka "cram mode")
 
-## Intervals
-During review, you have the choice between *set*ting an interval, or *changing* the previous. For example setting "5h" would mean that in 5 hours, that review would become due again.
+## Review / Intervals
+During review, you have the choice between *setting* an interval, or *changing* the previous. For example setting "5h" would mean that in 5 hours, that review would become due again.
 
 Most of the time you probably want to change the previous interval. Either relatively with percent increases or adding a fixed time amount.
 
 Clicking an interval selection will "select" it with a black border and preview the new interval and the date and time when it'll become due again. click the same selection again to confirm.
+
+Note that the last interval means the time between the last review and now. NOT as the interval that was set. That's intentional as that's really what counts.
 
 ## Filter
 - `tag: math` matches all infos that have a `math` tag. This is case-sensitive and a precise match, so it won't match a `mathematics` tag.
