@@ -830,7 +830,8 @@ var App = React.createClass({
 
       conversionNote: false,
       dropBoxStatus: "initial",
-      lastLoadedStr: "never"
+      lastLoadedStr: "never",
+      isChanged: false
     };
   },
   clickNav: function (mode) {
@@ -867,14 +868,15 @@ var App = React.createClass({
       settings: this.state.ginseng_settings,
       meta: newMeta
     };
-    client.writeFile("ginseng_data.txt", JSON.stringify(writeData, null, "\t"), function (error, stat) {
+    client.writeFile("ginseng_data.txt", JSON.stringify(writeData, null, "\t"), function (error) {
       if (error) {
         console.log("error: " + error);
       }
       thisApp.setState({
         meta: newMeta,
         dropBoxStatus: "loggedIn",
-        conversionNote: false
+        conversionNote: false,
+        isChanged: false
       });
     });
   },
@@ -899,7 +901,7 @@ var App = React.createClass({
   loadDB: function () {
     this.setState({ dropBoxStatus: "loading" });
     var thisApp = this;
-    client.readFile("ginseng_data.txt", function (error, data, stat) {
+    client.readFile("ginseng_data.txt", function (error, data) {
       if (error) {
         console.log("ERROR: " + error);
       }
@@ -910,7 +912,8 @@ var App = React.createClass({
         ginseng_settings: sanitizedData.ginseng_settings,
         meta: sanitizedData.meta,
         lastLoadedStr: moment().format(),
-        dropBoxStatus: "loggedIn"
+        dropBoxStatus: "loggedIn",
+        isChanged: false
       });
     });
   },
@@ -929,7 +932,8 @@ var App = React.createClass({
     }
     this.setState({
       infos: newInfos,
-      activeMode: "browse"
+      activeMode: "browse",
+      isChanged: true
     });
   },
   onInfoDelete: function () {
@@ -961,7 +965,8 @@ var App = React.createClass({
     this.setState({
       infoTypes: newTypes_copy,
       infos: new_infos,
-      activeMode: "browse"
+      activeMode: "browse",
+      isChanged: true
     });
   },
   applyInterval: function (infoIndex, reviewKey, newInterval) {
@@ -971,7 +976,8 @@ var App = React.createClass({
       dueTime: moment().add(moment.duration(newInterval)).format()
     });
     this.setState({
-      infos: newInfos
+      infos: newInfos,
+      isChanged: true
     });
   },
   getNewInfo: function () {
@@ -1016,7 +1022,7 @@ var App = React.createClass({
     }, React.createElement("div", {
       className: this.state.activeMode == "status" ? "active" : "inactive",
       onClick: this.clickNav.bind(this, "status")
-    }, "Status"), React.createElement("div", {
+    }, "Status", this.state.isChanged ? "*" : " "), React.createElement("div", {
       className: ["browse", "new", "edit"].indexOf(this.state.activeMode) !== -1 ? "active" : "inactive",
       onClick: this.clickNav.bind(this, "browse")
     }, "Infos"), React.createElement("div", {
