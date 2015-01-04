@@ -189,7 +189,6 @@ var App = React.createClass({
     },
     render: function () {
         console.log("render main");
-        //React.addons.Perf.start();
 
         // get used Tags
         var usedTags = [];
@@ -200,15 +199,13 @@ var App = React.createClass({
                 }
             }
         }
-
-        //React.addons.Perf.stop();
-        //React.addons.Perf.printInclusive();
         return (
             <div className="app">
                 <div className="navBar unselectable">
                     <div
                         className={this.state.activeMode == "status" ? "active" : "inactive"}
-                        onClick={this.clickNav.bind(this, "status")}>Status{this.state.isChanged?"*":" "}
+                        title={this.state.isChanged?"unsaved changes":""}
+                        onClick={this.clickNav.bind(this, "status")}>Status<span className={this.state.isChanged?"":"invisible"}>*</span>
                     </div>
                     <div className={["browse", "new", "edit"].indexOf(this.state.activeMode)!==-1 ? "active" : "inactive" }
                         onClick={this.clickNav.bind(this, "browse")}>Infos
@@ -234,7 +231,7 @@ var App = React.createClass({
                     />
                 }
 
-                {[ "new", "edit"].indexOf(this.state.activeMode) !== -1 &&
+                {["new", "edit"].indexOf(this.state.activeMode) !== -1 &&
                     <InfoEdit
                         info={this.state.activeMode === "new"?this.getNewInfo():this.state.infos[this.state.selectedInfoIndex]}
                         onDelete={this.state.activeMode === "edit"?this.onInfoDelete:false}
@@ -274,8 +271,9 @@ var App = React.createClass({
                     />
                 }
 
-            </div>);
-            }
+            </div>
+        );
+    }
 });
 
 var Status = React.createClass({

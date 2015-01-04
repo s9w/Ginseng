@@ -1001,7 +1001,6 @@ var App = React.createClass({
   },
   render: function () {
     console.log("render main");
-    //React.addons.Perf.start();
 
     // get used Tags
     var usedTags = [];
@@ -1012,17 +1011,17 @@ var App = React.createClass({
         }
       }
     }
-
-    //React.addons.Perf.stop();
-    //React.addons.Perf.printInclusive();
     return React.createElement("div", {
       className: "app"
     }, React.createElement("div", {
       className: "navBar unselectable"
     }, React.createElement("div", {
       className: this.state.activeMode == "status" ? "active" : "inactive",
+      title: this.state.isChanged ? "unsaved changes" : "",
       onClick: this.clickNav.bind(this, "status")
-    }, "Status", this.state.isChanged ? "*" : " "), React.createElement("div", {
+    }, "Status", React.createElement("span", {
+      className: this.state.isChanged ? "" : "invisible"
+    }, "*")), React.createElement("div", {
       className: ["browse", "new", "edit"].indexOf(this.state.activeMode) !== -1 ? "active" : "inactive",
       onClick: this.clickNav.bind(this, "browse")
     }, "Infos"), React.createElement("div", {
