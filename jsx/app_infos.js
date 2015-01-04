@@ -99,17 +99,16 @@ var InfoEdit = React.createClass({
 
         // used Tags
         var usedTagEls = [];
-        var seperator;
-        for (var index = 0; index < this.props.usedTags.length; ++index) {
-            if( this.state.info.tags.indexOf(this.props.usedTags[index]) === -1 ){
-                if(usedTagEls.length===0)
-                    seperator = "";
-                else
-                    seperator = ", ";
+        for (var i = 0; i < this.props.usedTags.length; ++i) {
+            if( ! (_.contains(this.state.info.tags, this.props.usedTags[i])) ){
+                if(!(_.isEmpty(usedTagEls))){
+                    usedTagEls.push(<span key={i+"x"}>, </span>);
+                }
                 usedTagEls.push(
-                    <a key={index}
-                        onClick={this.addUsedTag.bind(this, this.props.usedTags[index])}
-                        href="#">{seperator + this.props.usedTags[index]}</a>
+                    <a
+                        key={i}
+                        onClick={this.addUsedTag.bind(this, this.props.usedTags[i])}
+                        href="#">{this.props.usedTags[i]}</a>
                 );
             }
         }
@@ -131,7 +130,9 @@ var InfoEdit = React.createClass({
             );
         }
 
+        console.log("tags: " + JSON.stringify(this.state.info.tags));
         return (
+
             <div className="InfoEdit Component">
                 {infoTypeSection}
 

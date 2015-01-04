@@ -31,8 +31,8 @@ var Review = React.createClass({
                 var innerTruth = true;
                 var matches;
                 if((matches = /tag: ?(\w+)/.exec(filterElements[j])) != null) {
-                    if(info.tags.indexOf(matches[1]) === -1){
-                        innerTruth = false
+                    if(!(_.contains(info.tags, matches[1])) ){
+                        innerTruth = false;
                     }
                 }
                 else{
@@ -46,19 +46,6 @@ var Review = React.createClass({
         return false;
     },
     render() {
-        // flip button
-        var flipButton= false;
-        if(this.state.progressState === "frontSide")
-            flipButton =
-                <div style={{textAlign: "center"}}>
-                    <button
-                        tabIndex="1"
-                        ref="flipButton"
-                        className={"button buttonGood "+ (this.state.progressState === "frontSide"?"":"invisible")}
-                        onClick={this.flip} >Show backside
-                    </button>
-                </div>;
-
         // filter due cards and chose the next
         var urgency;
         var dueCount = 0;
@@ -78,7 +65,7 @@ var Review = React.createClass({
                         let lastReview = info.reviews[templateID][info.reviews[templateID].length - 1];
                         realInterval = moment().diff(moment(lastReview.reviewTime));
                         urgency = realInterval / moment(lastReview.dueTime).diff(moment(lastReview.reviewTime));
-                    }else { // new info, no review data
+                    }else {
                         urgency = 1.1;
                         realInterval = 0;
                     }
@@ -100,14 +87,10 @@ var Review = React.createClass({
         if (dueCount > 0) {
             return (
                 <div className="Component">
-                    <div>
-                        <button
-                            className="button"
-                            tabIndex="2"
-                            onClick={this.props.gotoEdit.bind(null, nextReview.infoIndex)}
-                        >Edit Info</button>
-                        <span>{"Due count: " + dueCount}</span>
-                    </div>
+                    <button
+                        tabIndex="2"
+                        onClick={this.props.gotoEdit.bind(null, nextReview.infoIndex)}>Edit Info</button>
+                    <span>{"Due count: " + dueCount}</span>
 
                     <ReviewDisplay
                         type={this.props.types[nextReview.info.typeID]}
@@ -116,7 +99,17 @@ var Review = React.createClass({
                         progressState={this.state.progressState}
                     />
 
-                    {flipButton}
+                    {this.state.progressState === "frontSide" &&
+                        <div style={{textAlign: "center"}}>
+                            <button
+                                tabIndex="1"
+                                ref="flipButton"
+                                className="buttonGood"
+                                onClick={this.flip}>Show backside
+                            </button>
+                        </div>
+                    }
+
                     <Intervaller
                         show={this.state.progressState === "backSide"}
                         reviewInterval={nextReview.realInterval}

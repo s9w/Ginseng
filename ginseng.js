@@ -261,15 +261,18 @@ var InfoEdit = React.createClass({
 
     // used Tags
     var usedTagEls = [];
-    var seperator;
-    for (var index = 0; index < this.props.usedTags.length; ++index) {
-      if (this.state.info.tags.indexOf(this.props.usedTags[index]) === -1) {
-        if (usedTagEls.length === 0) seperator = "";else seperator = ", ";
+    for (var i = 0; i < this.props.usedTags.length; ++i) {
+      if (!_.contains(this.state.info.tags, this.props.usedTags[i])) {
+        if (!_.isEmpty(usedTagEls)) {
+          usedTagEls.push(React.createElement("span", {
+            key: i + "x"
+          }, ", "));
+        }
         usedTagEls.push(React.createElement("a", {
-          key: index,
-          onClick: this.addUsedTag.bind(this, this.props.usedTags[index]),
+          key: i,
+          onClick: this.addUsedTag.bind(this, this.props.usedTags[i]),
           href: "#"
-        }, seperator + this.props.usedTags[index]));
+        }, this.props.usedTags[i]));
       }
     }
 
@@ -286,6 +289,7 @@ var InfoEdit = React.createClass({
       }, "Templ. " + templateID));
     }
 
+    console.log("tags: " + JSON.stringify(this.state.info.tags));
     return React.createElement("div", {
       className: "InfoEdit Component"
     }, infoTypeSection, React.createElement("section", null, React.createElement("h3", null, "Entries"), React.createElement("form", {
@@ -487,7 +491,7 @@ var Review = React.createClass({
         var innerTruth = true;
         var matches;
         if ((matches = /tag: ?(\w+)/.exec(filterElements[j])) != null) {
-          if (info.tags.indexOf(matches[1]) === -1) {
+          if (!_.contains(info.tags, matches[1])) {
             innerTruth = false;
           }
         } else {
@@ -500,17 +504,6 @@ var Review = React.createClass({
     return false;
   },
   render: function () {
-    // flip button
-    var flipButton = false;
-    if (this.state.progressState === "frontSide") flipButton = React.createElement("div", {
-      style: { textAlign: "center" }
-    }, React.createElement("button", {
-      tabIndex: "1",
-      ref: "flipButton",
-      className: "button buttonGood " + (this.state.progressState === "frontSide" ? "" : "invisible"),
-      onClick: this.flip
-    }, "Show backside"));
-
     // filter due cards and chose the next
     var urgency;
     var dueCount = 0;
@@ -531,7 +524,6 @@ var Review = React.createClass({
             realInterval = moment().diff(moment(lastReview.reviewTime));
             urgency = realInterval / moment(lastReview.dueTime).diff(moment(lastReview.reviewTime));
           } else {
-            // new info, no review data
             urgency = 1.1;
             realInterval = 0;
           }
@@ -553,16 +545,22 @@ var Review = React.createClass({
     if (dueCount > 0) {
       return React.createElement("div", {
         className: "Component"
-      }, React.createElement("div", null, React.createElement("button", {
-        className: "button",
+      }, React.createElement("button", {
         tabIndex: "2",
         onClick: this.props.gotoEdit.bind(null, nextReview.infoIndex)
-      }, "Edit Info"), React.createElement("span", null, "Due count: " + dueCount)), React.createElement(ReviewDisplay, {
+      }, "Edit Info"), React.createElement("span", null, "Due count: " + dueCount), React.createElement(ReviewDisplay, {
         type: this.props.types[nextReview.info.typeID],
         templateID: nextReview.templateID,
         info: nextReview.info,
         progressState: this.state.progressState
-      }), flipButton, React.createElement(Intervaller, {
+      }), this.state.progressState === "frontSide" && React.createElement("div", {
+        style: { textAlign: "center" }
+      }, React.createElement("button", {
+        tabIndex: "1",
+        ref: "flipButton",
+        className: "buttonGood",
+        onClick: this.flip
+      }, "Show backside")), React.createElement(Intervaller, {
         show: this.state.progressState === "backSide",
         reviewInterval: nextReview.realInterval,
         applyInterval: this.applyInterval.bind(this, nextReview.infoIndex, nextReview.templateID),
@@ -985,10 +983,11 @@ var App = React.createClass({
     while (!(firstTypeID in this.state.infoTypes)) {
       firstTypeID = (parseInt(firstTypeID, 10) + 1).toString();
     }
-    var entries = [];
+    var entries = _.times(this.state.infoTypes[firstTypeID].entryNames.length, function () {
+      return "";
+    });
     var reviews = {};
     for (var i = 0; i < this.state.infoTypes[firstTypeID].entryNames.length; ++i) {
-      entries.push("");
       reviews[i] = [];
     }
     return {
@@ -1002,15 +1001,6 @@ var App = React.createClass({
   render: function () {
     console.log("render main");
 
-    // get used Tags
-    var usedTags = [];
-    for (var i = 0; i < this.state.infos.length; ++i) {
-      for (var j = 0; j < this.state.infos[i].tags.length; ++j) {
-        if (usedTags.indexOf(this.state.infos[i].tags[j]) === -1) {
-          usedTags.push(this.state.infos[i].tags[j]);
-        }
-      }
-    }
     return React.createElement("div", {
       className: "app"
     }, React.createElement("div", {
@@ -1039,11 +1029,11 @@ var App = React.createClass({
       lastLoadedStr: this.state.lastLoadedStr,
       onDbLoad: this.loadDB,
       conversionNote: this.state.conversionNote
-    }), ["new", "edit"].indexOf(this.state.activeMode) !== -1 && React.createElement(InfoEdit, {
+    }), _.contains(["new", "edit"], this.state.activeMode) && React.createElement(InfoEdit, {
       info: this.state.activeMode === "new" ? this.getNewInfo() : this.state.infos[this.state.selectedInfoIndex],
       onDelete: this.state.activeMode === "edit" ? this.onInfoDelete : false,
       types: this.state.infoTypes,
-      usedTags: usedTags,
+      usedTags: _(this.state.infos).pluck("tags").flatten().union().value(),
       onSave: this.onInfoEdit,
       cancelEdit: this.clickNav.bind(this, "browse")
     }), this.state.activeMode === "browse" && React.createElement(InfoBrowser, {

@@ -173,10 +173,9 @@ var App = React.createClass({
         while(!(firstTypeID in this.state.infoTypes)){
             firstTypeID = (parseInt(firstTypeID, 10)+1).toString();
         }
-        var entries = [];
+        var entries = _.times(this.state.infoTypes[firstTypeID].entryNames.length, function(){return ""});
         var reviews = {};
         for (let i = 0; i < this.state.infoTypes[firstTypeID].entryNames.length; ++i) {
-            entries.push("");
             reviews[i] = [];
         }
         return {
@@ -190,15 +189,6 @@ var App = React.createClass({
     render: function () {
         console.log("render main");
 
-        // get used Tags
-        var usedTags = [];
-        for (var i = 0; i < this.state.infos.length; ++i) {
-            for (var j = 0; j < this.state.infos[i].tags.length; ++j) {
-                if(usedTags.indexOf(this.state.infos[i].tags[j]) === -1){
-                    usedTags.push( this.state.infos[i].tags[j] );
-                }
-            }
-        }
         return (
             <div className="app">
                 <div className="navBar unselectable">
@@ -231,12 +221,12 @@ var App = React.createClass({
                     />
                 }
 
-                {["new", "edit"].indexOf(this.state.activeMode) !== -1 &&
+                {_.contains(["new", "edit"], this.state.activeMode) &&
                     <InfoEdit
                         info={this.state.activeMode === "new"?this.getNewInfo():this.state.infos[this.state.selectedInfoIndex]}
                         onDelete={this.state.activeMode === "edit"?this.onInfoDelete:false}
                         types={this.state.infoTypes}
-                        usedTags={usedTags}
+                        usedTags={_(this.state.infos).pluck('tags').flatten().union().value()}
                         onSave={this.onInfoEdit}
                         cancelEdit={this.clickNav.bind(this, "browse")}
                     />
