@@ -171,16 +171,19 @@ var InfoEdit = React.createClass({
     return {
       info: JSON.parse(JSON.stringify(this.props.info)),
       previewID: false,
-      scrollHeights: {},
       newTagValue: ""
     };
   },
-  //componentDidMount(){
-  //    //Only focus first text field with new infos. Otherwise confusing/unwanted, especially on mobile
-  //    if(!("info" in this.props)) {
-  //        this.refs[0].getDOMNode().focus();
-  //    }
-  //},
+  componentDidMount: function () {
+    console.log("componentDidMount");
+    for (var entryIdx = 0; entryIdx < this.state.info.entries.length; ++entryIdx) {
+      this.refs[entryIdx].getDOMNode().style.height = this.refs[entryIdx].getDOMNode().scrollHeight - 4 + "px";
+    }
+    //    //Only focus first text field with new infos. Otherwise confusing/unwanted, especially on mobile
+    //    if(!("info" in this.props)) {
+    //        this.refs[0].getDOMNode().focus();
+    //    }
+  },
   onTypeChange: function (newTypeID) {
     var newInfo = JSON.parse(JSON.stringify(this.state.info));
     newInfo.typeID = newTypeID;
@@ -209,15 +212,13 @@ var InfoEdit = React.createClass({
     this.setState({ previewID: newPreview });
   },
   onEntryEdit: function (event) {
-    console.log("name: " + event.target.name + ", value: " + event.target.value);
-
     var newInfo = JSON.parse(JSON.stringify(this.state.info));
-    var scrollHeights = JSON.parse(JSON.stringify(this.state.scrollHeights));
-    scrollHeights[event.target.name] = this.refs[event.target.name].getDOMNode().scrollHeight;
+    var node = this.refs[event.target.name].getDOMNode();
+    node.style.height = "auto";
+    node.style.height = node.scrollHeight - 4 + "px";
     newInfo.entries[event.target.name] = event.target.value;
     this.setState({
-      info: newInfo,
-      scrollHeights: scrollHeights
+      info: newInfo
     });
   },
   handleNewTagChange: function (e) {
@@ -244,16 +245,12 @@ var InfoEdit = React.createClass({
     // the entries
     var entrySections = [];
     for (var entryIdx = 0; entryIdx < this.state.info.entries.length; ++entryIdx) {
-      var ss = { overflow: "hidden" };
-      if (entryIdx in this.state.scrollHeights) {
-        ss = { overflow: "hidden", height: this.state.scrollHeights[entryIdx] - 4 + "px" };
-      }
       entrySections.push(React.createElement("textarea", {
         key: entryIdx,
         value: this.state.info.entries[entryIdx],
         placeholder: this.props.types[this.state.info.typeID].entryNames[entryIdx],
         onChange: this.onEntryEdit,
-        style: ss,
+        style: { overflow: "hidden" },
         name: entryIdx,
         ref: entryIdx
       }));
@@ -345,7 +342,7 @@ var Intervaller = React.createClass({
   displayName: "Intervaller",
   getInitialState: function () {
     return {
-      modifyType: "change", // change, set
+      modifyType: this.props.reviewInterval === 0 ? "set" : "change",
       changeType: "minutes", // minutes, hours, weeks, relative
       modifyAmount: 10,
       activeKeyIndex: false
@@ -422,6 +419,7 @@ var Intervaller = React.createClass({
     return React.createElement("div", {
       className: this.props.show ? "" : "invisible"
     }, React.createElement("button", {
+      disabled: this.props.reviewInterval === 0,
       className: " " + (this.state.modifyType === "change" ? "buttonGood" : ""),
       onClick: this.onModeChange.bind(this, "change")
     }, "change"), React.createElement("button", {
@@ -774,14 +772,13 @@ var InfoTypes = React.createClass({
         className: "flexElemContHoriz button " + (_this.state.mode === templateID ? "buttonGood" : ""),
         onClick: _this.setMode.bind(_this, templateID)
       }, "Template " + templateID);
-    })), mainSection, React.createElement("section", {
+    })), mainSection, React.createElement("div", {
       className: "flexContHoriz"
     }, React.createElement("button", {
       disabled: !isChanged,
-      className: "flexElemContHoriz buttonGood",
+      className: "buttonGood",
       onClick: this.props.onSave.bind(null, this.state.types, this.state.changes)
     }, "Save"), React.createElement("button", {
-      className: "flexElemContHoriz",
       onClick: this.props.cancelEdit
     }, "Cancel")));
   }

@@ -3,16 +3,19 @@ var InfoEdit = React.createClass({
         return {
             info: JSON.parse( JSON.stringify( this.props.info )),
             previewID: false,
-            scrollHeights: {},
             newTagValue: ""
         };
     },
-    //componentDidMount(){
+    componentDidMount(){
+        console.log("componentDidMount");
+        for (let entryIdx = 0; entryIdx < this.state.info.entries.length; ++entryIdx) {
+            this.refs[entryIdx].getDOMNode().style.height = this.refs[entryIdx].getDOMNode().scrollHeight-4+"px";
+        }
     //    //Only focus first text field with new infos. Otherwise confusing/unwanted, especially on mobile
     //    if(!("info" in this.props)) {
     //        this.refs[0].getDOMNode().focus();
     //    }
-    //},
+    },
     onTypeChange(newTypeID){
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
         newInfo.typeID = newTypeID;
@@ -41,15 +44,13 @@ var InfoEdit = React.createClass({
         this.setState({previewID: newPreview});
     },
     onEntryEdit(event){
-        console.log("name: " + event.target.name + ", value: " + event.target.value);
-
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
-        var scrollHeights = JSON.parse( JSON.stringify( this.state.scrollHeights ));
-        scrollHeights[event.target.name] = this.refs[event.target.name].getDOMNode().scrollHeight;
+        var node = this.refs[event.target.name].getDOMNode();
+        node.style.height = 'auto';
+        node.style.height = node.scrollHeight-4+"px";
         newInfo.entries[event.target.name] = event.target.value;
         this.setState({
-            info: newInfo,
-            scrollHeights: scrollHeights
+            info: newInfo
         });
     },
     handleNewTagChange(e){
@@ -79,17 +80,13 @@ var InfoEdit = React.createClass({
         // the entries
         var entrySections = [];
         for (let entryIdx = 0; entryIdx < this.state.info.entries.length; ++entryIdx) {
-            var ss = {"overflow": "hidden"};
-            if(entryIdx in this.state.scrollHeights){
-                ss = {"overflow": "hidden", "height": this.state.scrollHeights[entryIdx]-4+"px"}
-            }
             entrySections.push(
                 <textarea
                     key={entryIdx}
                     value = {this.state.info.entries[entryIdx]}
                     placeholder={this.props.types[this.state.info.typeID].entryNames[entryIdx]}
                     onChange={this.onEntryEdit}
-                    style={ss}
+                    style={{"overflow": "hidden"}}
                     name={entryIdx}
                     ref={entryIdx}
                 />

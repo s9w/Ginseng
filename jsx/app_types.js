@@ -187,14 +187,14 @@ var InfoTypes = React.createClass({
 
                 {mainSection}
 
-                <section className="flexContHoriz">
+                <div className="flexContHoriz">
                     <button
                         disabled={!isChanged}
-                        className="flexElemContHoriz buttonGood"
+                        className="buttonGood"
                         onClick={this.props.onSave.bind(null, this.state.types, this.state.changes)}>Save
                     </button>
-                    <button className="flexElemContHoriz" onClick={this.props.cancelEdit}>Cancel</button>
-                </section>
+                    <button onClick={this.props.cancelEdit}>Cancel</button>
+                </div>
             </div>
         );
     }

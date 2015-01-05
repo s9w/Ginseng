@@ -1,7 +1,7 @@
 var Intervaller = React.createClass({
     getInitialState() {
         return {
-            modifyType: "change", // change, set
+            modifyType: this.props.reviewInterval===0?"set":"change",
             changeType: "minutes", // minutes, hours, weeks, relative
             modifyAmount: 10,
             activeKeyIndex: false
@@ -82,6 +82,7 @@ var Intervaller = React.createClass({
         return(
             <div className={this.props.show?"":"invisible"}>
                 <button
+                    disabled={this.props.reviewInterval===0}
                     className={" "+ (this.state.modifyType==="change"?"buttonGood":"")}
                     onClick={this.onModeChange.bind(this, "change")}>change</button>
                 <button
