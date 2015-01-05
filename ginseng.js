@@ -171,7 +171,8 @@ var InfoEdit = React.createClass({
     return {
       info: JSON.parse(JSON.stringify(this.props.info)),
       previewID: false,
-      scrollHeights: {}
+      scrollHeights: {},
+      newTagValue: ""
     };
   },
   //componentDidMount(){
@@ -194,20 +195,16 @@ var InfoEdit = React.createClass({
     }
     this.setState({ info: newInfo });
   },
-  onTagsEdit: function (event) {
+  toggleTag: function (tagStr) {
     var newInfo = JSON.parse(JSON.stringify(this.state.info));
-    if (event.target.value === "") {
-      newInfo.tags = [];
+    if (_.contains(newInfo.tags, tagStr)) {
+      newInfo.tags.splice(newInfo.tags.indexOf(tagStr), 1);
     } else {
-      newInfo.tags = event.target.value.replace(/ /g, "").split(",");
+      newInfo.tags.push(tagStr);
     }
     this.setState({ info: newInfo });
   },
-  addUsedTag: function (nextTagStr) {
-    var newInfo = JSON.parse(JSON.stringify(this.state.info));
-    newInfo.tags.push(nextTagStr);
-    this.setState({ info: newInfo });
-  },
+
   setPreview: function (newPreview) {
     this.setState({ previewID: newPreview });
   },
@@ -223,10 +220,14 @@ var InfoEdit = React.createClass({
       scrollHeights: scrollHeights
     });
   },
+  handleNewTagChange: function (e) {
+    this.setState({ newTagValue: e.target.value });
+  },
   render: function () {
+    var _this = this;
     // Typename
     var infoTypeSection;
-    if ("info" in this.props) {
+    if (this.props.info.entries[0] !== "") {
       //edit
       infoTypeSection = React.createElement("section", null, React.createElement("h3", null, "Info Type"), React.createElement("span", {
         className: "sectionContent"
@@ -259,52 +260,38 @@ var InfoEdit = React.createClass({
       }));
     }
 
-    // used Tags
-    var usedTagEls = [];
-    for (var i = 0; i < this.props.usedTags.length; ++i) {
-      if (!_.contains(this.state.info.tags, this.props.usedTags[i])) {
-        if (!_.isEmpty(usedTagEls)) {
-          usedTagEls.push(React.createElement("span", {
-            key: i + "x"
-          }, ", "));
-        }
-        usedTagEls.push(React.createElement("a", {
-          key: i,
-          onClick: this.addUsedTag.bind(this, this.props.usedTags[i]),
-          href: "#"
-        }, this.props.usedTags[i]));
-      }
-    }
-
-    var templateButtons = [React.createElement("button", {
-      key: "none",
-      className: "flexElemContHoriz" + (this.state.previewID ? "" : " buttonGood"),
-      onClick: this.setPreview.bind(this, false)
-    }, "None")];
-    for (var templateID in this.props.types[this.state.info.typeID].templates) {
-      templateButtons.push(React.createElement("button", {
-        key: templateID,
-        className: "flexElemContHoriz" + (this.state.previewID === templateID ? " buttonGood" : ""),
-        onClick: this.setPreview.bind(this, templateID)
-      }, "Templ. " + templateID));
-    }
-
-    console.log("tags: " + JSON.stringify(this.state.info.tags));
     return React.createElement("div", {
       className: "InfoEdit Component"
     }, infoTypeSection, React.createElement("section", null, React.createElement("h3", null, "Entries"), React.createElement("form", {
       onChange: this.onEntryEdit
-    }, entrySections)), React.createElement("section", null, React.createElement("h3", null, "Tags"), React.createElement("textarea", {
-      className: "sectionContent",
-      rows: 1,
-      type: "text",
-      value: this.state.info.tags.join(", "),
-      onChange: this.onTagsEdit
-    }), React.createElement("div", {
+    }, entrySections)), React.createElement("section", null, React.createElement("h3", null, "Tags"), React.createElement("div", {
       className: "sectionContent"
-    }, "used: ", usedTagEls)), React.createElement("section", null, React.createElement("h3", null, "Preview"), React.createElement("div", {
+    }, _.union(this.props.usedTags, this.state.info.tags).map(function (tag) {
+      return React.createElement("button", {
+        key: tag,
+        className: _.contains(_this.state.info.tags, tag) ? "buttonGood" : "",
+        onClick: _this.toggleTag.bind(_this, tag),
+        style: { marginRight: 5 }
+      }, tag);
+    }), React.createElement("input", {
+      value: this.state.newTagValue,
+      placeholder: "new tag",
+      onChange: this.handleNewTagChange
+    }), React.createElement("button", {
+      onClick: this.toggleTag.bind(this, this.state.newTagValue)
+    }, "+"))), React.createElement("section", null, React.createElement("h3", null, "Preview"), React.createElement("div", {
       className: "sectionContent tabContainer"
-    }, templateButtons)), this.state.previewID && React.createElement(ReviewDisplay, {
+    }, React.createElement("button", {
+      key: "none",
+      className: "flexElemContHoriz" + (this.state.previewID ? "" : " buttonGood"),
+      onClick: this.setPreview.bind(this, false)
+    }, "None"), _.keys(this.props.types[this.state.info.typeID].templates).map(function (templateID) {
+      return React.createElement("button", {
+        key: templateID,
+        className: "flexElemContHoriz" + (_this.state.previewID === templateID ? " buttonGood" : ""),
+        onClick: _this.setPreview.bind(_this, templateID)
+      }, "Templ. " + templateID);
+    }))), this.state.previewID && React.createElement(ReviewDisplay, {
       type: this.props.types[this.state.info.typeID],
       templateID: this.state.previewID,
       info: this.state.info,

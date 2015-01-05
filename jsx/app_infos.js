@@ -3,7 +3,8 @@ var InfoEdit = React.createClass({
         return {
             info: JSON.parse( JSON.stringify( this.props.info )),
             previewID: false,
-            scrollHeights: {}
+            scrollHeights: {},
+            newTagValue: ""
         };
     },
     //componentDidMount(){
@@ -26,20 +27,16 @@ var InfoEdit = React.createClass({
         }
         this.setState({info: newInfo});
     },
-    onTagsEdit(event) {
+    toggleTag(tagStr){
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
-        if(event.target.value === ""){
-            newInfo.tags = [];
+        if(_.contains(newInfo.tags, tagStr)){
+            newInfo.tags.splice(newInfo.tags.indexOf(tagStr), 1);
         }else{
-            newInfo.tags = event.target.value.replace(/ /g, "").split(",");
+            newInfo.tags.push(tagStr);
         }
         this.setState( {info: newInfo} );
     },
-    addUsedTag(nextTagStr) {
-        var newInfo = JSON.parse( JSON.stringify( this.state.info ));
-        newInfo.tags .push(nextTagStr);
-        this.setState( {info: newInfo} );
-    },
+
     setPreview(newPreview){
         this.setState({previewID: newPreview});
     },
@@ -55,10 +52,13 @@ var InfoEdit = React.createClass({
             scrollHeights: scrollHeights
         });
     },
+    handleNewTagChange(e){
+        this.setState({newTagValue: e.target.value})
+    },
     render() {
         // Typename
         var infoTypeSection;
-        if("info" in this.props){ //edit
+        if(this.props.info.entries[0]!==""){ //edit
             infoTypeSection =
                 <section>
                     <h3>Info Type</h3>
@@ -97,42 +97,7 @@ var InfoEdit = React.createClass({
             );
         }
 
-        // used Tags
-        var usedTagEls = [];
-        for (var i = 0; i < this.props.usedTags.length; ++i) {
-            if( ! (_.contains(this.state.info.tags, this.props.usedTags[i])) ){
-                if(!(_.isEmpty(usedTagEls))){
-                    usedTagEls.push(<span key={i+"x"}>, </span>);
-                }
-                usedTagEls.push(
-                    <a
-                        key={i}
-                        onClick={this.addUsedTag.bind(this, this.props.usedTags[i])}
-                        href="#">{this.props.usedTags[i]}</a>
-                );
-            }
-        }
-
-        var templateButtons = [
-            <button
-                key={"none"}
-                className={"flexElemContHoriz" + (this.state.previewID ? "" : " buttonGood")}
-                onClick={this.setPreview.bind(this, false)}>{"None"}
-            </button>
-        ];
-        for (var templateID in this.props.types[this.state.info.typeID].templates) {
-            templateButtons.push(
-                <button
-                    key={templateID}
-                    className={"flexElemContHoriz" + (this.state.previewID === templateID ? " buttonGood" : "")}
-                    onClick={this.setPreview.bind(this, templateID)}>{"Templ. " + templateID}
-                </button>
-            );
-        }
-
-        console.log("tags: " + JSON.stringify(this.state.info.tags));
         return (
-
             <div className="InfoEdit Component">
                 {infoTypeSection}
 
@@ -145,22 +110,38 @@ var InfoEdit = React.createClass({
 
                 <section>
                     <h3>Tags</h3>
-                    <textarea
-                        className="sectionContent"
-                        rows={1}
-                        type="text"
-                        value={this.state.info.tags.join(", ")}
-                        onChange={this.onTagsEdit}
-                    />
                     <div className="sectionContent">
-                        used: {usedTagEls}
+                        {_.union(this.props.usedTags, this.state.info.tags).map(tag =>
+                            <button
+                                key={tag}
+                                className={_.contains(this.state.info.tags, tag)?"buttonGood":""}
+                                onClick={this.toggleTag.bind(this, tag)}
+                                style={{marginRight: 5}}>{tag}</button>
+                        )}
+                        <input
+                            value={this.state.newTagValue}
+                            placeholder="new tag"
+                            onChange={this.handleNewTagChange}
+                        />
+                        <button onClick={this.toggleTag.bind(this, this.state.newTagValue)}>+</button>
                     </div>
                 </section>
 
                 <section>
                     <h3>Preview</h3>
                     <div className="sectionContent tabContainer">
-                        {templateButtons}
+                        <button
+                            key={"none"}
+                            className={"flexElemContHoriz" + (this.state.previewID ? "" : " buttonGood")}
+                            onClick={this.setPreview.bind(this, false)}>{"None"}
+                        </button>
+                        {_.keys(this.props.types[this.state.info.typeID].templates).map( templateID =>
+                                <button
+                                    key={templateID}
+                                    className={"flexElemContHoriz" + (this.state.previewID === templateID ? " buttonGood" : "")}
+                                    onClick={this.setPreview.bind(this, templateID)}>{"Templ. " + templateID}
+                                </button>
+                        )}
                     </div>
                 </section>
 
