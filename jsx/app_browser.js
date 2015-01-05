@@ -80,18 +80,9 @@ var InfoBrowser = React.createClass({
         });
 
         // generate trs
-        var maxAge = 0;
-        var age;
         var tableRows = [];
         var thData;
-        for (var k = 0; k < sortedInfos.length; ++k) {
-            age = moment().diff(moment(sortedInfos[k].creationDate));
-            if( age>maxAge){
-                maxAge = age;
-            }
-        }
         for (let i = 0; i < sortedInfos.length; ++i) {
-            age = moment().diff(moment(sortedInfos[i].creationDate));
             if( sortedInfos[i].entries[0].toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1 ||
                 sortedInfos[i].entries[1].toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1) {
                 var ds=[];
@@ -100,7 +91,7 @@ var InfoBrowser = React.createClass({
                     sortedInfos[i].entries[1],
                     this.props.types[sortedInfos[i].typeID].name,
                     sortedInfos[i].tags.join(", "),
-                    getShortPreciseIntervalStr(age)
+                    getShortPreciseIntervalStr(moment().diff(moment(sortedInfos[i].creationDate)))
                 ];
                 for (let j = 0; j < thData.length; ++j) {
                     var content;
@@ -110,20 +101,7 @@ var InfoBrowser = React.createClass({
                     }else{
                         content= thData[j];
                     }
-                    if(j==4){
-                        ds.push(
-                            <td key={j}>
-                                <div style={{position: "absolute"}}>{content}</div>
-                                <div style={{
-                                    height: "1em",
-                                    background: "#E0E0E0",
-                                    width: (age/maxAge*100.0)+"%"
-                                }}></div>
-                            </td>
-                        );
-                    }else {
-                        ds.push(<td key={j}>{content}</td>);
-                    }
+                    ds.push(<td key={j}>{content}</td>);
                 }
                 tableRows.push(
                     <tr key={i} onClick={this.props.onRowSelect.bind(null, i)}>

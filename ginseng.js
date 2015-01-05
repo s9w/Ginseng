@@ -69,21 +69,12 @@ var InfoBrowser = React.createClass({
     });
 
     // generate trs
-    var maxAge = 0;
-    var age;
     var tableRows = [];
     var thData;
-    for (var k = 0; k < sortedInfos.length; ++k) {
-      age = moment().diff(moment(sortedInfos[k].creationDate));
-      if (age > maxAge) {
-        maxAge = age;
-      }
-    }
     for (var i = 0; i < sortedInfos.length; ++i) {
-      age = moment().diff(moment(sortedInfos[i].creationDate));
       if (sortedInfos[i].entries[0].toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1 || sortedInfos[i].entries[1].toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1) {
         var ds = [];
-        thData = [sortedInfos[i].entries[0], sortedInfos[i].entries[1], this.props.types[sortedInfos[i].typeID].name, sortedInfos[i].tags.join(", "), getShortPreciseIntervalStr(age)];
+        thData = [sortedInfos[i].entries[0], sortedInfos[i].entries[1], this.props.types[sortedInfos[i].typeID].name, sortedInfos[i].tags.join(", "), getShortPreciseIntervalStr(moment().diff(moment(sortedInfos[i].creationDate)))];
         for (var j = 0; j < thData.length; ++j) {
           var content;
           var shortenLen = j === 2 ? 5 : 15;
@@ -92,23 +83,9 @@ var InfoBrowser = React.createClass({
           } else {
             content = thData[j];
           }
-          if (j == 4) {
-            ds.push(React.createElement("td", {
-              key: j
-            }, React.createElement("div", {
-              style: { position: "absolute" }
-            }, content), React.createElement("div", {
-              style: {
-                height: "1em",
-                background: "#E0E0E0",
-                width: age / maxAge * 100 + "%"
-              }
-            })));
-          } else {
-            ds.push(React.createElement("td", {
-              key: j
-            }, content));
-          }
+          ds.push(React.createElement("td", {
+            key: j
+          }, content));
         }
         tableRows.push(React.createElement("tr", {
           key: i,
@@ -174,16 +151,7 @@ var InfoEdit = React.createClass({
       newTagValue: ""
     };
   },
-  componentDidMount: function () {
-    console.log("componentDidMount");
-    for (var entryIdx = 0; entryIdx < this.state.info.entries.length; ++entryIdx) {
-      this.refs[entryIdx].getDOMNode().style.height = this.refs[entryIdx].getDOMNode().scrollHeight - 4 + "px";
-    }
-    //    //Only focus first text field with new infos. Otherwise confusing/unwanted, especially on mobile
-    //    if(!("info" in this.props)) {
-    //        this.refs[0].getDOMNode().focus();
-    //    }
-  },
+  componentDidMount: function () {},
   onTypeChange: function (newTypeID) {
     var newInfo = JSON.parse(JSON.stringify(this.state.info));
     newInfo.typeID = newTypeID;
@@ -211,12 +179,9 @@ var InfoEdit = React.createClass({
   setPreview: function (newPreview) {
     this.setState({ previewID: newPreview });
   },
-  onEntryEdit: function (event) {
+  onEntryEdit: function (entryIdx, value) {
     var newInfo = JSON.parse(JSON.stringify(this.state.info));
-    var node = this.refs[event.target.name].getDOMNode();
-    node.style.height = "auto";
-    node.style.height = node.scrollHeight - 4 + "px";
-    newInfo.entries[event.target.name] = event.target.value;
+    newInfo.entries[entryIdx] = value;
     this.setState({
       info: newInfo
     });
@@ -241,24 +206,16 @@ var InfoEdit = React.createClass({
         onTypeChange: this.onTypeChange
       }));
     }
-
-    // the entries
-    var entrySections = [];
-    for (var entryIdx = 0; entryIdx < this.state.info.entries.length; ++entryIdx) {
-      entrySections.push(React.createElement("textarea", {
-        key: entryIdx,
-        value: this.state.info.entries[entryIdx],
-        placeholder: this.props.types[this.state.info.typeID].entryNames[entryIdx],
-        onChange: this.onEntryEdit,
-        style: { overflow: "hidden" },
-        name: entryIdx,
-        ref: entryIdx
-      }));
-    }
-
     return React.createElement("div", {
       className: "InfoEdit Component"
-    }, infoTypeSection, React.createElement("section", null, React.createElement("h3", null, "Entries"), entrySections), React.createElement("section", null, React.createElement("h3", null, "Tags"), React.createElement("div", null, _.union(this.props.usedTags, this.state.info.tags).map(function (tag) {
+    }, infoTypeSection, React.createElement("section", null, React.createElement("h3", null, "Entries"), this.state.info.entries.map(function (entry, entryIdx) {
+      return React.createElement(Textarea, {
+        key: entryIdx,
+        value: entry,
+        placeholder: _this.props.types[_this.state.info.typeID].entryNames[entryIdx],
+        onEntryEdit: _this.onEntryEdit.bind(_this, entryIdx)
+      });
+    })), React.createElement("section", null, React.createElement("h3", null, "Tags"), React.createElement("div", null, _.union(this.props.usedTags, this.state.info.tags).map(function (tag) {
       return React.createElement("button", {
         key: tag,
         className: _.contains(_this.state.info.tags, tag) ? "buttonGood" : "",
@@ -300,6 +257,26 @@ var InfoEdit = React.createClass({
   }
 });
 
+var Textarea = React.createClass({
+  displayName: "Textarea",
+  componentDidMount: function () {
+    this.getDOMNode().style.height = this.getDOMNode().scrollHeight - 4 + "px";
+  },
+  onEntryEdit: function () {
+    this.getDOMNode().style.height = "auto";
+    this.getDOMNode().style.height = this.getDOMNode().scrollHeight - 4 + "px";
+    this.props.onEntryEdit(this.getDOMNode().value);
+  },
+  render: function () {
+    return React.createElement("textarea", {
+      value: this.props.value,
+      placeholder: this.props.placeholder,
+      onChange: this.onEntryEdit,
+      style: { overflow: "hidden" }
+    });
+  }
+});
+
 var Popup = React.createClass({
   displayName: "Popup",
   render: function () {
@@ -336,6 +313,10 @@ var ITypeSwitcher = React.createClass({
     }, typeNameOptions);
   }
 });
+//    //Only focus first text field with new infos. Otherwise confusing/unwanted, especially on mobile
+//    if(!("info" in this.props)) {
+//        this.refs[0].getDOMNode().focus();
+//    }
 "use strict";
 
 var Intervaller = React.createClass({
@@ -766,10 +747,10 @@ var InfoTypes = React.createClass({
     }, React.createElement("button", {
       className: this.state.mode === "main" ? "buttonGood" : "",
       onClick: this.setMode.bind(this, "main")
-    }, "Type"), Object.keys(selectedType.templates).map(function (templateID) {
+    }, "Properties"), Object.keys(selectedType.templates).map(function (templateID) {
       return React.createElement("button", {
         key: templateID,
-        className: "flexElemContHoriz button " + (_this.state.mode === templateID ? "buttonGood" : ""),
+        className: "flexElemContHoriz" + (_this.state.mode === templateID ? " buttonGood" : ""),
         onClick: _this.setMode.bind(_this, templateID)
       }, "Template " + templateID);
     })), mainSection, React.createElement("div", {
@@ -801,8 +782,8 @@ var App = React.createClass({
       activeMode: "status",
       selectedTypeID: false,
       selectedInfoIndex: false,
+      reviewModes: init_data.reviewModes,
 
-      conversionNote: false,
       dropBoxStatus: "initial",
       lastLoadedStr: "never",
       isChanged: false
@@ -849,28 +830,9 @@ var App = React.createClass({
       thisApp.setState({
         meta: newMeta,
         dropBoxStatus: "loggedIn",
-        conversionNote: false,
         isChanged: false
       });
     });
-  },
-  loadJsonData: function (jsonData) {
-    var sanitizedData = {
-      infos: jsonData.infos,
-      infoTypes: jsonData.infoTypes,
-      ginseng_settings: jsonData.settings
-    };
-    if (!("meta" in jsonData)) {
-      this.setState({ conversionNote: "old data format from before 2014-12-17. Converted!" });
-      sanitizedData.meta = {
-        dataFormatVersion: "2014-12-17",
-        lastSaved: "never"
-      };
-    } else {
-      this.setState({ conversionNote: false });
-      sanitizedData.meta = jsonData.meta;
-    }
-    return sanitizedData;
   },
   loadDB: function () {
     this.setState({ dropBoxStatus: "loading" });
@@ -879,12 +841,13 @@ var App = React.createClass({
       if (error) {
         console.log("ERROR: " + error);
       }
-      var sanitizedData = thisApp.loadJsonData(JSON.parse(data));
+      var parsedData = JSON.parse(data);
       thisApp.setState({
-        infos: sanitizedData.infos,
-        infoTypes: sanitizedData.infoTypes,
-        ginseng_settings: sanitizedData.ginseng_settings,
-        meta: sanitizedData.meta,
+        infos: parsedData.infos,
+        infoTypes: parsedData.infoTypes,
+        ginseng_settings: parsedData.settings,
+        reviewModes: parsedData.reviewModes || thisApp.state.reviewModes,
+        meta: parsedData.meta,
         lastLoadedStr: moment().format(),
         dropBoxStatus: "loggedIn",
         isChanged: false
@@ -976,7 +939,6 @@ var App = React.createClass({
   },
   render: function () {
     console.log("render main");
-
     return React.createElement("div", {
       className: "app"
     }, React.createElement("div", {
@@ -1003,8 +965,7 @@ var App = React.createClass({
       onDbSave: this.saveDB,
       meta: this.state.meta,
       lastLoadedStr: this.state.lastLoadedStr,
-      onDbLoad: this.loadDB,
-      conversionNote: this.state.conversionNote
+      onDbLoad: this.loadDB
     }), _.contains(["new", "edit"], this.state.activeMode) && React.createElement(InfoEdit, {
       info: this.state.activeMode === "new" ? this.getNewInfo() : this.state.infos[this.state.selectedInfoIndex],
       onDelete: this.state.activeMode === "edit" ? this.onInfoDelete : false,
@@ -1023,7 +984,7 @@ var App = React.createClass({
       cancelEdit: this.clickNav.bind(this, "browse"),
       onSave: this.onTypesEdit,
       selectedTypeID: this.state.selectedTypeID
-    }), this.state.activeMode === "review" && React.createElement(Review, {
+    }), _.contains(["review"], this.state.activeMode) && React.createElement(Review, {
       infos: this.state.infos,
       types: this.state.infoTypes,
       applyInterval: this.applyInterval,
@@ -1054,11 +1015,6 @@ var Status = React.createClass({
     this.setState({ showOverwriteWarning: false });
   },
   render: function () {
-    var conversionNoteEl = false;
-    if (this.props.conversionNote) {
-      conversionNoteEl = React.createElement("div", null, this.props.conversionNote);
-    }
-
     var lastSavedStr = this.props.meta.lastSaved;
     var lastLoadedStr = this.props.lastLoadedStr;
     if (this.props.meta.lastSaved !== "never") {
@@ -1094,7 +1050,7 @@ var Status = React.createClass({
 
     return React.createElement("div", {
       className: "Status Component"
-    }, popupOverwrite, React.createElement("div", null, "Infos loaded: ", this.props.dropBoxStatus === "loading" ? "loading" : this.props.infoCount), React.createElement("div", null, "Dropbox Status: ", this.props.dropBoxStatus), React.createElement("div", null, "Last save: " + lastSavedStr), React.createElement("div", null, "Last load: " + lastLoadedStr), conversionNoteEl, React.createElement("div", {
+    }, popupOverwrite, React.createElement("div", null, "Infos loaded: ", this.props.dropBoxStatus === "loading" ? "loading" : this.props.infoCount), React.createElement("div", null, "Dropbox Status: ", this.props.dropBoxStatus), React.createElement("div", null, "Last save: " + lastSavedStr), React.createElement("div", null, "Last load: " + lastLoadedStr), React.createElement("div", {
       className: "flexContHoriz"
     }, React.createElement("button", {
       disabled: this.props.dropBoxStatus !== "initial",

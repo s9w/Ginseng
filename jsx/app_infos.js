@@ -7,10 +7,6 @@ var InfoEdit = React.createClass({
         };
     },
     componentDidMount(){
-        console.log("componentDidMount");
-        for (let entryIdx = 0; entryIdx < this.state.info.entries.length; ++entryIdx) {
-            this.refs[entryIdx].getDOMNode().style.height = this.refs[entryIdx].getDOMNode().scrollHeight-4+"px";
-        }
     //    //Only focus first text field with new infos. Otherwise confusing/unwanted, especially on mobile
     //    if(!("info" in this.props)) {
     //        this.refs[0].getDOMNode().focus();
@@ -43,12 +39,9 @@ var InfoEdit = React.createClass({
     setPreview(newPreview){
         this.setState({previewID: newPreview});
     },
-    onEntryEdit(event){
+    onEntryEdit(entryIdx, value){
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
-        var node = this.refs[event.target.name].getDOMNode();
-        node.style.height = 'auto';
-        node.style.height = node.scrollHeight-4+"px";
-        newInfo.entries[event.target.name] = event.target.value;
+        newInfo.entries[entryIdx] = value;
         this.setState({
             info: newInfo
         });
@@ -76,30 +69,20 @@ var InfoEdit = React.createClass({
                     />
                 </section>;
         }
-
-        // the entries
-        var entrySections = [];
-        for (let entryIdx = 0; entryIdx < this.state.info.entries.length; ++entryIdx) {
-            entrySections.push(
-                <textarea
-                    key={entryIdx}
-                    value = {this.state.info.entries[entryIdx]}
-                    placeholder={this.props.types[this.state.info.typeID].entryNames[entryIdx]}
-                    onChange={this.onEntryEdit}
-                    style={{"overflow": "hidden"}}
-                    name={entryIdx}
-                    ref={entryIdx}
-                />
-            );
-        }
-
         return (
             <div className="InfoEdit Component">
                 {infoTypeSection}
 
                 <section>
                     <h3>Entries</h3>
-                    {entrySections}
+                    {this.state.info.entries.map((entry, entryIdx) =>
+                        <Textarea
+                            key={entryIdx}
+                            value = {entry}
+                            placeholder={this.props.types[this.state.info.typeID].entryNames[entryIdx]}
+                            onEntryEdit={this.onEntryEdit.bind(this, entryIdx)}
+                        />
+                    )}
                 </section>
 
                 <section>
@@ -161,6 +144,27 @@ var InfoEdit = React.createClass({
                     }
                 </div>
             </div>);
+    }
+});
+
+var Textarea = React.createClass({
+    componentDidMount(){
+        this.getDOMNode().style.height = this.getDOMNode().scrollHeight-4+"px";
+    },
+    onEntryEdit(){
+        this.getDOMNode().style.height = 'auto';
+        this.getDOMNode().style.height = this.getDOMNode().scrollHeight-4+"px";
+        this.props.onEntryEdit(this.getDOMNode().value);
+    },
+    render() {
+        return (
+            <textarea
+                value = {this.props.value}
+                placeholder={this.props.placeholder}
+                onChange={this.onEntryEdit}
+                style={{"overflow": "hidden"}}
+            />
+        );
     }
 });
 

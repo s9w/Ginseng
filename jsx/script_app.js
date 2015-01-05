@@ -13,8 +13,8 @@ var App = React.createClass({
             activeMode: "status",
             selectedTypeID: false,
             selectedInfoIndex: false,
+            reviewModes: init_data.reviewModes,
 
-            conversionNote: false,
             dropBoxStatus: "initial",
             lastLoadedStr: "never",
             isChanged: false
@@ -63,28 +63,9 @@ var App = React.createClass({
             thisApp.setState({
                 meta: newMeta,
                 dropBoxStatus: "loggedIn",
-                conversionNote: false,
                 isChanged: false
             });
         });
-    },
-    loadJsonData(jsonData){
-        var sanitizedData= {
-            infos: jsonData.infos,
-            infoTypes: jsonData.infoTypes,
-            ginseng_settings: jsonData.settings
-        };
-        if(!("meta" in jsonData)){
-            this.setState({conversionNote: "old data format from before 2014-12-17. Converted!"});
-            sanitizedData.meta = {
-                "dataFormatVersion": "2014-12-17",
-                "lastSaved": "never"
-            };
-        }else{
-            this.setState({conversionNote: false});
-            sanitizedData.meta = jsonData.meta;
-        }
-        return sanitizedData;
     },
     loadDB() {
         this.setState({dropBoxStatus: "loading"});
@@ -93,12 +74,13 @@ var App = React.createClass({
             if (error) {
                 console.log("ERROR: " + error);
             }
-            var sanitizedData = thisApp.loadJsonData( JSON.parse(data) );
+            var parsedData = JSON.parse(data);
             thisApp.setState({
-                infos: sanitizedData.infos,
-                infoTypes: sanitizedData.infoTypes,
-                ginseng_settings: sanitizedData.ginseng_settings,
-                meta: sanitizedData.meta,
+                infos: parsedData.infos,
+                infoTypes: parsedData.infoTypes,
+                ginseng_settings: parsedData.settings,
+                reviewModes: parsedData.reviewModes || thisApp.state.reviewModes,
+                meta: parsedData.meta,
                 lastLoadedStr: moment().format(),
                 dropBoxStatus: "loggedIn",
                 isChanged: false
@@ -188,7 +170,6 @@ var App = React.createClass({
     },
     render: function () {
         console.log("render main");
-
         return (
             <div className="app">
                 <div className="navBar unselectable">
@@ -217,7 +198,6 @@ var App = React.createClass({
                         meta={this.state.meta}
                         lastLoadedStr={this.state.lastLoadedStr}
                         onDbLoad={this.loadDB}
-                        conversionNote={this.state.conversionNote}
                     />
                 }
 
@@ -251,7 +231,7 @@ var App = React.createClass({
                     />
                 }
 
-                {this.state.activeMode === "review" &&
+                {_.contains(["review"], this.state.activeMode) &&
                     <Review
                         infos={this.state.infos}
                         types={this.state.infoTypes}
@@ -286,11 +266,6 @@ var Status = React.createClass({
         this.setState({showOverwriteWarning: false});
     },
     render() {
-        var conversionNoteEl = false;
-        if(this.props.conversionNote){
-            conversionNoteEl = <div>{this.props.conversionNote}</div>
-        }
-
         var lastSavedStr  = this.props.meta.lastSaved;
         var lastLoadedStr = this.props.lastLoadedStr;
         if(this.props.meta.lastSaved !== "never"){
@@ -331,7 +306,6 @@ var Status = React.createClass({
                 <div>Dropbox Status: {this.props.dropBoxStatus}</div>
                 <div>{"Last save: " + lastSavedStr}</div>
                 <div>{"Last load: " + lastLoadedStr}</div>
-                {conversionNoteEl}
 
                 <div className={"flexContHoriz"}>
                     <button

@@ -173,13 +173,13 @@ var InfoTypes = React.createClass({
                 <div className="sectionContent tabContainer">
                     <button
                         className={this.state.mode==="main"?"buttonGood":""}
-                        onClick={this.setMode.bind(this, "main")}>Type
+                        onClick={this.setMode.bind(this, "main")}>Properties
                     </button>
 
                     {Object.keys(selectedType.templates).map(templateID =>
                         <button
                             key={templateID}
-                            className={"flexElemContHoriz button "+(this.state.mode===templateID?"buttonGood":"")}
+                            className={"flexElemContHoriz"+(this.state.mode===templateID?" buttonGood":"")}
                             onClick={this.setMode.bind(this, templateID)}>{"Template "+templateID}
                         </button>
                     )}
