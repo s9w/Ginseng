@@ -19,6 +19,11 @@ section {
   white-space: pre;
   display: flex;
   flex-direction: column; }
+  section > *:not(:first-child) {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1px; }
 
 h3 {
   font-size: 18px;
@@ -29,12 +34,6 @@ h3 {
 p {
   margin-top: 0.5em;
   margin-bottom: 0.5em; }
-
-.sectionContent {
-  margin-left: 10px;
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 1px; }
 
 .wrap {
   flex-wrap: wrap; }

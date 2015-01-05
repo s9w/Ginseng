@@ -202,7 +202,7 @@ var InfoEdit = React.createClass({
     } else {
       newInfo.tags.push(tagStr);
     }
-    this.setState({ info: newInfo });
+    this.setState({ info: newInfo, newTagValue: "" });
   },
 
   setPreview: function (newPreview) {
@@ -225,7 +225,6 @@ var InfoEdit = React.createClass({
   },
   render: function () {
     var _this = this;
-    // Typename
     var infoTypeSection;
     if (this.props.info.entries[0] !== "") {
       //edit
@@ -253,7 +252,7 @@ var InfoEdit = React.createClass({
         key: entryIdx,
         value: this.state.info.entries[entryIdx],
         placeholder: this.props.types[this.state.info.typeID].entryNames[entryIdx],
-        className: "sectionContent",
+        onChange: this.onEntryEdit,
         style: ss,
         name: entryIdx,
         ref: entryIdx
@@ -262,16 +261,11 @@ var InfoEdit = React.createClass({
 
     return React.createElement("div", {
       className: "InfoEdit Component"
-    }, infoTypeSection, React.createElement("section", null, React.createElement("h3", null, "Entries"), React.createElement("form", {
-      onChange: this.onEntryEdit
-    }, entrySections)), React.createElement("section", null, React.createElement("h3", null, "Tags"), React.createElement("div", {
-      className: "sectionContent"
-    }, _.union(this.props.usedTags, this.state.info.tags).map(function (tag) {
+    }, infoTypeSection, React.createElement("section", null, React.createElement("h3", null, "Entries"), entrySections), React.createElement("section", null, React.createElement("h3", null, "Tags"), React.createElement("div", null, _.union(this.props.usedTags, this.state.info.tags).map(function (tag) {
       return React.createElement("button", {
         key: tag,
         className: _.contains(_this.state.info.tags, tag) ? "buttonGood" : "",
-        onClick: _this.toggleTag.bind(_this, tag),
-        style: { marginRight: 5 }
+        onClick: _this.toggleTag.bind(_this, tag)
       }, tag);
     }), React.createElement("input", {
       value: this.state.newTagValue,
@@ -279,16 +273,14 @@ var InfoEdit = React.createClass({
       onChange: this.handleNewTagChange
     }), React.createElement("button", {
       onClick: this.toggleTag.bind(this, this.state.newTagValue)
-    }, "+"))), React.createElement("section", null, React.createElement("h3", null, "Preview"), React.createElement("div", {
-      className: "sectionContent tabContainer"
-    }, React.createElement("button", {
+    }, "+"))), React.createElement("section", null, React.createElement("h3", null, "Preview"), React.createElement("div", null, React.createElement("button", {
       key: "none",
-      className: "flexElemContHoriz" + (this.state.previewID ? "" : " buttonGood"),
+      className: this.state.previewID ? "" : "buttonGood",
       onClick: this.setPreview.bind(this, false)
     }, "None"), _.keys(this.props.types[this.state.info.typeID].templates).map(function (templateID) {
       return React.createElement("button", {
         key: templateID,
-        className: "flexElemContHoriz" + (_this.state.previewID === templateID ? " buttonGood" : ""),
+        className: _this.state.previewID === templateID ? "buttonGood" : "",
         onClick: _this.setPreview.bind(_this, templateID)
       }, "Templ. " + templateID);
     }))), this.state.previewID && React.createElement(ReviewDisplay, {
@@ -771,7 +763,7 @@ var InfoTypes = React.createClass({
       selectedTypeID: this.state.selectedTypeID,
       onTypeChange: this.selectType,
       onAddType: this.onAddType
-    })), React.createElement("section", {
+    })), React.createElement("div", {
       className: "sectionContent tabContainer"
     }, React.createElement("button", {
       className: this.state.mode === "main" ? "buttonGood" : "",
@@ -783,7 +775,7 @@ var InfoTypes = React.createClass({
         onClick: _this.setMode.bind(_this, templateID)
       }, "Template " + templateID);
     })), mainSection, React.createElement("section", {
-      className: "sectionContent flexContHoriz"
+      className: "flexContHoriz"
     }, React.createElement("button", {
       disabled: !isChanged,
       className: "flexElemContHoriz buttonGood",

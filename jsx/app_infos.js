@@ -34,7 +34,7 @@ var InfoEdit = React.createClass({
         }else{
             newInfo.tags.push(tagStr);
         }
-        this.setState( {info: newInfo} );
+        this.setState( {info: newInfo, newTagValue: ""} );
     },
 
     setPreview(newPreview){
@@ -56,7 +56,6 @@ var InfoEdit = React.createClass({
         this.setState({newTagValue: e.target.value})
     },
     render() {
-        // Typename
         var infoTypeSection;
         if(this.props.info.entries[0]!==""){ //edit
             infoTypeSection =
@@ -89,7 +88,7 @@ var InfoEdit = React.createClass({
                     key={entryIdx}
                     value = {this.state.info.entries[entryIdx]}
                     placeholder={this.props.types[this.state.info.typeID].entryNames[entryIdx]}
-                    className= "sectionContent"
+                    onChange={this.onEntryEdit}
                     style={ss}
                     name={entryIdx}
                     ref={entryIdx}
@@ -103,20 +102,18 @@ var InfoEdit = React.createClass({
 
                 <section>
                     <h3>Entries</h3>
-                    <form onChange={this.onEntryEdit}>
-                        {entrySections}
-                    </form>
+                    {entrySections}
                 </section>
 
                 <section>
                     <h3>Tags</h3>
-                    <div className="sectionContent">
+                    <div>
                         {_.union(this.props.usedTags, this.state.info.tags).map(tag =>
                             <button
                                 key={tag}
                                 className={_.contains(this.state.info.tags, tag)?"buttonGood":""}
                                 onClick={this.toggleTag.bind(this, tag)}
-                                style={{marginRight: 5}}>{tag}</button>
+                                >{tag}</button>
                         )}
                         <input
                             value={this.state.newTagValue}
@@ -129,18 +126,18 @@ var InfoEdit = React.createClass({
 
                 <section>
                     <h3>Preview</h3>
-                    <div className="sectionContent tabContainer">
+                    <div>
                         <button
                             key={"none"}
-                            className={"flexElemContHoriz" + (this.state.previewID ? "" : " buttonGood")}
+                            className={(this.state.previewID ? "" : "buttonGood")}
                             onClick={this.setPreview.bind(this, false)}>{"None"}
                         </button>
                         {_.keys(this.props.types[this.state.info.typeID].templates).map( templateID =>
-                                <button
-                                    key={templateID}
-                                    className={"flexElemContHoriz" + (this.state.previewID === templateID ? " buttonGood" : "")}
-                                    onClick={this.setPreview.bind(this, templateID)}>{"Templ. " + templateID}
-                                </button>
+                            <button
+                                key={templateID}
+                                className={(this.state.previewID === templateID ? "buttonGood" : "")}
+                                onClick={this.setPreview.bind(this, templateID)}>{"Templ. " + templateID}
+                            </button>
                         )}
                     </div>
                 </section>

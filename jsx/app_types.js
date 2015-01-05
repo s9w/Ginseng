@@ -170,7 +170,7 @@ var InfoTypes = React.createClass({
                     />
                 </section>
 
-                <section className="sectionContent tabContainer">
+                <div className="sectionContent tabContainer">
                     <button
                         className={this.state.mode==="main"?"buttonGood":""}
                         onClick={this.setMode.bind(this, "main")}>Type
@@ -183,11 +183,11 @@ var InfoTypes = React.createClass({
                             onClick={this.setMode.bind(this, templateID)}>{"Template "+templateID}
                         </button>
                     )}
-                </section>
+                </div>
 
                 {mainSection}
 
-                <section className="sectionContent flexContHoriz">
+                <section className="flexContHoriz">
                     <button
                         disabled={!isChanged}
                         className="flexElemContHoriz buttonGood"
