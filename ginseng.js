@@ -324,13 +324,16 @@ var Intervaller = React.createClass({
   getInitialState: function () {
     return {
       modifyType: this.props.reviewInterval === 0 ? "set" : "change",
-      changeType: "minutes", // minutes, hours, weeks, relative
+      changeType: "minutes",
       modifyAmount: 10,
       activeKeyIndex: false
     };
   },
   componentWillReceiveProps: function (nextProps) {
-    this.setState({ activeKeyIndex: false });
+    this.setState({
+      activeKeyIndex: false,
+      modifyType: nextProps.reviewInterval === 0 ? "set" : this.state.modifyType
+    });
   },
   onModeChange: function (newModeStr) {
     if (newModeStr !== this.state.modifyType) {
