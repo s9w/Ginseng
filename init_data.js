@@ -89,12 +89,12 @@ var init_data = {
             "0":{
                 "name": "All",
                 "condition": "",
-                "urgencyThreshold": 1.0
+                "dueThreshold": 1.0
             },
             "1":{
                 "name": "Uni",
                 "condition": "tag: math || tag: physik",
-                "urgencyThreshold": 1.0
+                "dueThreshold": 1.0
             }
         },
         "settings": {

@@ -23,7 +23,7 @@ var Settings = React.createClass({
         this.setState({settings: newSettings});
     },
     render() {
-
+        var isChanged = JSON.stringify(this.props.settings)!==JSON.stringify(this.state.settings);
         return (
             <div className="Component">
                 <section>
@@ -54,6 +54,8 @@ var Settings = React.createClass({
                 </section>
 
                 <button
+                    className="buttonGood"
+                    disabled={!isChanged}
                     onClick={this.onSave}>Save</button>
             </div>
         )

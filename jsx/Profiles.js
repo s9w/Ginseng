@@ -66,8 +66,8 @@ var Profiles = React.createClass({
                             displayType: "input"
                         },
                         {
-                            displayName: "Urgency Threshold",
-                            key: "urgencyThreshold",
+                            displayName: "Due threshold",
+                            key: "dueThreshold",
                             displayType: "input"
                         }
                     ]}

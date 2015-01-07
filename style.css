@@ -157,8 +157,8 @@ tbody > tr > td {
   border-bottom: thick solid #000000; }
   .navBar > div {
     cursor: pointer;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 3px;
+    padding-right: 3px;
     font-size: 16px;
     font-weight: bold;
     line-height: 2em; }

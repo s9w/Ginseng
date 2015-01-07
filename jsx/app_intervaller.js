@@ -83,7 +83,7 @@ var Intervaller = React.createClass({
                 <div className="intervalButtonCont">
                     {intervals}
                 </div>
-                <div>Old interval: {getPreciseIntervalStr( this.props.reviewInterval )}</div>
+                <div>Last interval: {getPreciseIntervalStr( this.props.reviewInterval )}</div>
                 <div className={this.state.activeKeyIndex?"":"invisible"}>New interval: {getPreciseIntervalStr( this.getNewInterval() )}</div>
                 <div className={this.state.activeKeyIndex?"":"invisible"}>Due on: {moment().add(moment.duration(this.getNewInterval())).format("dddd, YYYY-MM-DD, HH:mm") }</div>
             </div>

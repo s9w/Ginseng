@@ -50,7 +50,7 @@ var Review = React.createClass({
                         realInterval = 0;
                     }
 
-                    if(urgency >= this.props.activeProfile.urgencyThreshold) {
+                    if(urgency >= this.props.activeProfile.dueThreshold) {
                         dueCount++;
                         if (urgency > nextReview.urgency) {
                             nextReview.urgency = urgency;
