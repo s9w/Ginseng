@@ -47,19 +47,26 @@ var InfoEdit = React.createClass({
         var infoTypeSection;
         if(this.props.info.entries[0]!==""){ //edit
             infoTypeSection =
-                <section>
-                    <h3>Info Type</h3>
-                    <span className="sectionContent">{this.props.types[this.state.info.typeID].name}</span>
-                </section>;
-        }else{ // new
+                <Editor
+                    path={this.props.types[this.state.info.typeID]}
+                    objects={[
+                        {
+                            displayName: "Info Type",
+                            key: "name",
+                            displayType: "label"
+                        }
+                    ]}
+
+                />
+
+        } else { // new
             infoTypeSection =
                 <section>
                     <h3>Info Type</h3>
-                    <TypeSwitcher
-                        className="sectionContent"
-                        types={this.props.types}
-                        selectedTypeID={this.state.info.typeID}
-                        onTypeChange={this.onTypeChange}
+                    <DictSelector
+                        dict={this.props.types}
+                        selectedID={this.state.info.typeID}
+                        onSelectionChange={this.onTypeChange}
                     />
                 </section>;
         }
@@ -174,31 +181,31 @@ var Popup = React.createClass({
     }
 });
 
-var TypeSwitcher = React.createClass({
-    onTypeChange(event){
-        this.props.onTypeChange(event.target.value);
+var DictSelector = React.createClass({
+    onSelectionChange(event){
+        this.props.onSelectionChange(event.target.value);
     },
     render() {
         return (
             <div className="flexRow">
                 <select
-                    size={_.max([_.keys(this.props.types).length, 2])}
-                    onChange={this.onTypeChange}
-                    style={{overflow:"hidden"}}
-                    value={this.props.selectedTypeID}>
-                        {_.map(this.props.types, (type, typeID) =>
+                    size={_.max([_.keys(this.props.dict).length, 2])}
+                    onChange={this.onSelectionChange}
+                    style={{overflow:"hidden", minWidth: "100px"}}
+                    value={this.props.selectedID}>
+                        {_.map(this.props.dict, (element, key) =>
                             <option
-                                key={typeID}
-                                value={typeID}>{type.name}</option>
+                                key={key}
+                                value={key}>{element.name}</option>
                         )}
                 </select>
-                {"onDeleteType" in this.props &&
+                {"onDeleteElement" in this.props &&
                     <div>
-                        <button onClick={this.props.onAddType}>New</button>
+                        <button onClick={this.props.onAddElement}>New</button>
                         <button
                             className="buttonDanger"
-                            disabled={!this.props.onDeleteType}
-                            onClick={this.props.onDeleteType}>Delete</button>
+                            disabled={!this.props.onDeleteElement}
+                            onClick={this.props.onDeleteElement}>Delete</button>
                     </div>
                 }
             </div>

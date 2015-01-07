@@ -93,7 +93,7 @@ var init_data = {
             },
             "1":{
                 "name": "Uni",
-                "condition": "tag: math or tag: physik",
+                "condition": "tag: math || tag: physik",
                 "urgencyThreshold": 1.0
             }
         },

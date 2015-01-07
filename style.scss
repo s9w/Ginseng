@@ -202,26 +202,23 @@ tbody>tr>td{
 
 .navBar{
   display: flex;
-  //  justify-content: space-between;
-  /*flex-wrap: wrap;*/
+  justify-content: center;
+  flex-wrap: wrap;
   max-width: 500px;
   margin-left: auto ;
   margin-right: auto ;
   border-bottom: thick solid #000000;
   & > div{
-    flex: 1 1 auto;
-    text-align: center;
-    /*padding: 0 8px;*/
-    /*display:inline;*/
     cursor: pointer;
-    //    height: 12.0vw;
-    line-height: 12.0vw;
-    font-size: 6.0vw;
-    @media (min-width: 300px) {
-      line-height: 36px;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 2em;
+    @media (min-width: 450px) {
       font-size: 18px;
     }
-    //  font-weight: normal;
+
     //  text-rendering: optimizeLegibility;
     &:hover{
       background-color: lighten($base-green, 30%);

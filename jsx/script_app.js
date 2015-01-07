@@ -12,7 +12,8 @@ var App = React.createClass({
             meta: init_data.meta,
             activeMode: "status",
             selectedInfoIndex: false,
-            reviewModes: init_data.reviewModes,
+            reviewProfiles: init_data.reviewProfiles,
+            activeProfileKey: _.min(_.keys(init_data.reviewProfiles)),
 
             dropBoxStatus: "initial",
             lastLoadedStr: "never",
@@ -78,7 +79,7 @@ var App = React.createClass({
                 infos: parsedData.infos,
                 infoTypes: parsedData.infoTypes,
                 settings: parsedData.settings,
-                reviewModes: parsedData.reviewModes || thisApp.state.reviewModes,
+                reviewProfiles: parsedData.reviewProfiles || thisApp.state.reviewProfiles,
                 meta: parsedData.meta,
                 lastLoadedStr: moment().format(),
                 dropBoxStatus: "loggedIn",
@@ -90,6 +91,12 @@ var App = React.createClass({
         this.setState({
             selectedInfoIndex: infoIndex,
             activeMode: "edit"
+        })
+    },
+    gotoReview(param){
+        this.setState({
+            activeMode: "review",
+            activeProfileKey: param
         })
     },
     onInfoEdit(newInfo) {
@@ -164,8 +171,13 @@ var App = React.createClass({
             creationDate: moment().format()
         }
     },
-    updateSettings(newSettings){
-        this.setState({settings: newSettings});
+    updateGeneric(name, value){
+        var newState = {
+            isChanged: true,
+            activeMode: "browse"
+        };
+        newState[name] = value;
+        this.setState(newState);
     },
     render: function () {
         return (
@@ -179,14 +191,17 @@ var App = React.createClass({
                     <div className={this.state.activeMode == "settings" ? "active" : ""}
                         onClick={this.clickNav.bind(this, "settings")}>Settings
                     </div>
-                    <div className={["browse", "new", "edit"].indexOf(this.state.activeMode)!==-1 ? "active" : "" }
+                    <div className={_(["browse", "new", "edit"]).contains(this.state.activeMode) ? "active" : "" }
                         onClick={this.clickNav.bind(this, "browse")}>Infos
                     </div>
-                    <div className={this.state.activeMode == "types" ? "active" : ""}
+                    <div className={this.state.activeMode === "types" ? "active" : ""}
                         onClick={this.clickNav.bind(this, "types")}>Types
                     </div>
-                    <div className={this.state.activeMode == "review" ? "active" : ""}
-                        onClick={this.clickNav.bind(this, "review")}>Review
+                    <div className={this.state.activeMode === "profiles" ? "active" : ""}
+                        onClick={this.clickNav.bind(this, "profiles")}>Profiles
+                    </div>
+                    <div className={_(["review", "reviewPrompt" ]).contains( this.state.activeMode) ? "active" : ""}
+                        onClick={this.clickNav.bind(this, "reviewPrompt")}>Review
                     </div>
                 </div>
 
@@ -206,7 +221,7 @@ var App = React.createClass({
                 {this.state.activeMode === "settings" &&
                     <Settings
                         settings={this.state.settings}
-                        updateSettings={this.updateSettings}
+                        updateSettings={this.updateGeneric.bind(this, "settings")}
                     />
                 }
 
@@ -239,18 +254,64 @@ var App = React.createClass({
                     />
                 }
 
-                {_.contains(["review"], this.state.activeMode) &&
+                {this.state.activeMode === "profiles" &&
+                    <Profiles
+                        reviewProfiles={this.state.reviewProfiles}
+                        updateProfiles={this.updateGeneric.bind(this, "reviewProfiles")}
+                        onCancel={this.clickNav.bind(this, "browse")}
+                    />
+                }
+
+                { this.state.activeMode === "reviewPrompt" &&
+                    <ReviewPrompt
+                        profiles={this.state.reviewProfiles}
+                        gotoReview={this.gotoReview}
+                    />
+                }
+
+                { this.state.activeMode === "review" &&
                     <Review
                         infos={this.state.infos}
                         types={this.state.infoTypes}
                         applyInterval={this.applyInterval}
                         timeIntervalChoices={this.state.settings.timeIntervalChoices}
                         gotoEdit={this.gotoEdit}
+                        activeProfile={this.state.reviewProfiles[this.state.activeProfileKey]}
                     />
                 }
 
             </div>
         );
+    }
+});
+
+var ReviewPrompt = React.createClass({
+    componentWillMount(){
+        // Skip Profile if there's only one
+        if(_.keys(this.props.profiles).length === 1){
+            this.gotoReview();
+        }
+    },
+    onChange(event){
+        var newDict = _.pick(this.props.path, _.pluck(this.props.objects, "key"));
+        newDict[event.target.name] = event.target.value;
+        this.props.onUpdate(newDict);
+    },
+    gotoReview(){
+        this.props.gotoReview();
+    },
+    render() {
+        return (
+            <div className="Component">
+                <h3>Select review profile</h3>
+                {_(this.props.profiles).map((profile, key) =>
+                    <button
+                        onClick={this.props.gotoReview.bind(null, key)}
+                        >{profile.name}
+                    </button>
+                )}
+            </div>
+        )
     }
 });
 
@@ -332,40 +393,36 @@ var Status = React.createClass({
     }
 });
 
-var Settings = React.createClass({
-    getInitialState() {
-        return {
-            settings: this.props.settings
-        };
-    },
-    onSave(){
-        var newReviewHistoryLength = _.parseInt(this.state.settings.reviewHistoryLength);
-        var newSettings = JSON.parse( JSON.stringify( this.state.settings ));
-        newSettings.reviewHistoryLength = newReviewHistoryLength>=1?
-            newReviewHistoryLength:
-            this.props.settings.reviewHistoryLength;
-        this.props.updateSettings(newSettings);
-    },
+
+var Editor = React.createClass({
     onChange(event){
-        var newSettings = JSON.parse( JSON.stringify( this.state.settings ));
-        newSettings[event.target.name] = event.target.value;
-        this.setState({settings: newSettings});
+        var newDict = _.pick(this.props.path, _.pluck(this.props.objects, "key"));
+        newDict[event.target.name] = event.target.value;
+        this.props.onUpdate(newDict);
     },
     render() {
-
+        var innerHtml;
+        var thisOuter = this;
         return (
-            <div className="Component">
-                <span>Number of saved Reviews to keep. Higher Number will increase file size (around 0.1KB per review): </span>
-                <input
-                    onChange={this.onChange}
-                    name="reviewHistoryLength"
-                    type="number"
-                    min="1"
-                    step="1"
-                    style={{maxWidth: "50px" }}
-                    value={this.state.settings.reviewHistoryLength} />
-                <button
-                    onClick={this.onSave}>Save</button>
+            <div>
+                {this.props.objects.map(function (object) {
+                    if (object.displayType === "label") {
+                        innerHtml = <span>{thisOuter.props.path[object.key]}</span>;
+                    } else if (object.displayType === "input") {
+                        innerHtml = <input
+                            type="text"
+                            name={object.key}
+                            onChange={thisOuter.onChange}
+                            value={thisOuter.props.path[object.key]} />
+                    }
+                    return (
+                        <section key={object.key}>
+                            <h3>{object.displayName}</h3>
+                            {innerHtml}
+                        </section>
+                    );
+
+                })}
             </div>
         )
     }

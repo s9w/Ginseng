@@ -82,7 +82,6 @@ var InfoTypes = React.createClass({
         this.refs.nameRef.getDOMNode().focus();
     },
     onDeleteType(){
-        console.log("onDeleteType");
         var newTypes = JSON.parse( JSON.stringify( this.state.types ));
         delete newTypes[this.state.selectedTypeID];
         this.setState({
@@ -152,12 +151,12 @@ var InfoTypes = React.createClass({
             <div className="Component">
                 <section>
                     <h3>Info Type</h3>
-                    <TypeSwitcher
-                        types={this.state.types}
-                        selectedTypeID={this.state.selectedTypeID}
-                        onTypeChange={this.selectType}
-                        onAddType={this.onAddType}
-                        onDeleteType={_.keys(this.state.types).length<=1?false:this.onDeleteType}
+                    <DictSelector
+                        dict={this.state.types}
+                        selectedID={this.state.selectedTypeID}
+                        onSelectionChange={this.selectType}
+                        onAddElement={this.onAddType}
+                        onDeleteElement={_.keys(this.state.types).length<=1?false:this.onDeleteType}
                     />
                 </section>
 

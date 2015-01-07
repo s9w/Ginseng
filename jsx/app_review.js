@@ -24,26 +24,9 @@ var Review = React.createClass({
             return true
         }
 
-        var filtersOr = filterStr.split(" or ");
-        for (var i = 0; i < filtersOr.length; ++i) {
-            var filterElements = filtersOr[i].split(" and ");
-            for (var j = 0; j < filterElements.length; ++j) {
-                var innerTruth = true;
-                var matches;
-                if((matches = /tag: ?(\w+)/.exec(filterElements[j])) != null) {
-                    if(!(_.contains(info.tags, matches[1])) ){
-                        innerTruth = false;
-                    }
-                }
-                else{
-                    console.log("Error, unknown filter: " + filterElements[j]);
-                    return false;
-                }
-            }
-            if(innerTruth)
-                return true;
-        }
-        return false;
+        return eval(filterStr.replace(/tag: ?(\w+)/g, function (match, p1) {
+            return "(_(info.tags).contains(\"" + p1 + "\"))";
+        }));
     },
     render() {
         // filter due cards and chose the next
@@ -60,7 +43,8 @@ var Review = React.createClass({
         for (var infoIndex = 0; infoIndex < this.props.infos.length; ++infoIndex) {
             var info = this.props.infos[infoIndex];
             for(var templateID in info.reviews){
-                if( this.filterInfo(this.props.types[info.typeID].templates[templateID].condition, info)){
+                if( this.filterInfo(this.props.types[info.typeID].templates[templateID].condition, info) &&
+                    this.filterInfo(this.props.activeProfile.condition, info) ){
                     if(info.reviews[templateID].length > 0) {
                         let lastReview = info.reviews[templateID][info.reviews[templateID].length - 1];
                         realInterval = moment().diff(moment(lastReview.reviewTime));
