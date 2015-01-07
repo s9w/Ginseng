@@ -48,7 +48,6 @@ var Intervaller = React.createClass({
         });
     },
     render(){
-        console.log("render intervaller");
         var intervals = [];
         var keyIndex = 0;
         for (let timeframeKey in this.props.timeIntervalChoices) {

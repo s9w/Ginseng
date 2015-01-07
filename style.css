@@ -25,7 +25,8 @@ section {
 
 .flexRow {
   display: flex;
-  flex-direction: row; }
+  flex-direction: row;
+  align-items: flex-start; }
 
 .flexCol {
   display: flex;
@@ -161,11 +162,11 @@ tbody > tr > td {
     /*display:inline;*/
     cursor: pointer;
     line-height: 12.0vw;
-    font-size: 8.0vw; }
+    font-size: 6.0vw; }
     @media (min-width: 300px) {
       .navBar > div {
         line-height: 36px;
-        font-size: 24px; } }
+        font-size: 18px; } }
     .navBar > div:hover {
       background-color: #c9eabe; }
     .navBar > div.active {

@@ -24,7 +24,6 @@ var ReviewDisplay = React.createClass({
             nextProps.progressState !== this.props.progressState;
     },
     render(){
-        console.log("render ReviewDisplay");
         var thisOuter = this;
         var frontStr = this.props.type.templates[this.props.templateID].front.replace(
             /{(\w*)}/g, function (match, p1) {

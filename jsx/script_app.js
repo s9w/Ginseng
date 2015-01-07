@@ -8,7 +8,7 @@ var App = React.createClass({
         return {
             infos: init_data.infos,
             infoTypes: init_data.infoTypes,
-            ginseng_settings: init_data.settings,
+            settings: init_data.settings,
             meta: init_data.meta,
             activeMode: "status",
             selectedInfoIndex: false,
@@ -45,14 +45,14 @@ var App = React.createClass({
         for(var i=0; i<writeInfos.length; i++){
             var info = writeInfos[i];
             for(var reviewKey in info.reviews)
-            if(info.reviews[reviewKey].length > this.state.ginseng_settings.reviewHistoryLength){
+            if(info.reviews[reviewKey].length > this.state.settings.reviewHistoryLength){
                 info.reviews[reviewKey] = info.reviews[reviewKey].slice(-2);
             }
         }
         var writeData = {
             infos: writeInfos,
             infoTypes: this.state.infoTypes,
-            settings: this.state.ginseng_settings,
+            settings: this.state.settings,
             meta: newMeta
         };
         client.writeFile("ginseng_data.txt", JSON.stringify(writeData, null, '\t'), function(error) {
@@ -77,7 +77,7 @@ var App = React.createClass({
             thisApp.setState({
                 infos: parsedData.infos,
                 infoTypes: parsedData.infoTypes,
-                ginseng_settings: parsedData.settings,
+                settings: parsedData.settings,
                 reviewModes: parsedData.reviewModes || thisApp.state.reviewModes,
                 meta: parsedData.meta,
                 lastLoadedStr: moment().format(),
@@ -164,22 +164,28 @@ var App = React.createClass({
             creationDate: moment().format()
         }
     },
+    updateSettings(newSettings){
+        this.setState({settings: newSettings});
+    },
     render: function () {
         return (
             <div className="app">
                 <div className="navBar unselectable">
                     <div
-                        className={this.state.activeMode == "status" ? "active" : "inactive"}
+                        className={this.state.activeMode == "status" ? "active" : ""}
                         title={this.state.isChanged?"unsaved changes":""}
                         onClick={this.clickNav.bind(this, "status")}>Status<span className={this.state.isChanged?"":"invisible"}>*</span>
                     </div>
-                    <div className={["browse", "new", "edit"].indexOf(this.state.activeMode)!==-1 ? "active" : "inactive" }
+                    <div className={this.state.activeMode == "settings" ? "active" : ""}
+                        onClick={this.clickNav.bind(this, "settings")}>Settings
+                    </div>
+                    <div className={["browse", "new", "edit"].indexOf(this.state.activeMode)!==-1 ? "active" : "" }
                         onClick={this.clickNav.bind(this, "browse")}>Infos
                     </div>
-                    <div className={this.state.activeMode == "types" ? "active" : "inactive"}
+                    <div className={this.state.activeMode == "types" ? "active" : ""}
                         onClick={this.clickNav.bind(this, "types")}>Types
                     </div>
-                    <div className={this.state.activeMode == "review" ? "active" : "inactive"}
+                    <div className={this.state.activeMode == "review" ? "active" : ""}
                         onClick={this.clickNav.bind(this, "review")}>Review
                     </div>
                 </div>
@@ -194,6 +200,13 @@ var App = React.createClass({
                         lastLoadedStr={this.state.lastLoadedStr}
                         onDbLoad={this.loadDB}
                         isChanged={this.state.isChanged}
+                    />
+                }
+
+                {this.state.activeMode === "settings" &&
+                    <Settings
+                        settings={this.state.settings}
+                        updateSettings={this.updateSettings}
                     />
                 }
 
@@ -231,7 +244,7 @@ var App = React.createClass({
                         infos={this.state.infos}
                         types={this.state.infoTypes}
                         applyInterval={this.applyInterval}
-                        timeIntervalChoices={this.state.ginseng_settings.timeIntervalChoices}
+                        timeIntervalChoices={this.state.settings.timeIntervalChoices}
                         gotoEdit={this.gotoEdit}
                     />
                 }
@@ -314,6 +327,45 @@ var Status = React.createClass({
                         disabled={this.props.dropBoxStatus !== "loggedIn" || !this.props.isChanged}
                         onClick={this.onSaveClick}>Save to Dropbox</button>
                 </div>
+            </div>
+        )
+    }
+});
+
+var Settings = React.createClass({
+    getInitialState() {
+        return {
+            settings: this.props.settings
+        };
+    },
+    onSave(){
+        var newReviewHistoryLength = _.parseInt(this.state.settings.reviewHistoryLength);
+        var newSettings = JSON.parse( JSON.stringify( this.state.settings ));
+        newSettings.reviewHistoryLength = newReviewHistoryLength>=1?
+            newReviewHistoryLength:
+            this.props.settings.reviewHistoryLength;
+        this.props.updateSettings(newSettings);
+    },
+    onChange(event){
+        var newSettings = JSON.parse( JSON.stringify( this.state.settings ));
+        newSettings[event.target.name] = event.target.value;
+        this.setState({settings: newSettings});
+    },
+    render() {
+
+        return (
+            <div className="Component">
+                <span>Number of saved Reviews to keep. Higher Number will increase file size (around 0.1KB per review): </span>
+                <input
+                    onChange={this.onChange}
+                    name="reviewHistoryLength"
+                    type="number"
+                    min="1"
+                    step="1"
+                    style={{maxWidth: "50px" }}
+                    value={this.state.settings.reviewHistoryLength} />
+                <button
+                    onClick={this.onSave}>Save</button>
             </div>
         )
     }

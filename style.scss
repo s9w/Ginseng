@@ -36,6 +36,7 @@ section{
 .flexRow{
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
 }
 .flexCol{
   display: flex;
@@ -215,10 +216,10 @@ tbody>tr>td{
     cursor: pointer;
     //    height: 12.0vw;
     line-height: 12.0vw;
-    font-size: 8.0vw;
+    font-size: 6.0vw;
     @media (min-width: 300px) {
       line-height: 36px;
-      font-size: 24px;
+      font-size: 18px;
     }
     //  font-weight: normal;
     //  text-rendering: optimizeLegibility;

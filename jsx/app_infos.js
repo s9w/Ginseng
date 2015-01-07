@@ -91,6 +91,7 @@ var InfoEdit = React.createClass({
                         )}
                         <input
                             value={this.state.newTagValue}
+                            size={8}
                             placeholder="new tag"
                             onChange={this.handleNewTagChange}
                         />
@@ -181,7 +182,7 @@ var TypeSwitcher = React.createClass({
         return (
             <div className="flexRow">
                 <select
-                    size={_.keys(this.props.types).length}
+                    size={_.max([_.keys(this.props.types).length, 2])}
                     onChange={this.onTypeChange}
                     style={{overflow:"hidden"}}
                     value={this.props.selectedTypeID}>
@@ -192,11 +193,12 @@ var TypeSwitcher = React.createClass({
                         )}
                 </select>
                 {"onDeleteType" in this.props &&
-                    <div className="flexCol">
-                        <button onClick={this.props.onAddType}>New type</button>
+                    <div>
+                        <button onClick={this.props.onAddType}>New</button>
                         <button
+                            className="buttonDanger"
                             disabled={!this.props.onDeleteType}
-                            onClick={this.props.onDeleteType}>Delete type</button>
+                            onClick={this.props.onDeleteType}>Delete</button>
                     </div>
                 }
             </div>
