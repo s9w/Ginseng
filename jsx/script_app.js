@@ -165,7 +165,6 @@ var App = React.createClass({
         }
     },
     render: function () {
-        console.log("render main");
         return (
             <div className="app">
                 <div className="navBar unselectable">
@@ -194,6 +193,7 @@ var App = React.createClass({
                         meta={this.state.meta}
                         lastLoadedStr={this.state.lastLoadedStr}
                         onDbLoad={this.loadDB}
+                        isChanged={this.state.isChanged}
                     />
                 }
 
@@ -311,7 +311,7 @@ var Status = React.createClass({
                         disabled={this.props.dropBoxStatus !== "loggedIn"}
                         onClick={this.props.onDbLoad}>Load from Dropbox</button>
                     <button
-                        disabled={this.props.dropBoxStatus !== "loggedIn"}
+                        disabled={this.props.dropBoxStatus !== "loggedIn" || !this.props.isChanged}
                         onClick={this.onSaveClick}>Save to Dropbox</button>
                 </div>
             </div>

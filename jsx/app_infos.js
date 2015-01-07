@@ -6,12 +6,6 @@ var InfoEdit = React.createClass({
             newTagValue: ""
         };
     },
-    componentDidMount(){
-    //    //Only focus first text field with new infos. Otherwise confusing/unwanted, especially on mobile
-    //    if(!("info" in this.props)) {
-    //        this.refs[0].getDOMNode().focus();
-    //    }
-    },
     onTypeChange(newTypeID){
         var newInfo = JSON.parse( JSON.stringify( this.state.info ));
         newInfo.typeID = newTypeID;
@@ -61,7 +55,7 @@ var InfoEdit = React.createClass({
             infoTypeSection =
                 <section>
                     <h3>Info Type</h3>
-                    <ITypeSwitcher
+                    <TypeSwitcher
                         className="sectionContent"
                         types={this.props.types}
                         selectedTypeID={this.state.info.typeID}
@@ -179,32 +173,32 @@ var Popup = React.createClass({
     }
 });
 
-var ITypeSwitcher = React.createClass({
-    onTypeChange(typeID){
-        this.props.onTypeChange(typeID);
+var TypeSwitcher = React.createClass({
+    onTypeChange(event){
+        this.props.onTypeChange(event.target.value);
     },
     render() {
-        var typeNameOptions = [];
-        for(var typeID in this.props.types){
-            typeNameOptions.push(
-                <button
-                    key={typeID}
-                    className={"button"+(this.props.selectedTypeID===typeID?" buttonGood":"")}
-                    onClick={this.onTypeChange.bind(this, typeID)}>{this.props.types[typeID].name}</button>
-            );
-        }
-        if(this.props.onAddType) {
-            typeNameOptions.push(
-                <button
-                    className="button"
-                    key="new"
-                    onClick={this.props.onAddType}>New..</button>
-            );
-        }
-
         return (
-            <div className="sectionContent wrap">
-                {typeNameOptions}
+            <div className="flexRow">
+                <select
+                    size={_.keys(this.props.types).length}
+                    onChange={this.onTypeChange}
+                    style={{overflow:"hidden"}}
+                    value={this.props.selectedTypeID}>
+                        {_.map(this.props.types, (type, typeID) =>
+                            <option
+                                key={typeID}
+                                value={typeID}>{type.name}</option>
+                        )}
+                </select>
+                {"onDeleteType" in this.props &&
+                    <div className="flexCol">
+                        <button onClick={this.props.onAddType}>New type</button>
+                        <button
+                            disabled={!this.props.onDeleteType}
+                            onClick={this.props.onDeleteType}>Delete type</button>
+                    </div>
+                }
             </div>
         );
     }

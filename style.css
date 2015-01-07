@@ -21,9 +21,15 @@ section {
   flex-direction: column; }
   section > *:not(:first-child) {
     margin-left: 10px;
-    display: flex;
-    flex-direction: row;
     margin-bottom: 1px; }
+
+.flexRow {
+  display: flex;
+  flex-direction: row; }
+
+.flexCol {
+  display: flex;
+  flex-direction: column; }
 
 h3 {
   font-size: 18px;

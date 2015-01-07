@@ -55,14 +55,9 @@ var InfoTypes = React.createClass({
             changes: newchanges
         });
     },
-    componentDidUpdate : function(){
-        if(this.state.types[this.state.selectedTypeID].name === "New info type"){
-            this.refs.nameRef.getDOMNode().focus();
-        }
-    },
     onAddType(){
         var newTypes = JSON.parse( JSON.stringify( this.state.types ));
-        var nextTypeID =  _.parseInt(_.max(_.keys(this.props.types)))+1;
+        var nextTypeID =  _.parseInt(_.max(_.keys(this.state.types)))+1;
 
         newTypes[nextTypeID] = {
             "name": "New info type",
@@ -84,6 +79,16 @@ var InfoTypes = React.createClass({
             types: newTypes,
             selectedTypeID: nextTypeID
         });
+        this.refs.nameRef.getDOMNode().focus();
+    },
+    onDeleteType(){
+        console.log("onDeleteType");
+        var newTypes = JSON.parse( JSON.stringify( this.state.types ));
+        delete newTypes[this.state.selectedTypeID];
+        this.setState({
+            types: newTypes,
+            selectedTypeID: _.parseInt(_.max(_.keys(newTypes)))
+        });
     },
     setMode(modeStr){
         this.setState({mode: modeStr});
@@ -94,7 +99,6 @@ var InfoTypes = React.createClass({
         this.setState({types: newTypes});
     },
     render() {
-        console.log("render types");
         var selectedType = this.state.types[this.state.selectedTypeID];
 
         var mainSection;
@@ -120,7 +124,7 @@ var InfoTypes = React.createClass({
                 <section key={1}>
                     <h3>Entries</h3>
                     {selectedType.entryNames.map((entryName, i) =>
-                        <div key={i} className="sectionContent">
+                        <div className="flexRow" key={i}>
                             <input
                                 className="sectionContentEl"
                                 value={entryName}
@@ -148,12 +152,12 @@ var InfoTypes = React.createClass({
             <div className="Component">
                 <section>
                     <h3>Info Type</h3>
-                    <ITypeSwitcher
-                        className="sectionContent"
+                    <TypeSwitcher
                         types={this.state.types}
                         selectedTypeID={this.state.selectedTypeID}
                         onTypeChange={this.selectType}
                         onAddType={this.onAddType}
+                        onDeleteType={_.keys(this.state.types).length<=1?false:this.onDeleteType}
                     />
                 </section>
 

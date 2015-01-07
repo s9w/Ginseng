@@ -41,8 +41,6 @@ var InfoBrowser = React.createClass({
     this.setState({ sortOrder: newOrder });
   },
   render: function () {
-    console.log("render browse");
-
     // sort
     var thisBrowser = this;
     var sortedInfos = this.props.infos.sort(function (a, b) {
@@ -151,7 +149,6 @@ var InfoEdit = React.createClass({
       newTagValue: ""
     };
   },
-  componentDidMount: function () {},
   onTypeChange: function (newTypeID) {
     var newInfo = JSON.parse(JSON.stringify(this.state.info));
     newInfo.typeID = newTypeID;
@@ -199,7 +196,7 @@ var InfoEdit = React.createClass({
       }, this.props.types[this.state.info.typeID].name));
     } else {
       // new
-      infoTypeSection = React.createElement("section", null, React.createElement("h3", null, "Info Type"), React.createElement(ITypeSwitcher, {
+      infoTypeSection = React.createElement("section", null, React.createElement("h3", null, "Info Type"), React.createElement(TypeSwitcher, {
         className: "sectionContent",
         types: this.props.types,
         selectedTypeID: this.state.info.typeID,
@@ -286,37 +283,34 @@ var Popup = React.createClass({
   }
 });
 
-var ITypeSwitcher = React.createClass({
-  displayName: "ITypeSwitcher",
-  onTypeChange: function (typeID) {
-    this.props.onTypeChange(typeID);
+var TypeSwitcher = React.createClass({
+  displayName: "TypeSwitcher",
+  onTypeChange: function (event) {
+    this.props.onTypeChange(event.target.value);
   },
   render: function () {
-    var typeNameOptions = [];
-    for (var typeID in this.props.types) {
-      typeNameOptions.push(React.createElement("button", {
-        key: typeID,
-        className: "button" + (this.props.selectedTypeID === typeID ? " buttonGood" : ""),
-        onClick: this.onTypeChange.bind(this, typeID)
-      }, this.props.types[typeID].name));
-    }
-    if (this.props.onAddType) {
-      typeNameOptions.push(React.createElement("button", {
-        className: "button",
-        key: "new",
-        onClick: this.props.onAddType
-      }, "New.."));
-    }
-
     return React.createElement("div", {
-      className: "sectionContent wrap"
-    }, typeNameOptions);
+      className: "flexRow"
+    }, React.createElement("select", {
+      size: _.keys(this.props.types).length,
+      onChange: this.onTypeChange,
+      style: { overflow: "hidden" },
+      value: this.props.selectedTypeID
+    }, _.map(this.props.types, function (type, typeID) {
+      return React.createElement("option", {
+        key: typeID,
+        value: typeID
+      }, type.name);
+    })), "onDeleteType" in this.props && React.createElement("div", {
+      className: "flexCol"
+    }, React.createElement("button", {
+      onClick: this.props.onAddType
+    }, "New type"), React.createElement("button", {
+      disabled: !this.props.onDeleteType,
+      onClick: this.props.onDeleteType
+    }, "Delete type")));
   }
 });
-//    //Only focus first text field with new infos. Otherwise confusing/unwanted, especially on mobile
-//    if(!("info" in this.props)) {
-//        this.refs[0].getDOMNode().focus();
-//    }
 "use strict";
 
 var Intervaller = React.createClass({
@@ -631,14 +625,9 @@ var InfoTypes = React.createClass({
       changes: newchanges
     });
   },
-  componentDidUpdate: function () {
-    if (this.state.types[this.state.selectedTypeID].name === "New info type") {
-      this.refs.nameRef.getDOMNode().focus();
-    }
-  },
   onAddType: function () {
     var newTypes = JSON.parse(JSON.stringify(this.state.types));
-    var nextTypeID = _.parseInt(_.max(_.keys(this.props.types))) + 1;
+    var nextTypeID = _.parseInt(_.max(_.keys(this.state.types))) + 1;
 
     newTypes[nextTypeID] = {
       name: "New info type",
@@ -660,6 +649,16 @@ var InfoTypes = React.createClass({
       types: newTypes,
       selectedTypeID: nextTypeID
     });
+    this.refs.nameRef.getDOMNode().focus();
+  },
+  onDeleteType: function () {
+    console.log("onDeleteType");
+    var newTypes = JSON.parse(JSON.stringify(this.state.types));
+    delete newTypes[this.state.selectedTypeID];
+    this.setState({
+      types: newTypes,
+      selectedTypeID: _.parseInt(_.max(_.keys(newTypes)))
+    });
   },
   setMode: function (modeStr) {
     this.setState({ mode: modeStr });
@@ -671,7 +670,6 @@ var InfoTypes = React.createClass({
   },
   render: function () {
     var _this = this;
-    console.log("render types");
     var selectedType = this.state.types[this.state.selectedTypeID];
 
     var mainSection;
@@ -694,8 +692,8 @@ var InfoTypes = React.createClass({
         key: 1
       }, React.createElement("h3", null, "Entries"), selectedType.entryNames.map(function (entryName, i) {
         return React.createElement("div", {
-          key: i,
-          className: "sectionContent"
+          className: "flexRow",
+          key: i
         }, React.createElement("input", {
           className: "sectionContentEl",
           value: entryName,
@@ -715,12 +713,12 @@ var InfoTypes = React.createClass({
     var isChanged = JSON.stringify(this.props.types) !== JSON.stringify(this.state.types);
     return React.createElement("div", {
       className: "Component"
-    }, React.createElement("section", null, React.createElement("h3", null, "Info Type"), React.createElement(ITypeSwitcher, {
-      className: "sectionContent",
+    }, React.createElement("section", null, React.createElement("h3", null, "Info Type"), React.createElement(TypeSwitcher, {
       types: this.state.types,
       selectedTypeID: this.state.selectedTypeID,
       onTypeChange: this.selectType,
-      onAddType: this.onAddType
+      onAddType: this.onAddType,
+      onDeleteType: _.keys(this.state.types).length <= 1 ? false : this.onDeleteType
     })), React.createElement("div", {
       className: "sectionContent tabContainer"
     }, React.createElement("button", {
@@ -913,7 +911,6 @@ var App = React.createClass({
     };
   },
   render: function () {
-    console.log("render main");
     return React.createElement("div", {
       className: "app"
     }, React.createElement("div", {
@@ -940,7 +937,8 @@ var App = React.createClass({
       onDbSave: this.saveDB,
       meta: this.state.meta,
       lastLoadedStr: this.state.lastLoadedStr,
-      onDbLoad: this.loadDB
+      onDbLoad: this.loadDB,
+      isChanged: this.state.isChanged
     }), _.contains(["new", "edit"], this.state.activeMode) && React.createElement(InfoEdit, {
       info: this.state.activeMode === "new" ? this.getNewInfo() : this.state.infos[this.state.selectedInfoIndex],
       onDelete: this.state.activeMode === "edit" ? this.onInfoDelete : false,
@@ -1034,7 +1032,7 @@ var Status = React.createClass({
       disabled: this.props.dropBoxStatus !== "loggedIn",
       onClick: this.props.onDbLoad
     }, "Load from Dropbox"), React.createElement("button", {
-      disabled: this.props.dropBoxStatus !== "loggedIn",
+      disabled: this.props.dropBoxStatus !== "loggedIn" || !this.props.isChanged,
       onClick: this.onSaveClick
     }, "Save to Dropbox")));
   }

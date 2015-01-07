@@ -27,10 +27,19 @@ section{
   flex-direction: column;
   > *:not(:first-child){
     margin-left: 10px;
-    display: flex;
-    flex-direction: row;
+//    display: flex;
+//    flex-direction: row;
     margin-bottom: 1px;
   }
+}
+
+.flexRow{
+  display: flex;
+  flex-direction: row;
+}
+.flexCol{
+  display: flex;
+  flex-direction: column;
 }
 
 h3{

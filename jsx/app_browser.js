@@ -52,8 +52,6 @@ var InfoBrowser = React.createClass({
         this.setState({sortOrder: newOrder})
     },
     render(){
-        console.log("render browse");
-
         // sort
         var thisBrowser = this;
         var sortedInfos = this.props.infos.sort(function(a, b){
