@@ -79,7 +79,7 @@ var InfoEdit = React.createClass({
                     {this.state.info.entries.map((entry, entryIdx) =>
                         <Textarea
                             key={entryIdx}
-                            value = {entry}
+                            value={entry}
                             placeholder={this.props.types[this.state.info.typeID].entryNames[entryIdx]}
                             onEntryEdit={this.onEntryEdit.bind(this, entryIdx)}
                         />
@@ -145,7 +145,8 @@ var InfoEdit = React.createClass({
                         <button className="buttonDanger" onClick={this.props.onDelete}>Delete</button>
                     }
                 </div>
-            </div>);
+            </div>
+        );
     }
 });
 

@@ -34,11 +34,7 @@ var Review = React.createClass({
         var dueCount = 0;
         var realInterval;
         var nextReview = {
-            urgency: 1.0,
-            infoIndex: 0,
-            info: false,
-            templateID: 0,
-            realInterval: 0
+            urgency: 1.0
         };
         for (var infoIndex = 0; infoIndex < this.props.infos.length; ++infoIndex) {
             var info = this.props.infos[infoIndex];
@@ -54,7 +50,7 @@ var Review = React.createClass({
                         realInterval = 0;
                     }
 
-                    if(urgency >= 1.0) {
+                    if(urgency >= this.props.activeProfile.urgencyThreshold) {
                         dueCount++;
                         if (urgency > nextReview.urgency) {
                             nextReview.urgency = urgency;

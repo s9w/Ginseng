@@ -5,15 +5,9 @@ var Profiles = React.createClass({
             selectedProfileID: _.min(_.keys(this.props.reviewProfiles)).toString()
         };
     },
-    onChange(event){
-        console.log("event.target.name: " + event.target.name + ", value: " + event.target.value);
-        var newProfiles = _.cloneDeep( this.state.reviewProfiles );
-        newProfiles[this.state.selectedProfileID][event.target.name] = event.target.value;
-        this.setState({reviewProfiles: newProfiles});
-    },
     addProfile(){
-        var newProfiles = JSON.parse( JSON.stringify( this.state.reviewProfiles ));
         var nextProfileID =  _.parseInt(_.max(_.keys(this.state.reviewProfiles)))+1;
+        var newProfiles = _.cloneDeep( this.state.reviewProfiles );
         newProfiles[nextProfileID] = {
             "name": "New Profile",
             "condition": "",
@@ -21,19 +15,20 @@ var Profiles = React.createClass({
         };
 
         this.setState({
-            selectedProfileID: nextProfileID,
-            reviewProfiles: newProfiles
+            reviewProfiles: newProfiles,
+            selectedProfileID: nextProfileID
         });
     },
     deleteProfile(){
-        var newProfiles = JSON.parse( JSON.stringify( this.state.reviewProfiles ));
+        var newProfiles = _.cloneDeep( this.state.reviewProfiles );
         delete newProfiles[this.state.selectedProfileID];
         this.setState({
             reviewProfiles: newProfiles,
             selectedProfileID: _.parseInt(_.max(_.keys(newProfiles)))
         });
     },
-    update123(param){
+    updateprofiles(param){
+        console.log("param: " + JSON.stringify(param));
         var newProfiles = _.cloneDeep( this.state.reviewProfiles) ;
         _.extend( newProfiles[this.state.selectedProfileID], param);
         this.setState({reviewProfiles: newProfiles});
@@ -76,7 +71,7 @@ var Profiles = React.createClass({
                             displayType: "input"
                         }
                     ]}
-                    onUpdate={this.update123}
+                    onUpdate={this.updateprofiles}
                 />
 
                 <div className="flexContHoriz">

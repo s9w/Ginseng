@@ -50,13 +50,20 @@ var App = React.createClass({
                 info.reviews[reviewKey] = info.reviews[reviewKey].slice(-2);
             }
         }
-        var writeData = {
+        var writeDataObj = {
             infos: writeInfos,
             infoTypes: this.state.infoTypes,
+            reviewProfiles: this.state.reviewProfiles,
             settings: this.state.settings,
             meta: newMeta
         };
-        client.writeFile("ginseng_data.txt", JSON.stringify(writeData, null, '\t'), function(error) {
+        var writeDataString;
+        if(this.state.settings.useCompression){
+            writeDataString = LZString.compressToUTF16   (JSON.stringify(writeDataObj));
+        }else{
+            writeDataString = JSON.stringify(writeDataObj, null, '\t');
+        }
+        client.writeFile("ginseng_data.txt", writeDataString, function(error) {
             if (error) {
                 console.log("error: " + error);
             }
@@ -74,11 +81,19 @@ var App = React.createClass({
             if (error) {
                 console.log("ERROR: " + error);
             }
-            var parsedData = JSON.parse(data);
+            var parsedData;
+            try{
+                parsedData = JSON.parse(data);
+            }catch(e){
+                console.log("Error: " + e.message);
+                parsedData = JSON.parse(LZString.decompressFromUTF16(data));
+
+            }
+
             thisApp.setState({
                 infos: parsedData.infos,
                 infoTypes: parsedData.infoTypes,
-                settings: parsedData.settings,
+                settings: _(thisApp.state.settings).extend(parsedData.settings).value(),
                 reviewProfiles: parsedData.reviewProfiles || thisApp.state.reviewProfiles,
                 meta: parsedData.meta,
                 lastLoadedStr: moment().format(),
@@ -201,7 +216,7 @@ var App = React.createClass({
                         onClick={this.clickNav.bind(this, "profiles")}>Profiles
                     </div>
                     <div className={_(["review", "reviewPrompt" ]).contains( this.state.activeMode) ? "active" : ""}
-                        onClick={this.clickNav.bind(this, "reviewPrompt")}>Review
+                        onClick={this.clickNav.bind(this, "review")}>Review
                     </div>
                 </div>
 
@@ -277,6 +292,7 @@ var App = React.createClass({
                         timeIntervalChoices={this.state.settings.timeIntervalChoices}
                         gotoEdit={this.gotoEdit}
                         activeProfile={this.state.reviewProfiles[this.state.activeProfileKey]}
+                        profiles={this.state.reviewProfiles}
                     />
                 }
 

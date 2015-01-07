@@ -124,7 +124,8 @@ var init_data = {
                     30
                 ]
             },
-            "reviewHistoryLength": 2
+            "reviewHistoryLength": 2,
+            "useCompression": false
         },
         "meta": {
             "dataFormatVersion": "2014-12-17",
