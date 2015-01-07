@@ -85,14 +85,16 @@ var init_data = {
                 }
             }
         },
-        "reviewModes":{
+        "reviewProfiles":{
             "0":{
                 "name": "All",
-                "condition": ""
+                "condition": "",
+                "urgencyThreshold": 1.0
             },
             "1":{
                 "name": "Uni",
-                "condition": "tag: math or tag: physik"
+                "condition": "tag: math or tag: physik",
+                "urgencyThreshold": 1.0
             }
         },
         "settings": {

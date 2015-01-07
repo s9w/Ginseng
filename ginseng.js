@@ -323,7 +323,7 @@ var Intervaller = React.createClass({
   displayName: "Intervaller",
   getInitialState: function () {
     return {
-      modifyType: this.props.reviewInterval === 0 ? "set" : "change",
+      modifyType: "change",
       changeType: "minutes",
       modifyAmount: 10,
       activeKeyIndex: false
@@ -331,26 +331,27 @@ var Intervaller = React.createClass({
   },
   componentWillReceiveProps: function (nextProps) {
     this.setState({
-      activeKeyIndex: false,
-      modifyType: nextProps.reviewInterval === 0 ? "set" : this.state.modifyType
+      modifyType: nextProps.reviewInterval === 0 ? "set" : "change",
+      activeKeyIndex: false
     });
   },
   onModeChange: function (newModeStr) {
     if (newModeStr !== this.state.modifyType) {
-      this.setState({ modifyType: newModeStr, activeKeyIndex: false });
+      this.setState({
+        modifyType: newModeStr,
+        activeKeyIndex: false
+      });
     }
   },
   componentWillMount: function () {
     console.log("intervaller mount");
   },
   getNewInterval: function () {
-    var intervalDiff;
     if (this.state.modifyType === "change") {
       if (this.state.changeType === "percent") {
-        intervalDiff = this.props.reviewInterval * this.state.modifyAmount / 100;
-        return intervalDiff + this.props.reviewInterval;
+        return this.props.reviewInterval * (this.state.modifyAmount / 100 + 1);
       } else {
-        intervalDiff = moment.duration(this.state.modifyAmount, this.state.changeType.toLowerCase()).asMilliseconds();
+        var intervalDiff = moment.duration(this.state.modifyAmount, this.state.changeType.toLowerCase()).asMilliseconds();
         return this.props.reviewInterval + intervalDiff;
       }
     } else if (this.state.modifyType === "set") {
@@ -369,31 +370,19 @@ var Intervaller = React.createClass({
   },
   render: function () {
     console.log("render intervaller");
-    var cx = React.addons.classSet;
     var intervals = [];
     var keyIndex = 0;
     for (var timeframeKey in this.props.timeIntervalChoices) {
       for (var i = 0; i < this.props.timeIntervalChoices[timeframeKey].length; ++i) {
-        var buttonClasses = cx({
-          unselectable: true,
-          intervalMinutes: timeframeKey === "Minutes",
-          intervalHours: timeframeKey === "Hours",
-          intervalDays: timeframeKey === "Days",
-          intervalWeeks: timeframeKey === "Weeks",
-          intervalMonths: timeframeKey === "Months",
-          intervalPercent: timeframeKey === "Percent",
-          buttonSelected: keyIndex === this.state.activeKeyIndex,
-          invisible: timeframeKey === "Percent" && this.state.modifyType === "set"
-        });
+        var bc = ["unselectable", keyIndex === this.state.activeKeyIndex ? "buttonGood" : "interval" + timeframeKey, timeframeKey === "Percent" && this.state.modifyType === "set" ? "invisible" : ""];
         var plusEL = React.createElement("span", {
           className: this.state.modifyType === "change" ? "" : "invisible"
         }, "+");
         var amount = this.props.timeIntervalChoices[timeframeKey][i];
-        var buttonStr = amount;
-        if (timeframeKey === "Percent") buttonStr += "%";else buttonStr += timeframeKey.slice(0, 1).toLowerCase();
+        var buttonStr = amount + (timeframeKey === "Percent" ? "%" : timeframeKey.slice(0, 1).toLowerCase());
         intervals.push(React.createElement("button", {
           key: keyIndex,
-          className: buttonClasses,
+          className: bc.join(" "),
           onClick: this.onIntervalChoice.bind(this, amount, keyIndex, timeframeKey.toLowerCase())
         }, plusEL, " ", buttonStr));
         keyIndex += 1;
@@ -587,13 +576,7 @@ var ReviewDisplay = React.createClass({
 var InfoTypes = React.createClass({
   displayName: "InfoTypes",
   getInitialState: function () {
-    var chosenTypeID = 0;
-    while (!(chosenTypeID in this.props.types)) {
-      chosenTypeID++;
-    }
-    if (this.props.selectedTypeID) {
-      chosenTypeID = this.props.selectedTypeID;
-    }
+    var chosenTypeID = this.props.selectedTypeID || _.min(_.keys(this.props.types));
     return {
       selectedTypeID: chosenTypeID.toString(),
       types: this.props.types,
@@ -655,14 +638,7 @@ var InfoTypes = React.createClass({
   },
   onAddType: function () {
     var newTypes = JSON.parse(JSON.stringify(this.state.types));
-    // get next type ID
-    var nextTypeID = "0";
-    for (var typeID in newTypes) {
-      if (parseInt(typeID, 10) > parseInt(nextTypeID, 10)) {
-        nextTypeID = typeID;
-      }
-    }
-    nextTypeID = (parseInt(nextTypeID, 10) + 1).toString();
+    var nextTypeID = _.parseInt(_.max(_.keys(this.props.types))) + 1;
 
     newTypes[nextTypeID] = {
       name: "New info type",
@@ -783,7 +759,6 @@ var App = React.createClass({
       ginseng_settings: init_data.settings,
       meta: init_data.meta,
       activeMode: "status",
-      selectedTypeID: false,
       selectedInfoIndex: false,
       reviewModes: init_data.reviewModes,
 
@@ -921,10 +896,7 @@ var App = React.createClass({
     });
   },
   getNewInfo: function () {
-    var firstTypeID = "0";
-    while (!(firstTypeID in this.state.infoTypes)) {
-      firstTypeID = (parseInt(firstTypeID, 10) + 1).toString();
-    }
+    var firstTypeID = _.min(_.keys(this.state.infoTypes));
     var entries = _.times(this.state.infoTypes[firstTypeID].entryNames.length, function () {
       return "";
     });
@@ -985,8 +957,7 @@ var App = React.createClass({
     }), this.state.activeMode === "types" && React.createElement(InfoTypes, {
       types: this.state.infoTypes,
       cancelEdit: this.clickNav.bind(this, "browse"),
-      onSave: this.onTypesEdit,
-      selectedTypeID: this.state.selectedTypeID
+      onSave: this.onTypesEdit
     }), _.contains(["review"], this.state.activeMode) && React.createElement(Review, {
       infos: this.state.infos,
       types: this.state.infoTypes,

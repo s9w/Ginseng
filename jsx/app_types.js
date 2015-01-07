@@ -1,12 +1,6 @@
 var InfoTypes = React.createClass({
     getInitialState() {
-        var chosenTypeID = 0;
-        while(!(chosenTypeID in this.props.types)){
-            chosenTypeID++;
-        }
-        if(this.props.selectedTypeID){
-            chosenTypeID = this.props.selectedTypeID;
-        }
+        var chosenTypeID = this.props.selectedTypeID || _.min(_.keys(this.props.types));
         return {
             selectedTypeID: chosenTypeID.toString(),
             types: this.props.types,
@@ -68,14 +62,7 @@ var InfoTypes = React.createClass({
     },
     onAddType(){
         var newTypes = JSON.parse( JSON.stringify( this.state.types ));
-        // get next type ID
-        var nextTypeID = "0";
-        for(var typeID in newTypes){
-            if(parseInt(typeID, 10) > parseInt(nextTypeID, 10)){
-                nextTypeID = typeID;
-            }
-        }
-        nextTypeID = (parseInt(nextTypeID, 10)+1).toString();
+        var nextTypeID =  _.parseInt(_.max(_.keys(this.props.types)))+1;
 
         newTypes[nextTypeID] = {
             "name": "New info type",

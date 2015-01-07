@@ -11,7 +11,6 @@ var App = React.createClass({
             ginseng_settings: init_data.settings,
             meta: init_data.meta,
             activeMode: "status",
-            selectedTypeID: false,
             selectedInfoIndex: false,
             reviewModes: init_data.reviewModes,
 
@@ -151,10 +150,7 @@ var App = React.createClass({
         });
     },
     getNewInfo(){
-        var firstTypeID = "0";
-        while(!(firstTypeID in this.state.infoTypes)){
-            firstTypeID = (parseInt(firstTypeID, 10)+1).toString();
-        }
+        var firstTypeID = _.min(_.keys(this.state.infoTypes));
         var entries = _.times(this.state.infoTypes[firstTypeID].entryNames.length, function(){return ""});
         var reviews = {};
         for (let i = 0; i < this.state.infoTypes[firstTypeID].entryNames.length; ++i) {
@@ -227,7 +223,6 @@ var App = React.createClass({
                         types={this.state.infoTypes}
                         cancelEdit={this.clickNav.bind(this, "browse")}
                         onSave={this.onTypesEdit}
-                        selectedTypeID={this.state.selectedTypeID}
                     />
                 }
 
