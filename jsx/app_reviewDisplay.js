@@ -1,4 +1,9 @@
 var ReviewDisplay = React.createClass({
+    getDefaultProps: function() {
+        return {
+            progressState: 'backSide'
+        };
+    },
     renderMarkdown(str){
         var latexStringBuffer = [];
         // replace math with $$
@@ -18,30 +23,28 @@ var ReviewDisplay = React.createClass({
             }
         });
     },
-    shouldComponentUpdate: function (nextProps, nextState) {
-        return nextProps.info.typeID !== this.props.info.templateID ||
-            JSON.stringify(nextProps.info.entries) !== JSON.stringify(this.props.info.entries) ||
-            nextProps.progressState !== this.props.progressState;
-    },
     render(){
         var thisOuter = this;
-        var frontStr = this.props.type.templates[this.props.templateID].front.replace(
+        var template = this.props.template;
+        var frontStr = template.front.replace(
             /{(\w*)}/g, function (match, p1) {
-                return thisOuter.props.info.entries[thisOuter.props.type.entryNames.indexOf(p1)];
+                return thisOuter.props.templateData[p1];
             });
 
-        var backStr = this.props.type.templates[this.props.templateID].back.replace(
+        var backStr = template.back.replace(
             /{(\w*)}/g, function (match, p1) {
-                return thisOuter.props.info.entries[thisOuter.props.type.entryNames.indexOf(p1)];
+                return thisOuter.props.templateData[p1];
             });
         return(
             <div id="reviewStage">
                 <div
                     className="markdowned"
-                    dangerouslySetInnerHTML={{__html: this.renderMarkdown(frontStr)}}></div>
+                    dangerouslySetInnerHTML={{__html: this.renderMarkdown(frontStr)}}>
+                </div>
                 <div
                     className={"markdowned " + (this.props.progressState === "backSide" ? "" : "invisible")}
-                    dangerouslySetInnerHTML={{__html: this.renderMarkdown(backStr)}}></div>
+                    dangerouslySetInnerHTML={{__html: this.renderMarkdown(backStr)}}>
+                </div>
             </div>
         )
     }

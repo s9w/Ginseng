@@ -21,9 +21,6 @@ var Intervaller = React.createClass({
             });
         }
     },
-    componentWillMount(){
-        console.log("intervaller mount");
-    },
     getNewInterval(){
         if(this.state.modifyType === "change") {
             if (this.state.changeType === "percent") {

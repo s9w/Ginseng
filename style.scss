@@ -168,7 +168,7 @@ thead{
     -webkit-user-select: none;
     -ms-user-select: none;
     @media (max-device-width: 400px)  {
-      height: 30px;
+      height: 40px;
     }
   }
 
@@ -342,6 +342,10 @@ input, select, textarea{
   input, textarea{
     line-height: 1.7;
   }
+}
+
+textarea, select{
+  overflow: hidden;
 }
 
 .unselectable {

@@ -139,7 +139,8 @@ var InfoTypes = React.createClass({
                         className="sectionContent">
                         <button
                             className="buttonGood"
-                            onClick={this.onFieldsResize.bind(this, "add")}>Add entry
+                            onClick={this.onFieldsResize.bind(this, "add")}>
+                            Add entry
                         </button>
                     </div>
                 </section>
@@ -181,7 +182,8 @@ var InfoTypes = React.createClass({
                     <button
                         disabled={!isChanged}
                         className="buttonGood"
-                        onClick={this.props.onSave.bind(null, this.state.types, this.state.changes)}>Save
+                        onClick={this.props.onSave.bind(null, this.state.types, this.state.changes)}>
+                        Save
                     </button>
                     <button onClick={this.props.cancelEdit}>Cancel</button>
                 </div>

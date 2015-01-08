@@ -69,13 +69,14 @@ var Review = React.createClass({
                 <div className="Component">
                     <button
                         tabIndex="2"
-                        onClick={this.props.gotoEdit.bind(null, nextReview.infoIndex)}>Edit Info</button>
+                        onClick={this.props.gotoEdit.bind(null, nextReview.infoIndex)}>
+                        Edit Info
+                    </button>
                     <span>{"Due count: " + dueCount}</span>
 
                     <ReviewDisplay
-                        type={this.props.types[nextReview.info.typeID]}
-                        templateID={nextReview.templateID}
-                        info={nextReview.info}
+                        template={this.props.types[nextReview.info.typeID].templates[nextReview.templateID]}
+                        templateData={_.zipObject(this.props.types[nextReview.info.typeID].entryNames, nextReview.info.entries)}
                         progressState={this.state.progressState}
                     />
 
@@ -85,7 +86,8 @@ var Review = React.createClass({
                                 tabIndex="1"
                                 ref="flipButton"
                                 className="buttonGood"
-                                onClick={this.flip}>Show backside
+                                onClick={this.flip}>
+                                Show backside
                             </button>
                         </div>
                     }

@@ -63,7 +63,8 @@ var Profiles = React.createClass({
                         {
                             displayName: "Condition",
                             key: "condition",
-                            displayType: "input"
+                            displayType: "input",
+                            placeholder: "Empty condition matches all"
                         },
                         {
                             displayName: "Due threshold",

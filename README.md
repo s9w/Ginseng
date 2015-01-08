@@ -14,7 +14,7 @@ The template maps an info to a front and back side of a virtual flashcard. In th
 
 Templates can have to a condition so they only get generated when that condition is matched. For example a reverse template will only be generated if an info has a "reverse" tag. The syntax is described [below](#filter).
 
-The templates (as well as the info entries) are written in [below](http://en.wikipedia.org/wiki/Markdown). The info entries can be used with curly braces, like `{front}`. The templates as well as the entries can contain LaTeX code between single dollar signs.
+The templates (as well as the info entries) are written in [Markdown](http://en.wikipedia.org/wiki/Markdown). The info entries can be used with curly braces, like `{front}`. The templates as well as the entries can contain [LaTeX](http://en.wikipedia.org/wiki/LaTeX) code between single dollar signs.
 
 Note that there are no static groups (or "decks" as in Anki) for infos. Instead there are *profiles*. By default this works like Anki, so it shows the generated templates for everything that's "due". That behaviour is customizable though. It can filter based on the infos type, entries, tags, creation date, last interval. Some example uses might be
 - group together different languages or different university related tags
@@ -36,16 +36,16 @@ Each generated template has a "dueness", based on the selected interval and the 
 With a growing collection of things to keep in mind/Ginseng, more control over the reviews is helpful - that's what profiles are for. In addition to filtering the infos by their tag as described below, you can also specify a "due threshold". Based on the dueness described above, you can manually specify when to display cards. This allows for bigger/smaller review sessions or "cramming".
 
 ## Filter syntax
-- Infos can be filtered by their tags. `tag: math` matches all infos that have a `math` tag. This is case-sensitive and a precise match, so it won't match a `mathematics` tag.
+- Infos can be filtered by their tags. `tag: math` matches all infos that have a `math` tag. This is case-sensitive and a precise match, so it will neither match a `Math` nor a `mathematics` tag.
 - Filter queries can be logically combined with Javascript Syntax. That means `||` means "or", `&&` means and. Negations can be done with `!` and feel free to go wild with brackets. For example, `tag: math || tag: physics` matches all infos with either a math or a physics tag. And `!(tag: french) || tag: important` matches everything but french... unless it's important (tag-wise).
 - These filters can be applied to the templates as well as review profiles!
 
 ## Philosophy / Goals
-The App and the underlying data format are designed to be as open and robust as possible
-- All data is saved in a straightforward human-readable (and therefore hackable) JSON file
-- This means that syncing should be very easy to extend to other services like Google Drive, Firebase, MongoDB or really anything else
+Ginseng and the underlying data format are designed to be as open and robust as possible
+- All data is saved in a straightforward human-readable (and therefore hackable) JSON file.
+- This means that syncing should be reasonably easy to extend to other services like Google Drive, Firebase, MongoDB or really anything else.
 - The formatting of the view entries and the templates is done Markdown with optional LaTeX. Currently [marked](https://github.com/chjj/marked) is used for Markdown and [KaTeX](https://github.com/Khan/KaTeX) for LaTeX converting as they seem to be the fastest choice.
-- Dates/times are saved in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)
+- Dates/times are saved in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).
 
 ## Roadmap / issues
 - KaTeX is very fast but currently doesn't even support `\mathbb` fonts or basic Math operators, let alone other packages etc. Add Mathjax as an option?

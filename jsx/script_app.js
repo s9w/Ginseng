@@ -1,6 +1,6 @@
 var client = new Dropbox.Client({ key: "ob9346e5yc509q2" });
-//client.authDriver(new Dropbox.AuthDriver.Popup({receiverUrl: "https://s9w.github.io/ginseng/dropbox_receiver.html"}));
-client.authDriver(new Dropbox.AuthDriver.Popup({receiverUrl: "https://leastaction.org/ginseng/dropbox_receiver.html"}));
+client.authDriver(new Dropbox.AuthDriver.Popup({receiverUrl: "https://s9w.github.io/ginseng/dropbox_receiver.html"}));
+//client.authDriver(new Dropbox.AuthDriver.Popup({receiverUrl: "https://leastaction.org/ginseng/dropbox_receiver.html"}));
 
 
 var App = React.createClass({
@@ -59,10 +59,11 @@ var App = React.createClass({
         };
         var writeDataString;
         if(this.state.settings.useCompression){
-            writeDataString = LZString.compressToUTF16   (JSON.stringify(writeDataObj));
+            writeDataString = LZString.compressToUTF16 (JSON.stringify(writeDataObj));
         }else{
             writeDataString = JSON.stringify(writeDataObj, null, '\t');
         }
+        console.log("old: " + JSON.stringify(writeDataObj, null, '\t').length + ", new: " + LZString.compressToUTF16   (JSON.stringify(writeDataObj)).length);
         client.writeFile("ginseng_data.txt", writeDataString, function(error) {
             if (error) {
                 console.log("error: " + error);
@@ -85,9 +86,7 @@ var App = React.createClass({
             try{
                 parsedData = JSON.parse(data);
             }catch(e){
-                console.log("Error: " + e.message);
                 parsedData = JSON.parse(LZString.decompressFromUTF16(data));
-
             }
 
             thisApp.setState({
@@ -156,7 +155,6 @@ var App = React.createClass({
         this.setState({
             infoTypes: newTypes_copy,
             infos: new_infos,
-            activeMode: "browse",
             isChanged: true
         });
     },
@@ -188,8 +186,7 @@ var App = React.createClass({
     },
     updateGeneric(name, value){
         var newState = {
-            isChanged: true,
-            activeMode: "browse"
+            isChanged: true
         };
         newState[name] = value;
         this.setState(newState);
@@ -216,7 +213,7 @@ var App = React.createClass({
                         onClick={this.clickNav.bind(this, "profiles")}>Profiles
                     </div>
                     <div className={_(["review", "reviewPrompt" ]).contains( this.state.activeMode) ? "active" : ""}
-                        onClick={this.clickNav.bind(this, "review")}>Review
+                        onClick={this.clickNav.bind(this, "reviewPrompt")}>Review
                     </div>
                 </div>
 
@@ -334,8 +331,18 @@ var ReviewPrompt = React.createClass({
 var Status = React.createClass({
     getInitialState() {
         return {
-            showOverwriteWarning: false
+            showOverwriteWarning: false,
+            now: moment()
         };
+    },
+    componentDidMount: function() {
+        this.interval = setInterval(this.tick, 1000);
+    },
+    componentWillUnmount: function() {
+        clearInterval(this.interval);
+    },
+    tick: function() {
+        this.setState({now: moment()});
     },
     componentWillReceiveProps(){
         this.setState({showOverwriteWarning: false});
@@ -354,10 +361,10 @@ var Status = React.createClass({
         var lastSavedStr  = this.props.meta.lastSaved;
         var lastLoadedStr = this.props.lastLoadedStr;
         if(this.props.meta.lastSaved !== "never"){
-            lastSavedStr = moment(this.props.meta.lastSaved).fromNow();
+            lastSavedStr = moment(this.props.meta.lastSaved).from(this.state.now);
         }
         if(this.props.lastLoadedStr !== "never"){
-            lastLoadedStr = moment(this.props.lastLoadedStr).fromNow();
+            lastLoadedStr = moment(this.props.lastLoadedStr).from(this.state.now);
         }
         if(this.props.dropBoxStatus === "loading" ){
             lastSavedStr = "...";
@@ -429,7 +436,9 @@ var Editor = React.createClass({
                             type="text"
                             name={object.key}
                             onChange={thisOuter.onChange}
-                            value={thisOuter.props.path[object.key]} />
+                            value={thisOuter.props.path[object.key]}
+                            placeholder={object.placeholder}
+                        />
                     }
                     return (
                         <section key={object.key}>

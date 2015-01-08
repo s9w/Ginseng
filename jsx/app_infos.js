@@ -1,31 +1,30 @@
 var InfoEdit = React.createClass({
     getInitialState() {
         return {
-            info: JSON.parse( JSON.stringify( this.props.info )),
+            info: _.cloneDeep( this.props.info ),
             previewID: false,
             newTagValue: ""
         };
     },
     onTypeChange(newTypeID){
-        var newInfo = JSON.parse( JSON.stringify( this.state.info ));
+        var newInfo = _.cloneDeep( this.state.info );
         newInfo.typeID = newTypeID;
         var newEntriesLength = this.props.types[newTypeID].entryNames.length;
         var sizeDiff = newEntriesLength - this.state.info.entries.length;
         if( sizeDiff > 0 ){
-            for(var i=0; i<sizeDiff; i++){
-                newInfo.entries.push("");
-            }
+            newInfo.entries = newInfo.entries.concat(_.times(sizeDiff, x => ""));
         } else if(sizeDiff < 0){
             newInfo.entries = newInfo.entries.slice(0, newEntriesLength);
         }
         this.setState({info: newInfo});
     },
-    toggleTag(tagStr){
-        var newInfo = JSON.parse( JSON.stringify( this.state.info ));
-        if(_.contains(newInfo.tags, tagStr)){
-            newInfo.tags.splice(newInfo.tags.indexOf(tagStr), 1);
+    toggleTag(toggledTag){
+        var newInfo = _.cloneDeep( this.state.info );
+        if(_.contains(newInfo.tags, toggledTag)){
+            newInfo.tags.splice(newInfo.tags.indexOf(toggledTag), 1);
         }else{
-            newInfo.tags.push(tagStr);
+            newInfo.tags.push(toggledTag);
+            newInfo.tags = newInfo.tags.sort( (a,b) => a.localeCompare(b));
         }
         this.setState( {info: newInfo, newTagValue: ""} );
     },
@@ -33,9 +32,9 @@ var InfoEdit = React.createClass({
     setPreview(newPreview){
         this.setState({previewID: newPreview});
     },
-    onEntryEdit(entryIdx, value){
-        var newInfo = JSON.parse( JSON.stringify( this.state.info ));
-        newInfo.entries[entryIdx] = value;
+    onEntryEdit(entryIndex, entryValue){
+        var newInfo = _.cloneDeep( this.state.info );
+        newInfo.entries[entryIndex] = entryValue;
         this.setState({
             info: newInfo
         });
@@ -44,35 +43,21 @@ var InfoEdit = React.createClass({
         this.setState({newTagValue: e.target.value})
     },
     render() {
-        var infoTypeSection;
-        if(this.props.info.entries[0]!==""){ //edit
-            infoTypeSection =
-                <Editor
-                    path={this.props.types[this.state.info.typeID]}
-                    objects={[
-                        {
-                            displayName: "Info Type",
-                            key: "name",
-                            displayType: "label"
-                        }
-                    ]}
-
-                />
-
-        } else { // new
-            infoTypeSection =
-                <section>
-                    <h3>Info Type</h3>
-                    <DictSelector
-                        dict={this.props.types}
-                        selectedID={this.state.info.typeID}
-                        onSelectionChange={this.onTypeChange}
-                    />
-                </section>;
-        }
         return (
             <div className="InfoEdit Component">
-                {infoTypeSection}
+                <section>
+                    <h3>Info Type</h3>
+                    {_(this.props.types).keys().value().length>1?
+                        <DictSelector
+                            dict={this.props.types}
+                            selectedID={this.state.info.typeID}
+                            onSelectionChange={this.onTypeChange}
+                        />:
+                        <span>
+                            {this.props.types[this.state.info.typeID].name}
+                        </span>
+                    }
+                </section>
 
                 <section>
                     <h3>Entries</h3>
@@ -93,16 +78,19 @@ var InfoEdit = React.createClass({
                             <button
                                 key={tag}
                                 className={_.contains(this.state.info.tags, tag)?"buttonGood":""}
-                                onClick={this.toggleTag.bind(this, tag)}
-                                >{tag}</button>
+                                onClick={this.toggleTag.bind(this, tag)}>
+                                {tag}
+                            </button>
                         )}
+                    </div>
+                    <div>
                         <input
                             value={this.state.newTagValue}
                             size={8}
-                            placeholder="new tag"
+                            placeholder="New tag"
                             onChange={this.handleNewTagChange}
                         />
-                        <button onClick={this.toggleTag.bind(this, this.state.newTagValue)}>+</button>
+                        <button onClick={this.toggleTag.bind(this, this.state.newTagValue)}>Add</button>
                     </div>
                 </section>
 
@@ -112,13 +100,15 @@ var InfoEdit = React.createClass({
                         <button
                             key={"none"}
                             className={(this.state.previewID ? "" : "buttonGood")}
-                            onClick={this.setPreview.bind(this, false)}>{"None"}
+                            onClick={this.setPreview.bind(this, false)}>
+                        {"None"}
                         </button>
-                        {_.keys(this.props.types[this.state.info.typeID].templates).map( templateID =>
+                        {_(this.props.types[this.state.info.typeID].templates).keys().value().map( templateID =>
                             <button
                                 key={templateID}
                                 className={(this.state.previewID === templateID ? "buttonGood" : "")}
-                                onClick={this.setPreview.bind(this, templateID)}>{"Templ. " + templateID}
+                                onClick={this.setPreview.bind(this, templateID)}>
+                                {"Templ. " + templateID}
                             </button>
                         )}
                     </div>
@@ -126,10 +116,8 @@ var InfoEdit = React.createClass({
 
                 {this.state.previewID &&
                     <ReviewDisplay
-                        type={this.props.types[this.state.info.typeID]}
-                        templateID={this.state.previewID}
-                        info={this.state.info}
-                        progressState="backSide"
+                        template={this.props.types[this.state.info.typeID].templates[this.state.previewID]}
+                        templateData={_.zipObject(this.props.types[this.state.info.typeID].entryNames, this.state.info.entries)}
                     />
                 }
 
@@ -137,12 +125,18 @@ var InfoEdit = React.createClass({
                     <button
                         disabled={JSON.stringify(this.props.info) === JSON.stringify(this.state.info)}
                         className="buttonGood"
-                        onClick={this.props.onSave.bind(null, this.state.info)}>{this.props.onDelete?"save":"add"}</button>
+                        onClick={this.props.onSave.bind(null, this.state.info)}>
+                        {this.props.onDelete?"Save":"Add"}
+                    </button>
 
                     <button onClick={this.props.cancelEdit}>Cancel</button>
 
                     {this.props.onDelete &&
-                        <button className="buttonDanger" onClick={this.props.onDelete}>Delete</button>
+                        <button
+                            className="buttonDanger"
+                            onClick={this.props.onDelete}>
+                            Delete
+                        </button>
                     }
                 </div>
             </div>
@@ -162,10 +156,8 @@ var Textarea = React.createClass({
     render() {
         return (
             <textarea
-                value = {this.props.value}
-                placeholder={this.props.placeholder}
+                {..._(this.props).pick(["value", "placeholder"]).value() }
                 onChange={this.onEntryEdit}
-                style={{"overflow": "hidden"}}
             />
         );
     }
@@ -182,34 +174,3 @@ var Popup = React.createClass({
     }
 });
 
-var DictSelector = React.createClass({
-    onSelectionChange(event){
-        this.props.onSelectionChange(event.target.value);
-    },
-    render() {
-        return (
-            <div className="flexRow">
-                <select
-                    size={_.max([_.keys(this.props.dict).length, 2])}
-                    onChange={this.onSelectionChange}
-                    style={{overflow:"hidden", minWidth: "100px"}}
-                    value={this.props.selectedID}>
-                        {_.map(this.props.dict, (element, key) =>
-                            <option
-                                key={key}
-                                value={key}>{element.name}</option>
-                        )}
-                </select>
-                {"onDeleteElement" in this.props &&
-                    <div>
-                        <button onClick={this.props.onAddElement}>New</button>
-                        <button
-                            className="buttonDanger"
-                            disabled={!this.props.onDeleteElement}
-                            onClick={this.props.onDeleteElement}>Delete</button>
-                    </div>
-                }
-            </div>
-        );
-    }
-});

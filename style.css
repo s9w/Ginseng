@@ -127,7 +127,7 @@ thead {
     -ms-user-select: none; }
     @media (max-device-width: 400px) {
       thead > tr > th {
-        height: 30px; } }
+        height: 40px; } }
 
 tbody > tr {
   cursor: pointer; }
@@ -273,6 +273,9 @@ input, select, textarea {
 @media (max-device-width: 400px) {
   input, textarea {
     line-height: 1.7; } }
+textarea, select {
+  overflow: hidden; }
+
 .unselectable {
   -moz-user-select: none;
   -webkit-user-select: none;
