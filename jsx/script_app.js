@@ -120,7 +120,6 @@ var App = React.createClass({
     },
     onInfoDelete(){
         var newInfos = JSON.parse( JSON.stringify( this.state.infos ));
-        console.log("ondelete, this.state.selectedInfoIndex: " + this.state.selectedInfoIndex);
         newInfos.splice(this.state.selectedInfoIndex, 1);
         this.setState({
             infos: newInfos,

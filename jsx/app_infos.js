@@ -24,22 +24,24 @@ var InfoEdit = React.createClass({
         this.setState({info: newInfo});
     },
     toggleTag(toggledTag){
-        var newInfo = _.cloneDeep( this.state.info );
-        var newPreviewID = this.state.previewID;
-        if(_.contains(newInfo.tags, toggledTag)){
-            newInfo.tags.splice(newInfo.tags.indexOf(toggledTag), 1);
-            if(this.state.previewID && !filterInfo(this.props.types[this.state.info.typeID].templates[this.state.previewID].condition, newInfo)){
-                newPreviewID = false;
+        if(toggledTag != ""){
+            var newInfo = _.cloneDeep( this.state.info );
+            var newPreviewID = this.state.previewID;
+            if(_.contains(newInfo.tags, toggledTag)){
+                newInfo.tags.splice(newInfo.tags.indexOf(toggledTag), 1);
+                if(this.state.previewID && !filterInfo(this.props.types[this.state.info.typeID].templates[this.state.previewID].condition, newInfo)){
+                    newPreviewID = false;
+                }
+            }else{
+                newInfo.tags.push(toggledTag);
+                newInfo.tags = newInfo.tags.sort( (a,b) => a.localeCompare(b));
             }
-        }else{
-            newInfo.tags.push(toggledTag);
-            newInfo.tags = newInfo.tags.sort( (a,b) => a.localeCompare(b));
+            this.setState({
+                info: newInfo,
+                newTagValue: "",
+                previewID: newPreviewID
+            });
         }
-        this.setState({
-            info: newInfo,
-            newTagValue: "",
-            previewID: newPreviewID
-        });
     },
 
     setPreview(newPreview){
