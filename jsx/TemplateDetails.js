@@ -18,7 +18,7 @@ var TemplateDetails = React.createClass({
                 <section>
                     <h3>Front</h3>
                     <Textarea
-                        legal={isTemplateLegal.front}
+                        isLegal={isTemplateLegal.front}
                         value={this.props.template.front}
                         placeholder="Front template"
                         onEntryEdit={this.onViewChange.bind(this, "front")}
@@ -28,7 +28,7 @@ var TemplateDetails = React.createClass({
                 <section>
                     <h3>Back</h3>
                     <Textarea
-                        legal={isTemplateLegal.back}
+                        isLegal={isTemplateLegal.back}
                         value={this.props.template.back}
                         placeholder="Front template"
                         onEntryEdit={this.onViewChange.bind(this, "back")}
