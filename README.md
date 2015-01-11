@@ -1,39 +1,37 @@
 # Ginseng
 
-Ginseng is a web app for spaced repetition learning. Think Anki or SuperMemo but different.
+Ginseng is a web app for learning things with flashcards and spaced repetition. Think Anki, but different.
+
 - 100% in browser client-side Javascript
 - Data stored in single JSON file, sync over Dropbox
-- Freedom over review intervals. Not strictly bound to "difficulty"
-- No fixed "deck" structure. Manage and filter by tags
+- Freedom over review intervals. Not bound to "difficulty"
+- No fixed "deck" structure. Manage and filter by tags and profiles
 - Native Markdown formatting and LaTeX support for content and templates
 
 ## Introduction
-In Ginseng, the thing you want to learn/memorize is called an *info*. An info can contain two or more *entries* and any number of tags. If you learn Spanish, the entries would be the English and Spanish word. Infos have a type which defines the number of entries as well as the templates which are used to display the info in the review mode.
+In Ginseng, the thing you want to learn/memorize is called an **info**. An info can contain two or more **entries** and any number of tags. If you learn Spanish, the entries would be the Spanish word and the english translation. Infos have a type which defines the number of entries as well as the **templates** which are used to display the info in the review mode.
 
-The template maps an info to a front and back side of a virtual flashcard. In the example case, the front could show the english word and the back could show the spanish word. More than one template can be created from an info: For example if you also want to test the reverse relation. Or you might want to include a note entry that gets displayed along.
-
-Templates can have to a condition so they only get generated when that condition is matched. For example a reverse template will only be generated if an info has a "reverse" tag. The syntax is described [below](#filter).
-
-The templates (as well as the info entries) are written in [Markdown](http://en.wikipedia.org/wiki/Markdown). The info entries can be used with curly braces, like `{front}`. The templates as well as the entries can contain [LaTeX](http://en.wikipedia.org/wiki/LaTeX) code between single dollar signs.
-
-Note that there are no static groups (or "decks" as in Anki) for infos. Instead there are *profiles*. By default this works like Anki, so it shows the generated templates for everything that's "due". That behaviour is customizable though. It can filter based on the infos type, entries, tags, creation date, last interval. Some example uses might be
-- group together different languages or different university related tags
-- only newly created
-- generate even if not due (aka "cram mode")
+A template maps an info to a front and back side of a virtual flashcard. In the example case, the front could show the english word and the back could show the spanish word. The templates (as well as the info entries) are written in [Markdown](http://en.wikipedia.org/wiki/Markdown). The info entries can be used with curly braces, like `{front}`. The templates as well as the entries can contain [LaTeX](http://en.wikipedia.org/wiki/LaTeX) code between single dollar signs.
 
 ![](https://github.com/s9w/Ginseng/raw/master/doc/pipeline1.png)
+
+There can be more than one template for a type, for example if you also want to test the reverse relation. Or you might want to include a note entry that gets displayed alongside. Templates can have to a condition so they only generate a flashcard when that condition is matched. An example could be a reverse template that will only be generated if an info has a "reverse" tag. The syntax is described [below](#filter).
+
 ![](https://github.com/s9w/Ginseng/raw/master/doc/pipeline2.png)
 
-## Review / Intervals
-During review, you have the choice between *setting* an interval, or *changing* the previous. For example setting "5h" would mean that in 5 hours, that review would become due again.
+During review, you have the choice between *setting* an interval, or *changing* the previous. For example setting "5h" would mean that in 5 hours, that review would become due again. Most of the time you'll probably want to change the previous interval. There are relative increases in percent or fixed time amounts.
 
-Most of the time you'll probably want to change the previous interval. There are relative increases in percent or fixed time amounts.
+Clicking an interval selection will "select" it and mark it green. The new interval and the date and time when it'll become due again are previewed below. Click the same selection again to confirm. That way you can quickly apply a new interval with a double click.
 
-Clicking an interval selection will "select" it and mark it green. The new interval and the date and time when it'll become due again are rpreviewed below. Click the same selection again to confirm. That way you can quickly apply a new interval with a double click.
+Note that the last interval is calculated as the actual time between the last review and now, NOT when the review would have been due. That's intentional as I feel that's really what counts.
 
-Note that the last interval means the actual time between the last review and now, NOT when the review would have been due. That's intentional as I feel that's really what counts.
+Each generated flashcard has a "**dueness**" based on the selected interval and the time since the last review. Right after reviewing, the dueness is 0. It increases linearly with time, reaching 1.0 at the time of it's designated interval. By default, that's when reviews are "due" and are displayed. It will continue to increase though if it's not reviewed. Most due cards are reviewed first.
 
-Each generated template has a "dueness", based on the selected interval and the time since the last review. Right after reviewing, the dueness is 0. It increases linearly with time, reaching 1.0 at the time of it's designated interval. By default, that's when reviews are "due" and are displayed. It will continue to increase though if it's not reviewed. Most due cards are reviewed first.
+With a growing collection of infos, more control over the reviews is helpful - that's what **profile**s are for. They group/filter the generated flashcards, either by their tag or creation date as described below or their dueness. A "due threshold" of less than 1.0 will show cards that are not due yet. That can be used as a "cramming mode" if you will.
+
+![](https://github.com/s9w/Ginseng/raw/master/doc/pipeline3.png)
+
+## Science
 
 ## Profiles
 With a growing collection of things to keep in mind/Ginseng, more control over the reviews is helpful - that's what profiles are for. In addition to filtering the infos by their tag as described below, you can also specify a "due threshold". Based on the dueness described above, you can manually specify when to display cards. This allows for bigger/smaller review sessions or "cramming".
