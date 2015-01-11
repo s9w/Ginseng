@@ -3,38 +3,74 @@ var init_data = {
             {
                 "typeID": "0",
                 "entries": [
-                    "Weihnachten",
-                    "Christmas"
+                    "Hamilton's equations",
+                    "- $\\dot{\\vec p} = -\\frac{\\partial H}{\\partial \\vec q}$\n- $\\dot{\\vec q} = \\frac{\\partial H}{\\partial \\vec p}$"
                 ],
-                "tags": [
-                    "englisch"
-                ],
-                "creationDate": "2014-12-10T21:40:09+01:00",
                 "reviews": {
-                    "0": [],
+                    "0": [
+                        {
+                            "reviewTime": "2015-01-11T20:03:56+01:00",
+                            "dueTime": "2015-01-11T22:03:56+01:00"
+                        }
+                    ],
                     "1": []
-                }
+                },
+                "tags": [
+                    "physics"
+                ],
+                "creationDate": "2015-01-11T16:04:23+01:00"
             },
             {
                 "typeID": "0",
                 "entries": [
-                    "Tree",
-                    "Baum"
+                    "la chica",
+                    "girl"
                 ],
-                "tags": [
-                    "englisch", "reverse"
-                ],
-                "creationDate": "2014-12-10T21:40:09+01:00",
                 "reviews": {
                     "0": [],
                     "1": []
-                }
+                },
+                "tags": [
+                    "spanish"
+                ],
+                "creationDate": "2015-01-11T15:58:42+01:00"
             },
             {
                 "typeID": "0",
                 "entries": [
-                    "Standardnormalverteilung",
-                    "$\\frac{1}{\\sqrt{2\\pi}}e^{-\\frac{x^2}{2}}$"
+                    "la manzana",
+                    "apple"
+                ],
+                "reviews": {
+                    "0": [],
+                    "1": []
+                },
+                "tags": [
+                    "reverse",
+                    "spanish"
+                ],
+                "creationDate": "2015-01-11T15:59:16+01:00"
+            },
+            {
+                "typeID": "0",
+                "entries": [
+                    "liberté",
+                    "freedom"
+                ],
+                "reviews": {
+                    "0": [],
+                    "1": []
+                },
+                "tags": [
+                    "french"
+                ],
+                "creationDate": "2015-01-11T16:00:39+01:00"
+            },
+            {
+                "typeID": "0",
+                "entries": [
+                    "Pythagorean theorem",
+                    "$a^2 + b^2 = x^2$\n![Animation](http://i.imgur.com/b4gZm.gif)"
                 ],
                 "tags": [
                     "math"
@@ -48,8 +84,11 @@ var init_data = {
         ],
         "infoTypes": {
             "0": {
-                "name": "Front and back",
-                "entryNames": ["front", "back"],
+                "name": "Example type",
+                "entryNames": [
+                    "front",
+                    "back"
+                ],
                 "templates": {
                     "0": {
                         "front": "{front}",
@@ -65,7 +104,11 @@ var init_data = {
             },
             "1": {
                 "name": "Countries",
-                "entryNames": ["Country", "Capital", "Language"],
+                "entryNames": [
+                    "Country",
+                    "Capital",
+                    "Language"
+                ],
                 "templates": {
                     "0": {
                         "front": "Country: {Country}",
@@ -85,16 +128,22 @@ var init_data = {
                 }
             }
         },
-        "reviewProfiles":{
-            "0":{
+        "reviewProfiles": {
+            "0": {
                 "name": "All",
                 "condition": "",
-                "dueThreshold": 1.0
+                "dueThreshold": 1
             },
-            "1":{
-                "name": "Uni",
-                "condition": "tag: math || tag: physik",
-                "dueThreshold": 1.0
+            "1": {
+                "name": "Languages",
+                "condition": "tag: spanish || tag: french",
+                "dueThreshold": "1.0"
+            },
+            "2": {
+                "name": "Math + Physics",
+                "condition": "tag: math || tag: physics",
+                "urgencyThreshold": 1,
+                "dueThreshold": "1.0"
             }
         },
         "settings": {
@@ -115,7 +164,10 @@ var init_data = {
                     3,
                     4
                 ],
-                "Weeks": [1, 2],
+                "Weeks": [
+                    1,
+                    2
+                ],
                 "Months": [],
                 "Percent": [
                     0,
@@ -128,8 +180,7 @@ var init_data = {
             "useCompression": false
         },
         "meta": {
-            "dataFormatVersion": "2014-12-17",
-            "lastSaved": "never"
+            "lastSaved": "2015-01-11T22:12:35+01:00"
         }
     }
     ;

@@ -27,25 +27,9 @@ var Settings = React.createClass({
         return (
             <div className="Component">
                 <section>
-                    <h3>Review Count</h3>
-                    <div>
-                        <span>Number of saved Reviews to keep. Higher Number will increase file size (around 0.1KB per review): </span>
-                        <input
-                            onChange={this.onChange}
-                            name="reviewHistoryLength"
-                            type="number"
-                            min="1"
-                            step="1"
-                            style={{maxWidth: "50px" }}
-                            value={this.state.settings.reviewHistoryLength}
-                        />
-                    </div>
-                </section>
-
-                <section>
                     <h3>Compression</h3>
                     <div>
-                        <span>Compress the data file. This will shorten the upload time to a third and the download time a bit. But it will make the data file unreadable for humans.</span>
+                        <span>Compress the data file. This will reduce the upload time to a third and the download time a bit. But it will make the data file unreadable for humans.</span>
                         <input
                             onChange={this.onChange}
                             name="useCompression"

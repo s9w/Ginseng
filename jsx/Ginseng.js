@@ -3,7 +3,7 @@ var client = new Dropbox.Client({ key: "ob9346e5yc509q2" });
 client.authDriver(new Dropbox.AuthDriver.Popup({receiverUrl: "https://leastaction.org/ginseng/dropbox_receiver.html"}));
 
 
-var App = React.createClass({
+var Ginseng = React.createClass({
     getInitialState() {
         return {
             infos: init_data.infos,
@@ -329,22 +329,27 @@ var Status = React.createClass({
         return (
             <div className="Status Component">
                 {popupOverwrite}
-                <div>Infos loaded: {this.props.dropBoxStatus === "loading"?"loading":this.props.infoCount}</div>
-                <div>{"Last save: " + lastSavedStr}</div>
-                <div>{"Last load: " + lastLoadedStr}</div>
+                <section>
+                    <h3>Infos</h3>
+                    <div>Infos loaded: {this.props.dropBoxStatus === "loading"?"loading":this.props.infoCount}</div>
+                </section>
 
-                <div className={"flexContHoriz"}>
-                    <button
-                        disabled={this.props.dropBoxStatus !== "initial"}
-                        className="buttonGood"
-                        onClick={this.props.onDBAuth}>Log into Dropbox</button>
-                    <button
-                        disabled={this.props.dropBoxStatus !== "loggedIn"}
-                        onClick={this.props.onDbLoad}>Load from Dropbox</button>
-                    <button
-                        disabled={this.props.dropBoxStatus !== "loggedIn" || !this.props.isChanged}
-                        onClick={this.onSaveClick}>Save to Dropbox</button>
-                </div>
+                <section>
+                    <h3>Dropbox</h3>
+                    <div>{"Last save: " + lastSavedStr}</div>
+                    <div>{"Last load: " + lastLoadedStr}</div>
+                    <div>
+                        {this.props.dropBoxStatus === "initial" && <button
+                            className="buttonGood"
+                            onClick={this.props.onDBAuth}>Login</button>}
+                        {this.props.dropBoxStatus !== "initial" && <button
+                            disabled={this.props.dropBoxStatus !== "loggedIn"}
+                            onClick={this.props.onDbLoad}>Load</button>}
+                        {this.props.dropBoxStatus !== "initial" && <button
+                            disabled={!this.props.isChanged || this.props.dropBoxStatus !== "loggedIn"}
+                            onClick={this.onSaveClick}>Save</button>}
+                    </div>
+                </section>
             </div>
         )
     }
@@ -388,5 +393,5 @@ var Editor = React.createClass({
 });
 
 React.render(
-    <App />, document.getElementById('content')
+    <Ginseng />, document.getElementById('content')
 );

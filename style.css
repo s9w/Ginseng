@@ -100,9 +100,6 @@ p {
   justify-content: center;
   max-width: 320px; }
 
-#reviewStage {
-  min-height: 100px; }
-
 .intervalButtonCont {
   display: flex;
   justify-content: flex-start;
@@ -263,7 +260,8 @@ button:disabled {
 #reviewStage {
   display: flex;
   flex-direction: column;
-  align-items: center; }
+  align-items: center;
+  min-height: 50px; }
 
 input, select, textarea {
   font-size: inherit;
