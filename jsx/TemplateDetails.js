@@ -40,6 +40,18 @@ var TemplateDetails = React.createClass({
                     ]}
                     onUpdate={this.onViewChange.bind(null, "condition")}
                 />
+
+                <section>
+                    <h3>Delete</h3>
+                    <div>
+                        <button
+                            className="buttonDanger"
+                            onClick={this.props.delete}>
+                            Delete this Template
+                        </button>
+                    </div>
+                </section>
+
             </div>
         );
     }

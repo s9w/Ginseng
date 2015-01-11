@@ -77,9 +77,9 @@ var InfoTypes = React.createClass({
         };
         this.setState({
             types: newTypes,
-            selectedTypeID: nextTypeID
+            selectedTypeID: nextTypeID,
+            mode: "main"
         });
-        this.refs.nameRef.getDOMNode().focus();
     },
     onDeleteType(){
         var newTypes = JSON.parse( JSON.stringify( this.state.types ));
@@ -97,6 +97,27 @@ var InfoTypes = React.createClass({
         newTypes[this.state.selectedTypeID].templates[this.state.mode][type] = newContent;
         this.setState({types: newTypes});
     },
+    onAddTemplate(){
+        var newTypes = JSON.parse( JSON.stringify( this.state.types ));
+        var nextTemplateID =  _.parseInt(_.max( _.keys(newTypes[this.state.selectedTypeID].templates) ))+1;
+        newTypes[this.state.selectedTypeID].templates[nextTemplateID] = {
+            "front": "{front}",
+            "back": "{back}",
+            "condition": ""
+        };
+        this.setState({
+            types: newTypes,
+            mode: nextTemplateID.toString()
+        });
+    },
+    onDeleteTemplate(){
+        var newTypes = JSON.parse( JSON.stringify( this.state.types ));
+        delete newTypes[this.state.selectedTypeID].templates[this.state.mode];
+        this.setState({
+            types: newTypes,
+            mode: _(newTypes[this.state.selectedTypeID].templates).keys().max().toString()
+        });
+    },
     render() {
         var selectedType = this.state.types[this.state.selectedTypeID];
 
@@ -106,6 +127,7 @@ var InfoTypes = React.createClass({
                 <TemplateDetails
                     view={selectedType.templates[this.state.mode]}
                     onViewChange={this.onViewChange}
+                    delete={this.onDeleteTemplate}
                 />
         } else {
             mainSection=[
@@ -131,7 +153,8 @@ var InfoTypes = React.createClass({
                             />
                             <button
                                 className={"buttonDanger microbutton sectionContentElFixed" + (selectedType.entryNames.length <= 2 ? " invisible" : "")}
-                                onClick={this.onFieldsResize.bind(this, i)}>✖
+                                onClick={this.onFieldsResize.bind(this, i)}>
+                                ✖
                             </button>
                         </div>
                     )}
@@ -174,6 +197,11 @@ var InfoTypes = React.createClass({
                             onClick={this.setMode.bind(this, templateID)}>{"Template "+templateID}
                         </button>
                     )}
+
+                    <button
+                        onClick={this.onAddTemplate}>
+                        Add...
+                    </button>
                 </div>
 
                 {mainSection}

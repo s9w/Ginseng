@@ -283,6 +283,7 @@ textarea, select {
 
 .tabContainer {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-start; }
 
 form {
