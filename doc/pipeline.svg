@@ -389,9 +389,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.98994949"
-     inkscape:cx="178.70158"
-     inkscape:cy="896.54128"
+     inkscape:zoom="1.4"
+     inkscape:cx="331.52251"
+     inkscape:cy="215.72463"
      inkscape:document-units="cm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1043,7 +1043,7 @@
          sodipodi:role="line">Flashcards</tspan></text>
     <path
        style="fill:none;stroke:#008000;stroke-width:3.54330707;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)"
-       d="m 429.30216,816.18921 30.00004,0.71428"
+       d="m 429.30216,819.81658 30.00004,0.71428"
        id="path6606-5-0"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
@@ -1056,7 +1056,7 @@
        y="700.69873" />
     <text
        xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans;font-stretch:normal;font-variant:normal"
        x="206.61574"
        y="850.04633"
        id="text3048-7-4"
@@ -1064,17 +1064,17 @@
          sodipodi:role="line"
          id="tspan3050-1-8"
          x="206.61574"
-         y="850.04633"><tspan
-   style="font-weight:bold;-inkscape-font-specification:Sans Bold"
-   id="tspan7341-6">Profile</tspan>: Only Real Science<tspan
-   style="font-size:65%;baseline-shift:super"
-   id="tspan8223">TM</tspan></tspan><tspan
+         y="850.04633"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Sans;-inkscape-font-specification:Sans"><tspan
+   style="-inkscape-font-specification:Sans Bold;font-family:Sans;font-weight:bold"
+   id="tspan8776">Profile</tspan>: Only Real Science (tm)</tspan><tspan
          sodipodi:role="line"
          x="206.61574"
          y="865.04633"
-         id="tspan3058-1-5"><tspan
+         id="tspan3058-1-5"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Sans;-inkscape-font-specification:Sans"><tspan
    style="font-weight:bold;-inkscape-font-specification:Sans Bold"
-   id="tspan7353-0">Condition</tspan>: tag: physics || tag: math</tspan></text>
+   id="tspan8782">Condition</tspan>: tag: physics || tag: math</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:18px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
@@ -1089,17 +1089,17 @@
     <text
        xml:space="preserve"
        style="font-size:18px;font-style:normal;font-weight:bold;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
-       x="529.87231"
-       y="734.97833"
+       x="530.58661"
+       y="676.40692"
        id="text7369-0"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan7371-6"
-         x="529.87231"
-         y="734.97833">Flashcards with</tspan><tspan
+         x="530.58661"
+         y="676.40692">Flashcards with</tspan><tspan
          sodipodi:role="line"
-         x="529.87231"
-         y="757.47833"
+         x="530.58661"
+         y="698.90692"
          id="tspan7373-6">filtering profile</tspan></text>
     <rect
        style="fill:#ffffff;fill-opacity:0.91176471;stroke:#000000;stroke-width:1.66376233;stroke-miterlimit:4;stroke-dasharray:none"
@@ -1369,7 +1369,7 @@
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path8168-6"
-       d="m 151.24552,820.90283 38.19826,0"
+       d="m 151.06695,820.90283 38.19826,0"
        style="fill:none;stroke:#008000;stroke-width:3.54330707;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)" />
     <path
        inkscape:export-ydpi="100.27936"
@@ -1390,7 +1390,7 @@
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936" />
     <rect
-       y="786.89447"
+       y="786.90588"
        x="464.24829"
        height="68.376236"
        width="122.34182"
@@ -1400,29 +1400,74 @@
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#008000;fill-opacity:1;stroke:none;font-family:Sans"
        x="523.97247"
-       y="804.85107"
+       y="808.42249"
        id="text8227"
        sodipodi:linespacing="125%"><tspan
          style="font-size:14px;fill:#008000"
          sodipodi:role="line"
          x="523.97247"
-         y="804.85107"
+         y="808.42249"
          id="tspan8229">imaginary unit</tspan><tspan
          style="font-size:14px;fill:#008000"
          id="tspan8231"
          sodipodi:role="line"
          x="523.97247"
-         y="822.35107" /><tspan
+         y="825.92249" /><tspan
          style="font-size:14px;fill:#008000"
          id="tspan8233"
          sodipodi:role="line"
          x="523.97247"
-         y="839.85107">x² = -1</tspan></text>
+         y="843.42249">x² = -1</tspan></text>
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path8235"
-       d="m 478.27636,818.77967 95.71427,0"
+       d="m 478.27636,822.3511 95.71427,0"
        style="fill:none;stroke:#008000;stroke-width:0.99212599;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.96850394, 3.96850394;stroke-dashoffset:0" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="198.57143"
+       y="748.78943"
+       id="text8245"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan8247"
+         x="198.57143"
+         y="748.78943"
+         style="font-size:36px;fill:#ff0000">X</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="198.57143"
+       y="917.36084"
+       id="text8253"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan8255"
+         x="198.57143"
+         y="917.36084"
+         style="font-size:36px;fill:#ff0000">X</tspan></text>
+    <text
+       sodipodi:linespacing="125%"
+       id="text8257"
+       y="988.07513"
+       x="198.57143"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         style="font-size:36px;fill:#ff0000"
+         y="988.07513"
+         x="198.57143"
+         id="tspan8259"
+         sodipodi:role="line">X</tspan></text>
+    <path
+       style="fill:none;stroke:#008000;stroke-width:3.54330709;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:0.19786096000000000;stroke-dasharray:14.17322835,14.17322835;marker-end:none;stroke-dashoffset:0"
+       d="m 205.53123,820.53086 217.48398,0"
+       id="path8261"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-ydpi="100.27936" />
   </g>
 </svg>
