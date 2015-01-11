@@ -41,6 +41,7 @@ var ReviewDisplay = React.createClass({
                     className="markdowned"
                     dangerouslySetInnerHTML={{__html: this.renderMarkdown(frontStr)}}>
                 </div>
+                <hr className={this.props.progressState === "backSide" ? "" : "invisible"} />
                 <div
                     className={"markdowned " + (this.props.progressState === "backSide" ? "" : "invisible")}
                     dangerouslySetInnerHTML={{__html: this.renderMarkdown(backStr)}}>

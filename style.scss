@@ -279,22 +279,6 @@ $intervalYellow: #5f95d0;
   @include hoverDark(mix($intervalRed, $intervalYellow, 0%));
 }
 
-//.intervalMinutes{
-//  @include hoverDark(#fff);
-//}
-//.intervalHours{
-//  @include hoverDark(mix($intervalRed, $intervalYellow, 75%));
-//}
-//.intervalDays{
-//  @include hoverDark(mix($intervalRed, $intervalYellow, 50%));
-//}
-//.intervalWeeks{
-//  @include hoverDark(mix($intervalRed, $intervalYellow, 25%));
-//}
-//.intervalMonths{
-//  @include hoverDark(mix($intervalRed, $intervalYellow, 0%));
-//}
-
 .buttonPlain{
   background: #FFF;
   &:hover{
@@ -378,4 +362,10 @@ textarea, select{
 form{
   display: flex;
   flex-direction: column;
+}
+
+hr{
+  border: 0;
+  border-bottom: 2px dashed #D0D0D0;
+  width: 100%;
 }

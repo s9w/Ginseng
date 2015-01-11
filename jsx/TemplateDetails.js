@@ -34,7 +34,8 @@ var TemplateDetails = React.createClass({
                         {
                             displayName: "Filter",
                             key: "condition",
-                            displayType: "input"
+                            displayType: "input",
+                            placeholder: "Empty condition matches all"
                         }
                     ]}
                     onUpdate={this.onViewChange.bind(null, "condition")}

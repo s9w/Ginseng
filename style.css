@@ -289,4 +289,9 @@ form {
   display: flex;
   flex-direction: column; }
 
+hr {
+  border: 0;
+  border-bottom: 2px dashed #D0D0D0;
+  width: 100%; }
+
 /*# sourceMappingURL=style.css.map */
