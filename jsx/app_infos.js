@@ -20,13 +20,21 @@ var InfoEdit = React.createClass({
     },
     toggleTag(toggledTag){
         var newInfo = _.cloneDeep( this.state.info );
+        var newPreviewID = this.state.previewID;
         if(_.contains(newInfo.tags, toggledTag)){
             newInfo.tags.splice(newInfo.tags.indexOf(toggledTag), 1);
+            if(this.state.previewID && !filterInfo(this.props.types[this.state.info.typeID].templates[this.state.previewID].condition, newInfo)){
+                newPreviewID = false;
+            }
         }else{
             newInfo.tags.push(toggledTag);
             newInfo.tags = newInfo.tags.sort( (a,b) => a.localeCompare(b));
         }
-        this.setState( {info: newInfo, newTagValue: ""} );
+        this.setState({
+            info: newInfo,
+            newTagValue: "",
+            previewID: newPreviewID
+        });
     },
 
     setPreview(newPreview){
@@ -40,9 +48,14 @@ var InfoEdit = React.createClass({
         });
     },
     handleNewTagChange(e){
-        this.setState({newTagValue: e.target.value})
+        this.setState({
+            newTagValue: e.target.value
+        })
     },
     render() {
+        var templateDueTime = this.state.previewID && (this.state.info.reviews[this.state.previewID].length >= 1) ?
+            moment(_.last(this.state.info.reviews[this.state.previewID]).dueTime).fromNow():
+            "now";
         return (
             <div className="InfoEdit Component">
                 <section>
@@ -101,9 +114,10 @@ var InfoEdit = React.createClass({
                             key={"none"}
                             className={(this.state.previewID ? "" : "buttonGood")}
                             onClick={this.setPreview.bind(this, false)}>
-                        {"None"}
+                            {"None"}
                         </button>
                         {_(this.props.types[this.state.info.typeID].templates).keys().value().map( templateID =>
+                            filterInfo(this.props.types[this.state.info.typeID].templates[templateID].condition, this.state.info) &&
                             <button
                                 key={templateID}
                                 className={(this.state.previewID === templateID ? "buttonGood" : "")}
@@ -112,17 +126,17 @@ var InfoEdit = React.createClass({
                             </button>
                         )}
                     </div>
-                </section>
 
-                {this.state.previewID &&
-                    <div>
-                        <span>Due {moment(_.last(this.state.info.reviews[this.state.previewID]).dueTime).fromNow()}</span>
-                        <ReviewDisplay
-                            template={this.props.types[this.state.info.typeID].templates[this.state.previewID]}
-                            templateData={_.zipObject(this.props.types[this.state.info.typeID].entryNames, this.state.info.entries)}
-                        />
-                    </div>
-                }
+                    {this.state.previewID &&
+                        <div>
+                            <span>Due {templateDueTime}</span>
+                            <ReviewDisplay
+                                template={this.props.types[this.state.info.typeID].templates[this.state.previewID]}
+                                templateData={_.zipObject(this.props.types[this.state.info.typeID].entryNames, this.state.info.entries)}
+                            />
+                        </div>
+                    }
+                </section>
 
                 <div className="flexContHoriz">
                     <button
