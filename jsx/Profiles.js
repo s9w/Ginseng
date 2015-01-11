@@ -28,7 +28,6 @@ var Profiles = React.createClass({
         });
     },
     updateprofiles(param){
-        console.log("param: " + JSON.stringify(param));
         var newProfiles = _.cloneDeep( this.state.reviewProfiles) ;
         _.extend( newProfiles[this.state.selectedProfileID], param);
         this.setState({reviewProfiles: newProfiles});

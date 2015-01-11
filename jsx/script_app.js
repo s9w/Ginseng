@@ -13,7 +13,6 @@ var App = React.createClass({
             activeMode: "status",
             selectedInfoIndex: false,
             reviewProfiles: init_data.reviewProfiles,
-            activeProfileKey: _.min(_.keys(init_data.reviewProfiles)),
 
             dropBoxStatus: "initial",
             lastLoadedStr: "never",
@@ -63,7 +62,6 @@ var App = React.createClass({
         }else{
             writeDataString = JSON.stringify(writeDataObj, null, '\t');
         }
-        console.log("old: " + JSON.stringify(writeDataObj, null, '\t').length + ", new: " + LZString.compressToUTF16   (JSON.stringify(writeDataObj)).length);
         client.writeFile("ginseng_data.txt", writeDataString, function(error) {
             if (error) {
                 console.log("error: " + error);
@@ -105,12 +103,6 @@ var App = React.createClass({
         this.setState({
             selectedInfoIndex: infoIndex,
             activeMode: "edit"
-        })
-    },
-    gotoReview(param){
-        this.setState({
-            activeMode: "review",
-            activeProfileKey: param
         })
     },
     onInfoEdit(newInfo) {
@@ -194,29 +186,11 @@ var App = React.createClass({
     render: function () {
         return (
             <div className="app">
-                <div className="navBar unselectable">
-                    <div
-                        className={this.state.activeMode == "status" ? "active" : ""}
-                        title={this.state.isChanged?"unsaved changes":""}
-                        onClick={this.clickNav.bind(this, "status")}>Status<span className={this.state.isChanged?"":"invisible"}>*</span>
-                    </div>
-                    <div className={this.state.activeMode == "settings" ? "active" : ""}
-                        onClick={this.clickNav.bind(this, "settings")}>Settings
-                    </div>
-                    <div className={_(["browse", "new", "edit"]).contains(this.state.activeMode) ? "active" : "" }
-                        onClick={this.clickNav.bind(this, "browse")}>Infos
-                    </div>
-                    <div className={this.state.activeMode === "types" ? "active" : ""}
-                        onClick={this.clickNav.bind(this, "types")}>Types
-                    </div>
-                    <div className={this.state.activeMode === "profiles" ? "active" : ""}
-                        onClick={this.clickNav.bind(this, "profiles")}>Profiles
-                    </div>
-                    <div className={_(["review", "reviewPrompt" ]).contains( this.state.activeMode) ? "active" : ""}
-                        onClick={this.clickNav.bind(this, "reviewPrompt")}>Review
-                    </div>
-                </div>
-
+                <NavBar
+                    activeMode={this.state.activeMode}
+                    isChanged={this.state.isChanged}
+                    clickNav={this.clickNav}
+                />
                 {this.state.activeMode === "status" &&
                     <Status
                         infoCount={this.state.infos.length}
@@ -274,13 +248,6 @@ var App = React.createClass({
                     />
                 }
 
-                { this.state.activeMode === "reviewPrompt" &&
-                    <ReviewPrompt
-                        profiles={this.state.reviewProfiles}
-                        gotoReview={this.gotoReview}
-                    />
-                }
-
                 { this.state.activeMode === "review" &&
                     <Review
                         infos={this.state.infos}
@@ -288,43 +255,12 @@ var App = React.createClass({
                         applyInterval={this.applyInterval}
                         timeIntervalChoices={this.state.settings.timeIntervalChoices}
                         gotoEdit={this.gotoEdit}
-                        activeProfile={this.state.reviewProfiles[this.state.activeProfileKey]}
                         profiles={this.state.reviewProfiles}
                     />
                 }
 
             </div>
         );
-    }
-});
-
-var ReviewPrompt = React.createClass({
-    componentWillMount(){
-        // Skip Profile if there's only one
-        if(_.keys(this.props.profiles).length === 1){
-            this.gotoReview();
-        }
-    },
-    onChange(event){
-        var newDict = _.pick(this.props.path, _.pluck(this.props.objects, "key"));
-        newDict[event.target.name] = event.target.value;
-        this.props.onUpdate(newDict);
-    },
-    gotoReview(){
-        this.props.gotoReview();
-    },
-    render() {
-        return (
-            <div className="Component">
-                <h3>Select review profile</h3>
-                {_(this.props.profiles).map((profile, key) =>
-                    <button
-                        onClick={this.props.gotoReview.bind(null, key)}
-                        >{profile.name}
-                    </button>
-                )}
-            </div>
-        )
     }
 });
 
@@ -395,7 +331,6 @@ var Status = React.createClass({
             <div className="Status Component">
                 {popupOverwrite}
                 <div>Infos loaded: {this.props.dropBoxStatus === "loading"?"loading":this.props.infoCount}</div>
-                <div>Dropbox Status: {this.props.dropBoxStatus}</div>
                 <div>{"Last save: " + lastSavedStr}</div>
                 <div>{"Last load: " + lastLoadedStr}</div>
 

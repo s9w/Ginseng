@@ -9,7 +9,7 @@ var Intervaller = React.createClass({
     },
     componentWillReceiveProps(nextProps){
         this.setState({
-            modifyType: nextProps.reviewInterval===0?"set":"change",
+            modifyType: nextProps.lastInterval===0?"set":"change",
             activeKeyIndex: false
         });
     },
@@ -22,17 +22,12 @@ var Intervaller = React.createClass({
         }
     },
     getNewInterval(){
-        if(this.state.modifyType === "change") {
-            if (this.state.changeType === "percent") {
-                return this.props.reviewInterval * (this.state.modifyAmount/100.0 + 1.0);
-            } else {
-                let intervalDiff = moment.duration(this.state.modifyAmount, this.state.changeType.toLowerCase()).asMilliseconds();
-                return this.props.reviewInterval + intervalDiff;
-            }
-        }
-        else if(this.state.modifyType === "set") {
-            return moment.duration(this.state.modifyAmount, this.state.changeType.toLowerCase()).asMilliseconds();
-        }
+        var intervalDiff = this.state.changeType === "percent"?
+            this.props.lastInterval * this.state.modifyAmount/100.0:
+            moment.duration(this.state.modifyAmount, this.state.changeType.toLowerCase()).asMilliseconds();
+        return (this.state.modifyType === "change")?
+            this.props.lastInterval + intervalDiff:
+            intervalDiff;
     },
     onIntervalChoice(modifyAmount, keyIndex, changeType){
         if(this.state.activeKeyIndex === keyIndex){
@@ -71,7 +66,7 @@ var Intervaller = React.createClass({
         return(
             <div className={this.props.show?"":"invisible"}>
                 <button
-                    disabled={this.props.reviewInterval===0}
+                    disabled={this.props.lastInterval===0}
                     className={" "+ (this.state.modifyType==="change"?"buttonGood":"")}
                     onClick={this.onModeChange.bind(this, "change")}>change</button>
                 <button
@@ -80,7 +75,7 @@ var Intervaller = React.createClass({
                 <div className="intervalButtonCont">
                     {intervals}
                 </div>
-                <div>Last interval: {getPreciseIntervalStr( this.props.reviewInterval )}</div>
+                <div>Last interval: {getPreciseIntervalStr( this.props.lastInterval )}</div>
                 <div className={this.state.activeKeyIndex?"":"invisible"}>New interval: {getPreciseIntervalStr( this.getNewInterval() )}</div>
                 <div className={this.state.activeKeyIndex?"":"invisible"}>Due on: {moment().add(moment.duration(this.getNewInterval())).format("dddd, YYYY-MM-DD, HH:mm") }</div>
             </div>

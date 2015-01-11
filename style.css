@@ -196,29 +196,29 @@ button {
     outline: 2px solid #478f2f; }
 
 .intervalMinutes {
-  background: #ff3300; }
+  background: rgba(255, 35, 15, 0.6); }
   .intervalMinutes:hover {
-    outline: 2px solid #b32400; }
+    outline: 2px solid rgba(189, 16, 0, 0.6); }
 
 .intervalHours {
-  background: #f35a00; }
+  background: rgba(185, 84, 99, 0.7); }
   .intervalHours:hover {
-    outline: 2px solid #aa3f00; }
+    outline: 2px solid rgba(134, 55, 66, 0.7); }
 
 .intervalDays {
-  background: #e78100; }
+  background: rgba(143, 114, 150, 0.8); }
   .intervalDays:hover {
-    outline: 2px solid #a25a00; }
+    outline: 2px solid rgba(101, 79, 106, 0.8); }
 
 .intervalWeeks {
-  background: #dba800; }
+  background: rgba(115, 134, 183, 0.9); }
   .intervalWeeks:hover {
-    outline: 2px solid #997600; }
+    outline: 2px solid rgba(71, 90, 138, 0.9); }
 
 .intervalMonths {
-  background: #d0d000; }
+  background: #5f95d0; }
   .intervalMonths:hover {
-    outline: 2px solid #929200; }
+    outline: 2px solid #3067a4; }
 
 .buttonPlain {
   background: #FFF; }

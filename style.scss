@@ -261,8 +261,8 @@ button{
   @include hoverDark($base-green);
 }
 
-$intervalRed: #FF3300;
-$intervalYellow: #d0d000;
+$intervalRed: rgba(255, 35, 15, 0.60);
+$intervalYellow: #5f95d0;
 .intervalMinutes{
   @include hoverDark(mix($intervalRed, $intervalYellow, 100%));
 }
@@ -278,6 +278,22 @@ $intervalYellow: #d0d000;
 .intervalMonths{
   @include hoverDark(mix($intervalRed, $intervalYellow, 0%));
 }
+
+//.intervalMinutes{
+//  @include hoverDark(#fff);
+//}
+//.intervalHours{
+//  @include hoverDark(mix($intervalRed, $intervalYellow, 75%));
+//}
+//.intervalDays{
+//  @include hoverDark(mix($intervalRed, $intervalYellow, 50%));
+//}
+//.intervalWeeks{
+//  @include hoverDark(mix($intervalRed, $intervalYellow, 25%));
+//}
+//.intervalMonths{
+//  @include hoverDark(mix($intervalRed, $intervalYellow, 0%));
+//}
 
 .buttonPlain{
   background: #FFF;

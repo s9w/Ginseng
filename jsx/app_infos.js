@@ -115,10 +115,13 @@ var InfoEdit = React.createClass({
                 </section>
 
                 {this.state.previewID &&
-                    <ReviewDisplay
-                        template={this.props.types[this.state.info.typeID].templates[this.state.previewID]}
-                        templateData={_.zipObject(this.props.types[this.state.info.typeID].entryNames, this.state.info.entries)}
-                    />
+                    <div>
+                        <span>Due {moment(_.last(this.state.info.reviews[this.state.previewID]).dueTime).fromNow()}</span>
+                        <ReviewDisplay
+                            template={this.props.types[this.state.info.typeID].templates[this.state.previewID]}
+                            templateData={_.zipObject(this.props.types[this.state.info.typeID].entryNames, this.state.info.entries)}
+                        />
+                    </div>
                 }
 
                 <div className="flexContHoriz">
