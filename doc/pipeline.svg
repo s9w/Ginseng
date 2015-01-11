@@ -9,8 +9,8 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="744.09448"
-   height="1052.3622"
+   width="486.44284"
+   height="898.11908"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.5 r10040"
@@ -23,41 +23,44 @@
     <marker
        inkscape:stockid="Arrow2Send"
        orient="auto"
-       refY="0.0"
-       refX="0.0"
+       refY="0"
+       refX="0"
        id="Arrow2Send"
-       style="overflow:visible;">
+       style="overflow:visible">
       <path
          id="path3977"
-         style="fill-rule:evenodd;stroke-width:0.62500000;stroke-linejoin:round;"
-         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
-         transform="scale(0.3) rotate(180) translate(-2.3,0)" />
+         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="matrix(-0.3,0,0,-0.3,0.69,0)"
+         inkscape:connector-curvature="0" />
     </marker>
     <marker
        inkscape:stockid="Arrow2Mend"
        orient="auto"
-       refY="0.0"
-       refX="0.0"
+       refY="0"
+       refX="0"
        id="Arrow2Mend"
-       style="overflow:visible;">
+       style="overflow:visible">
       <path
          id="path3971"
-         style="fill-rule:evenodd;stroke-width:0.62500000;stroke-linejoin:round;"
-         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
-         transform="scale(0.6) rotate(180) translate(0,0)" />
+         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="scale(-0.6,-0.6)"
+         inkscape:connector-curvature="0" />
     </marker>
     <marker
        inkscape:stockid="Arrow1Lend"
        orient="auto"
-       refY="0.0"
-       refX="0.0"
+       refY="0"
+       refX="0"
        id="Arrow1Lend"
-       style="overflow:visible;">
+       style="overflow:visible">
       <path
          id="path3947"
-         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;"
-         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
     </marker>
     <marker
        inkscape:stockid="Arrow2Mend"
@@ -390,8 +393,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="331.52251"
-     inkscape:cy="215.72463"
+     inkscape:cx="204.32291"
+     inkscape:cy="411.98437"
      inkscape:document-units="cm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -402,14 +405,24 @@
      inkscape:window-height="1003"
      inkscape:window-x="132"
      inkscape:window-y="132"
-     inkscape:window-maximized="0">
+     inkscape:window-maximized="0"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0">
     <inkscape:grid
        type="xygrid"
        id="grid3078"
        empspacing="5"
        visible="true"
        enabled="true"
-       snapvisiblegridlinesonly="true" />
+       snapvisiblegridlinesonly="true"
+       originx="-24.987547px"
+       originy="-110.95704px" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="167.95159,577.46192"
+       id="guide9623" />
   </sodipodi:namedview>
   <metadata
      id="metadata7">
@@ -427,58 +440,22 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,0.00130762)">
-    <path
-       style="fill:#0000ff;stroke:#0000ff;stroke-width:3.54330707;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)"
-       d="m 327.85714,528.91859 60.71429,42.14286"
-       id="path6614"
-       inkscape:connector-curvature="0"
-       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
-       inkscape:export-xdpi="100.27936"
-       inkscape:export-ydpi="100.27936"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="fill:none;stroke:#0000ff;stroke-width:3.54330707;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)"
-       d="m 331.54061,455.27973 61.31653,43.63886"
-       id="path6044"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc"
-       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
-       inkscape:export-xdpi="100.27936"
-       inkscape:export-ydpi="100.27936" />
-    <path
-       style="fill:none;stroke:#008000;stroke-width:3.54330707;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)"
-       d="m 333.49964,411.77574 55.07179,0.71428"
-       id="path6606"
-       inkscape:connector-curvature="0"
-       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
-       inkscape:export-xdpi="100.27936"
-       inkscape:export-ydpi="100.27936"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="fill:none;stroke:#800000;stroke-width:3.54330707;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)"
-       d="m 332.84663,372.55746 53.58194,-38.63887"
-       id="path6610"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc"
-       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
-       inkscape:export-xdpi="100.27936"
-       inkscape:export-ydpi="100.27936" />
+     transform="translate(-24.987547,-43.284775)">
     <rect
-       style="fill:#ffffff;fill-opacity:0.91176471;stroke:#000000;stroke-width:1.77165353;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:#ffffff;fill-opacity:0.91176471;stroke:#000000;stroke-width:1.81571937;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect4570"
-       width="127.14286"
-       height="80"
+       width="133.5463"
+       height="126.52444"
        x="200"
-       y="375.34717"
+       y="316.05743"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936" />
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Sans"
-       x="23.571428"
-       y="501.26935"
+       x="28.117117"
+       y="486.7915"
        id="text2985"
        sodipodi:linespacing="125%"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
@@ -486,27 +463,27 @@
        inkscape:export-ydpi="100.27936"><tspan
          sodipodi:role="line"
          id="tspan2987"
-         x="23.571428"
-         y="501.26935"><tspan
+         x="28.117117"
+         y="486.7915"><tspan
    style="font-weight:bold;fill:#0000ff;-inkscape-font-specification:Sans Bold"
    id="tspan2989">front</tspan>: la manzana</tspan><tspan
          sodipodi:role="line"
-         x="23.571428"
-         y="516.26935"
+         x="28.117117"
+         y="501.7915"
          id="tspan2991"><tspan
    style="font-weight:bold;fill:#0000ff;-inkscape-font-specification:Sans Bold"
    id="tspan2993">back</tspan>: apple</tspan><tspan
          sodipodi:role="line"
-         x="23.571428"
-         y="531.26935"
+         x="28.117117"
+         y="516.7915"
          id="tspan2995"><tspan
    style="font-weight:bold;fill:#0000ff;-inkscape-font-specification:Sans Bold"
    id="tspan3030">tags</tspan>: spanish, reverse</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#008000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="23.571428"
-       y="439.02255"
+       x="28.117113"
+       y="429.09039"
        id="text2985-1"
        sodipodi:linespacing="125%"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
@@ -514,55 +491,55 @@
        inkscape:export-ydpi="100.27936"><tspan
          sodipodi:role="line"
          id="tspan2987-7"
-         x="23.571428"
-         y="439.02255"><tspan
+         x="28.117113"
+         y="429.09039"><tspan
    style="font-weight:bold;fill:#008000;-inkscape-font-specification:Sans Bold"
    id="tspan2989-4">front</tspan>: imaginary unit</tspan><tspan
          sodipodi:role="line"
-         x="23.571428"
-         y="454.02255"
+         x="28.117113"
+         y="444.09039"
          id="tspan2991-0"><tspan
    style="font-weight:bold;fill:#008000;-inkscape-font-specification:Sans Bold"
    id="tspan2993-9">back</tspan>: $i^2 = -1$</tspan><tspan
          sodipodi:role="line"
-         x="23.571428"
-         y="469.02255"
+         x="28.117113"
+         y="459.09039"
          id="tspan2995-4"><tspan
    style="font-weight:bold;fill:#008000;-inkscape-font-specification:Sans Bold"
    id="tspan3032">tags</tspan>: math</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text3034"
-       y="376.77573"
-       x="23.571428"
+       y="377.95523"
+       x="42.259247"
        style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#800000;fill-opacity:1;stroke:none;font-family:Sans"
        xml:space="preserve"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936"><tspan
-         y="376.77573"
-         x="23.571428"
+         y="377.95523"
+         x="42.259247"
          id="tspan3036"
          sodipodi:role="line"><tspan
    id="tspan3038"
    style="font-weight:bold;fill:#800000;-inkscape-font-specification:Sans Bold">front</tspan>: liberté</tspan><tspan
          id="tspan3040"
-         y="391.77573"
-         x="23.571428"
+         y="392.95523"
+         x="42.259247"
          sodipodi:role="line"><tspan
    id="tspan3042"
    style="font-weight:bold;fill:#800000;-inkscape-font-specification:Sans Bold">back</tspan>: freedom</tspan><tspan
          id="tspan3044"
-         y="406.77573"
-         x="23.571428"
+         y="407.95523"
+         x="42.259247"
          sodipodi:role="line"><tspan
    id="tspan3046"
    style="font-weight:bold;fill:#800000;-inkscape-font-specification:Sans Bold">tags</tspan>: french</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="220.17062"
-       y="397.06146"
+       x="230.25728"
+       y="360.57343"
        id="text3048"
        sodipodi:linespacing="125%"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
@@ -570,66 +547,66 @@
        inkscape:export-ydpi="100.27936"><tspan
          sodipodi:role="line"
          id="tspan3050"
-         x="220.17062"
-         y="397.06146"><tspan
+         x="230.25728"
+         y="360.57343"><tspan
            style="font-weight:bold;-inkscape-font-specification:Sans Bold"
            id="tspan3052">Template 0</tspan></tspan><tspan
          sodipodi:role="line"
-         x="220.17062"
-         y="412.06146"
+         x="230.25728"
+         y="375.57343"
          id="tspan6034"><tspan
    style="font-weight:bold;-inkscape-font-specification:Sans Bold"
    id="tspan6036">front</tspan>: {front}</tspan><tspan
          sodipodi:role="line"
-         x="220.17062"
-         y="427.06146"
+         x="230.25728"
+         y="390.57343"
          id="tspan3054"><tspan
    style="font-weight:bold;-inkscape-font-specification:Sans Bold"
    id="tspan3056">back</tspan>: {back}</tspan><tspan
          sodipodi:role="line"
-         x="220.17062"
-         y="442.06146"
+         x="230.25728"
+         y="405.57343"
          id="tspan3058"><tspan
    style="font-weight:bold;-inkscape-font-specification:Sans Bold"
    id="tspan3076">Filter</tspan>:</tspan></text>
     <rect
-       style="fill:none;stroke:#0000ff;stroke-width:1.77165353;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:none;stroke:#0000ff;stroke-width:1.29502714;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect3084"
-       width="122.34182"
-       height="68.376236"
-       x="399.90051"
-       y="541.70435"
+       width="109.99999"
+       height="40.633816"
+       x="369.34882"
+       y="513.07794"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936" />
     <text
-       sodipodi:linespacing="125%"
+       sodipodi:linespacing="80.000001%"
        id="text3086"
-       y="559.66095"
-       x="459.98187"
-       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Sans"
+       y="526.17621"
+       x="423.61639"
+       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Sans"
        xml:space="preserve"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936"><tspan
          id="tspan3096"
-         y="559.66095"
-         x="459.98187"
+         y="526.17621"
+         x="423.61639"
          sodipodi:role="line"
-         style="font-size:14px;fill:#0000ff">Apple</tspan><tspan
-         y="577.16095"
-         x="459.98187"
+         style="font-size:14px;line-height:80.00000119%;fill:#0000ff">Apple</tspan><tspan
+         y="537.37622"
+         x="423.61639"
          sodipodi:role="line"
          id="tspan3108"
          style="font-size:14px;fill:#0000ff" /><tspan
-         y="594.66095"
-         x="459.98187"
+         y="548.57623"
+         x="423.61639"
          sodipodi:role="line"
          id="tspan3110"
          style="font-size:14px;fill:#0000ff">Manzana</tspan></text>
     <path
        style="fill:none;stroke:#0000ff;stroke-width:0.99212599;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.96850394, 3.96850394;stroke-dashoffset:0"
-       d="m 413.57144,573.58953 95.71428,0"
+       d="m 377.20595,534.10476 95.71428,0"
        id="path3112"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
@@ -637,87 +614,87 @@
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936" />
     <rect
-       y="300.17624"
-       x="398.47192"
-       height="68.376236"
-       width="122.34182"
+       y="312.40173"
+       x="369.34882"
+       height="42.147949"
+       width="109.99999"
        id="rect3882"
-       style="fill:none;stroke:#800000;stroke-width:1.77165353;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:none;stroke:#800000;stroke-width:1.31893468;stroke-miterlimit:4;stroke-dasharray:none"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936" />
     <text
        xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#800000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="458.55328"
-       y="318.1329"
+       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#800000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="422.18781"
+       y="326.46667"
        id="text3884"
-       sodipodi:linespacing="125%"
+       sodipodi:linespacing="80.000001%"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936"><tspan
-         style="font-size:14px;fill:#800000"
+         style="font-size:14px;line-height:80.00000119%;fill:#800000"
          sodipodi:role="line"
-         x="458.55328"
-         y="318.1329"
+         x="422.18781"
+         y="326.46667"
          id="tspan3886">liberté</tspan><tspan
-         style="font-size:14px;fill:#800000"
+         style="font-size:14px;line-height:80.00000119%;fill:#800000"
          id="tspan3888"
          sodipodi:role="line"
-         x="458.55328"
-         y="335.6329" /><tspan
-         style="font-size:14px;fill:#800000"
+         x="422.18781"
+         y="337.66669" /><tspan
+         style="font-size:14px;line-height:80.00000119%;fill:#800000"
          id="tspan3890"
          sodipodi:role="line"
-         x="458.55328"
-         y="353.1329">freedom</tspan></text>
+         x="422.18781"
+         y="348.86667">freedom</tspan></text>
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path3892"
-       d="m 412.14286,332.06145 95.71428,0"
+       d="m 375.77737,334.39521 95.71428,0"
        style="fill:none;stroke:#800000;stroke-width:0.99212599;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.96850394, 3.96850394;stroke-dashoffset:0"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936" />
     <rect
-       style="fill:none;stroke:#008000;stroke-width:1.77165353;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:none;stroke:#008000;stroke-width:1.32745683;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect3894"
-       width="122.34182"
-       height="68.376236"
-       x="399.18622"
-       y="383.74768"
+       width="109.99999"
+       height="42.694374"
+       x="369.34882"
+       y="359.30902"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936" />
     <text
-       sodipodi:linespacing="125%"
+       sodipodi:linespacing="80.000001%"
        id="text3896"
-       y="401.70435"
-       x="459.26758"
-       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#008000;fill-opacity:1;stroke:none;font-family:Sans"
+       y="373.8472"
+       x="422.9021"
+       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#008000;fill-opacity:1;stroke:none;font-family:Sans"
        xml:space="preserve"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936"><tspan
          id="tspan3898"
-         y="401.70435"
-         x="459.26758"
+         y="373.8472"
+         x="422.9021"
          sodipodi:role="line"
-         style="font-size:14px;fill:#008000">imaginary unit</tspan><tspan
-         y="419.20435"
-         x="459.26758"
+         style="font-size:14px;line-height:80.00000119%;fill:#008000">imaginary unit</tspan><tspan
+         y="385.04721"
+         x="422.9021"
          sodipodi:role="line"
          id="tspan3900"
-         style="font-size:14px;fill:#008000" /><tspan
-         y="436.70435"
-         x="459.26758"
+         style="font-size:14px;line-height:80.00000119%;fill:#008000" /><tspan
+         y="396.24719"
+         x="422.9021"
          sodipodi:role="line"
          id="tspan3902"
-         style="font-size:14px;fill:#008000">x² = -1</tspan></text>
+         style="font-size:14px;line-height:80.00000119%;fill:#008000">x² = -1</tspan></text>
     <path
        style="fill:none;stroke:#008000;stroke-width:0.99212599;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.96850394, 3.96850394;stroke-dashoffset:0"
-       d="m 412.85715,415.63288 95.71428,0"
+       d="m 376.49166,381.77574 95.71428,0"
        id="path3904"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
@@ -725,90 +702,90 @@
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936" />
     <rect
-       y="467.41858"
-       x="400.61478"
-       height="68.376236"
-       width="122.34182"
+       y="405.35156"
+       x="369.34882"
+       height="44.17881"
+       width="109.99999"
        id="rect3922"
-       style="fill:none;stroke:#0000ff;stroke-width:1.77165353;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:none;stroke:#0000ff;stroke-width:1.35033655;stroke-miterlimit:4;stroke-dasharray:none"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936" />
     <text
        xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Sans"
-       x="460.69614"
-       y="485.37524"
+       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Sans"
+       x="424.33066"
+       y="420.15118"
        id="text3924"
-       sodipodi:linespacing="125%"
+       sodipodi:linespacing="80.000001%"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936"><tspan
-         style="font-size:14px;fill:#0000ff"
+         style="font-size:14px;line-height:80.00000119%;fill:#0000ff"
          sodipodi:role="line"
-         x="460.69614"
-         y="485.37524"
+         x="424.33066"
+         y="420.15118"
          id="tspan3926">la manzana</tspan><tspan
-         style="font-size:14px;fill:#0000ff"
+         style="font-size:14px;line-height:80.00000119%;fill:#0000ff"
          id="tspan3928"
          sodipodi:role="line"
-         x="460.69614"
-         y="502.87524" /><tspan
-         style="font-size:14px;fill:#0000ff"
+         x="424.33066"
+         y="431.3512" /><tspan
+         style="font-size:14px;line-height:80.00000119%;fill:#0000ff"
          id="tspan3930"
          sodipodi:role="line"
-         x="460.69614"
-         y="520.37524">apple</tspan></text>
+         x="424.33066"
+         y="442.55118">apple</tspan></text>
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path3932"
-       d="m 414.28572,499.30382 95.71428,0"
+       d="m 377.92023,428.07974 95.71428,0"
        style="fill:none;stroke:#0000ff;stroke-width:0.99212599;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.96850394, 3.96850394;stroke-dashoffset:0"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936" />
     <rect
-       y="495.89432"
+       y="449.97305"
        x="200"
-       height="72.125114"
-       width="127.14286"
+       height="109.21594"
+       width="133.5463"
        id="rect6020"
-       style="fill:#ffffff;fill-opacity:0.91176471;stroke:#000000;stroke-width:1.77165353;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:#ffffff;fill-opacity:0.91176471;stroke:#000000;stroke-width:1.81571937;stroke-miterlimit:4;stroke-dasharray:none"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936" />
     <text
        sodipodi:linespacing="125%"
        id="text3062"
-       y="510.97232"
-       x="218.74205"
+       y="483.57565"
+       x="228.44618"
        style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
        xml:space="preserve"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936"><tspan
-         y="510.97232"
-         x="218.74205"
+         y="483.57565"
+         x="228.44618"
          id="tspan3064"
          sodipodi:role="line"><tspan
            id="tspan3066"
            style="font-weight:bold;-inkscape-font-specification:Sans Bold">Template 1</tspan></tspan><tspan
-         y="525.97229"
-         x="218.74205"
+         y="498.57565"
+         x="228.44618"
          sodipodi:role="line"
          id="tspan6038"><tspan
    style="font-weight:bold;-inkscape-font-specification:Sans Bold"
    id="tspan6040">front</tspan>: {front}</tspan><tspan
          id="tspan3068"
-         y="540.97229"
-         x="218.74205"
+         y="513.57568"
+         x="228.44618"
          sodipodi:role="line"><tspan
    id="tspan3070"
    style="font-weight:bold;-inkscape-font-specification:Sans Bold">back</tspan>: {back}</tspan><tspan
          id="tspan3072"
-         y="555.97229"
-         x="218.74205"
+         y="528.57568"
+         x="228.44618"
          sodipodi:role="line"><tspan
    style="font-weight:bold;-inkscape-font-specification:Sans Bold"
    id="tspan3074">Filter</tspan>: tag:reverse</tspan></text>
@@ -816,7 +793,7 @@
        xml:space="preserve"
        style="font-size:18px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
        x="218.91806"
-       y="337.8577"
+       y="289.37036"
        id="text6022"
        sodipodi:linespacing="125%"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
@@ -825,19 +802,19 @@
          sodipodi:role="line"
          id="tspan6024"
          x="218.91806"
-         y="337.8577">Templates</tspan></text>
+         y="289.37036">Templates</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text6026"
        y="288.20432"
-       x="414.28571"
+       x="377.92023"
        style="font-size:18px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
        xml:space="preserve"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936"><tspan
          y="288.20432"
-         x="414.28571"
+         x="377.92023"
          id="tspan6028"
          sodipodi:role="line">Flashcards</tspan></text>
     <text
@@ -854,182 +831,6 @@
          id="tspan6032"
          x="33.571423"
          y="343.20432">Infos</tspan></text>
-    <path
-       style="fill:#ff0000;stroke:#0000ff;stroke-width:3.54330707;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-start:none;marker-end:url(#Arrow2Mend)"
-       d="M 125.71429,500.34716 193.57143,448.2043"
-       id="path6042"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc"
-       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
-       inkscape:export-xdpi="100.27936"
-       inkscape:export-ydpi="100.27936" />
-    <path
-       style="fill:none;stroke:#008000;stroke-width:3.54330707;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)"
-       d="m 138.09609,435.8584 54.04677,-18.36838"
-       id="path6604"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc"
-       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
-       inkscape:export-xdpi="100.27936"
-       inkscape:export-ydpi="100.27936" />
-    <path
-       style="fill:none;stroke:#800000;stroke-width:3.54330707;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)"
-       d="m 110,389.63288 82.14286,7.85715"
-       id="path6608"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc"
-       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
-       inkscape:export-xdpi="100.27936"
-       inkscape:export-ydpi="100.27936" />
-    <path
-       style="fill:#0000ff;stroke:#0000ff;stroke-width:3.54330707;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)"
-       d="m 143.57144,517.49002 47.85714,12.14286"
-       id="path6612"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc"
-       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
-       inkscape:export-xdpi="100.27936"
-       inkscape:export-ydpi="100.27936" />
-    <rect
-       style="fill:none;stroke:#0000ff;stroke-width:1.77165353;stroke-miterlimit:4;stroke-dasharray:none"
-       id="rect3084-3"
-       width="122.34182"
-       height="68.376236"
-       x="24.248299"
-       y="944.85114" />
-    <text
-       sodipodi:linespacing="125%"
-       id="text3086-1"
-       y="962.80774"
-       x="84.329659"
-       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Sans"
-       xml:space="preserve"><tspan
-         id="tspan3096-2"
-         y="962.80774"
-         x="84.329659"
-         sodipodi:role="line"
-         style="font-size:14px;fill:#0000ff">Apple</tspan><tspan
-         y="980.30774"
-         x="84.329659"
-         sodipodi:role="line"
-         id="tspan3108-3"
-         style="font-size:14px;fill:#0000ff" /><tspan
-         y="997.80774"
-         x="84.329659"
-         sodipodi:role="line"
-         id="tspan3110-3"
-         style="font-size:14px;fill:#0000ff">Manzana</tspan></text>
-    <path
-       style="fill:none;stroke:#0000ff;stroke-width:0.99212599;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.96850394, 3.96850394;stroke-dashoffset:0"
-       d="m 37.919225,976.73632 95.714275,0"
-       id="path3112-4"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc" />
-    <rect
-       y="703.323"
-       x="22.81971"
-       height="68.376236"
-       width="122.34182"
-       id="rect3882-1"
-       style="fill:none;stroke:#800000;stroke-width:1.77165353;stroke-miterlimit:4;stroke-dasharray:none" />
-    <text
-       xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#800000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="82.90107"
-       y="721.27966"
-       id="text3884-1"
-       sodipodi:linespacing="125%"><tspan
-         style="font-size:14px;fill:#800000"
-         sodipodi:role="line"
-         x="82.90107"
-         y="721.27966"
-         id="tspan3886-3">liberté</tspan><tspan
-         style="font-size:14px;fill:#800000"
-         id="tspan3888-8"
-         sodipodi:role="line"
-         x="82.90107"
-         y="738.77966" /><tspan
-         style="font-size:14px;fill:#800000"
-         id="tspan3890-7"
-         sodipodi:role="line"
-         x="82.90107"
-         y="756.27966">freedom</tspan></text>
-    <path
-       sodipodi:nodetypes="cc"
-       inkscape:connector-curvature="0"
-       id="path3892-4"
-       d="m 36.490645,735.20824 95.714275,0"
-       style="fill:none;stroke:#800000;stroke-width:0.99212599;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.96850394, 3.96850394;stroke-dashoffset:0" />
-    <rect
-       style="fill:none;stroke:#008000;stroke-width:1.77165353;stroke-miterlimit:4;stroke-dasharray:none"
-       id="rect3894-2"
-       width="122.34182"
-       height="68.376236"
-       x="23.534004"
-       y="786.89447" />
-    <text
-       sodipodi:linespacing="125%"
-       id="text3896-7"
-       y="804.85107"
-       x="83.615364"
-       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#008000;fill-opacity:1;stroke:none;font-family:Sans"
-       xml:space="preserve"><tspan
-         id="tspan3898-7"
-         y="804.85107"
-         x="83.615364"
-         sodipodi:role="line"
-         style="font-size:14px;fill:#008000">imaginary unit</tspan><tspan
-         y="822.35107"
-         x="83.615364"
-         sodipodi:role="line"
-         id="tspan3900-9"
-         style="font-size:14px;fill:#008000" /><tspan
-         y="839.85107"
-         x="83.615364"
-         sodipodi:role="line"
-         id="tspan3902-3"
-         style="font-size:14px;fill:#008000">x² = -1</tspan></text>
-    <path
-       style="fill:none;stroke:#008000;stroke-width:0.99212599;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.96850394, 3.96850394;stroke-dashoffset:0"
-       d="m 37.204935,818.77967 95.714275,0"
-       id="path3904-1"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc" />
-    <rect
-       y="870.56537"
-       x="24.962593"
-       height="68.376236"
-       width="122.34182"
-       id="rect3922-9"
-       style="fill:none;stroke:#0000ff;stroke-width:1.77165353;stroke-miterlimit:4;stroke-dasharray:none" />
-    <text
-       xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Sans"
-       x="85.043953"
-       y="888.52203"
-       id="text3924-8"
-       sodipodi:linespacing="125%"><tspan
-         style="font-size:14px;fill:#0000ff"
-         sodipodi:role="line"
-         x="85.043953"
-         y="888.52203"
-         id="tspan3926-6">la manzana</tspan><tspan
-         style="font-size:14px;fill:#0000ff"
-         id="tspan3928-5"
-         sodipodi:role="line"
-         x="85.043953"
-         y="906.02203" /><tspan
-         style="font-size:14px;fill:#0000ff"
-         id="tspan3930-0"
-         sodipodi:role="line"
-         x="85.043953"
-         y="923.52203">apple</tspan></text>
-    <path
-       sodipodi:nodetypes="cc"
-       inkscape:connector-curvature="0"
-       id="path3932-2"
-       d="m 38.633505,902.45061 95.714275,0"
-       style="fill:none;stroke:#0000ff;stroke-width:0.99212599;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.96850394, 3.96850394;stroke-dashoffset:0" />
     <text
        sodipodi:linespacing="125%"
        id="text6026-8"
@@ -1042,64 +843,60 @@
          id="tspan6028-6"
          sodipodi:role="line">Flashcards</tspan></text>
     <path
-       style="fill:none;stroke:#008000;stroke-width:3.54330707;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)"
-       d="m 429.30216,819.81658 30.00004,0.71428"
+       style="fill:none;stroke:#008000;stroke-width:1.77165353;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)"
+       d="m 322.87359,794.81658 48.57147,0.71428"
        id="path6606-5-0"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
     <rect
-       style="fill:#ffffff;fill-opacity:0.91176471000000003;stroke:#000000;stroke-width:1.77165354;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:#ffffff;fill-opacity:0.91176471;stroke:#000000;stroke-width:1.77165353;stroke-miterlimit:4;stroke-dasharray:none"
        id="rect4570-1-2"
-       width="227.8566"
-       height="310.0744"
+       width="121.48439"
+       height="239.81927"
        x="197.54861"
        y="700.69873" />
     <text
        xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans;font-stretch:normal;font-variant:normal"
-       x="206.61574"
-       y="850.04633"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
+       x="233.04677"
+       y="808.09058"
        id="text3048-7-4"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan3050-1-8"
-         x="206.61574"
-         y="850.04633"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Sans;-inkscape-font-specification:Sans"><tspan
-   style="-inkscape-font-specification:Sans Bold;font-family:Sans;font-weight:bold"
-   id="tspan8776">Profile</tspan>: Only Real Science (tm)</tspan><tspan
+         x="233.04677"
+         y="808.09058"
+         style="font-size:18px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;text-anchor:start;font-family:Sans;-inkscape-font-specification:Sans Bold">Profile</tspan><tspan
          sodipodi:role="line"
-         x="206.61574"
-         y="865.04633"
+         x="233.04677"
+         y="825.57715"
          id="tspan3058-1-5"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Sans;-inkscape-font-specification:Sans"><tspan
-   style="font-weight:bold;-inkscape-font-specification:Sans Bold"
-   id="tspan8782">Condition</tspan>: tag: physics || tag: math</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:18px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
-       x="272.02451"
-       y="685.67285"
-       id="text6022-1-9"
-       sodipodi:linespacing="125%"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;font-family:Sans;-inkscape-font-specification:Sans"><tspan
+   style="font-weight:bold;text-align:start;text-anchor:start;-inkscape-font-specification:Sans Bold"
+   id="tspan8782">Condition</tspan>:<tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;font-family:Consolas;-inkscape-font-specification:Consolas"
+   id="tspan8786"></tspan></tspan><tspan
          sodipodi:role="line"
-         id="tspan6024-8-0"
-         x="272.02451"
-         y="685.67285">Profiles</tspan></text>
+         x="233.04677"
+         y="840.05023"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;font-family:Sans;-inkscape-font-specification:Sans"
+         id="tspan11125"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;font-family:Consolas;-inkscape-font-specification:Consolas"
+           id="tspan11127">tag: physics</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-size:18px;font-style:normal;font-weight:bold;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
-       x="530.58661"
-       y="676.40692"
+       x="439.87234"
+       y="672.83551"
        id="text7369-0"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan7371-6"
-         x="530.58661"
-         y="676.40692">Flashcards with</tspan><tspan
+         x="439.87234"
+         y="672.83551">Flashcards with</tspan><tspan
          sodipodi:role="line"
-         x="530.58661"
-         y="698.90692"
+         x="439.87234"
+         y="695.33551"
          id="tspan7373-6">filtering profile</tspan></text>
     <rect
        style="fill:#ffffff;fill-opacity:0.91176471;stroke:#000000;stroke-width:1.66376233;stroke-miterlimit:4;stroke-dasharray:none"
@@ -1201,94 +998,6 @@
          id="tspan3058-7"><tspan
    style="font-weight:bold;-inkscape-font-specification:Sans Bold"
    id="tspan3076-3">Filter</tspan>:</tspan></text>
-    <rect
-       y="73.053848"
-       x="397.10367"
-       height="58.171932"
-       width="122.34182"
-       id="rect3882-9"
-       style="fill:none;stroke:#800000;stroke-width:1.63411617;stroke-miterlimit:4;stroke-dasharray:none"
-       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
-       inkscape:export-xdpi="100.27936"
-       inkscape:export-ydpi="100.27936" />
-    <text
-       xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#800000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="457.18503"
-       y="87.526695"
-       id="text3884-9"
-       sodipodi:linespacing="125%"
-       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
-       inkscape:export-xdpi="100.27936"
-       inkscape:export-ydpi="100.27936"><tspan
-         style="font-size:14px;fill:#800000"
-         id="tspan3888-83"
-         sodipodi:role="line"
-         x="457.18503"
-         y="87.526695">liberté</tspan><tspan
-         style="font-size:14px;fill:#800000"
-         sodipodi:role="line"
-         x="457.18503"
-         y="105.0267"
-         id="tspan8180" /><tspan
-         style="font-size:14px;fill:#800000;font-weight:normal;-inkscape-font-specification:Sans"
-         id="tspan3890-4"
-         sodipodi:role="line"
-         x="457.18503"
-         y="122.5267">freedom</tspan></text>
-    <path
-       sodipodi:nodetypes="cc"
-       inkscape:connector-curvature="0"
-       id="path3892-8"
-       d="m 410.77463,101.45516 95.71428,0"
-       style="fill:none;stroke:#800000;stroke-width:0.99212599;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.96850394, 3.96850394;stroke-dashoffset:0"
-       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
-       inkscape:export-xdpi="100.27936"
-       inkscape:export-ydpi="100.27936" />
-    <rect
-       style="fill:none;stroke:#008000;stroke-width:1.64456844;stroke-miterlimit:4;stroke-dasharray:none"
-       id="rect3894-4"
-       width="122.34182"
-       height="58.918484"
-       x="397.81796"
-       y="141.27316"
-       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
-       inkscape:export-xdpi="100.27936"
-       inkscape:export-ydpi="100.27936" />
-    <text
-       sodipodi:linespacing="125%"
-       id="text3896-9"
-       y="157.52669"
-       x="457.89932"
-       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#008000;fill-opacity:1;stroke:none;font-family:Sans"
-       xml:space="preserve"
-       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
-       inkscape:export-xdpi="100.27936"
-       inkscape:export-ydpi="100.27936"><tspan
-         id="tspan3898-9"
-         y="157.52669"
-         x="457.89932"
-         sodipodi:role="line"
-         style="font-size:14px;fill:#008000">fromage</tspan><tspan
-         y="175.02669"
-         x="457.89932"
-         sodipodi:role="line"
-         id="tspan3900-2"
-         style="font-size:14px;fill:#008000" /><tspan
-         y="192.52669"
-         x="457.89932"
-         sodipodi:role="line"
-         id="tspan3902-5"
-         style="font-size:14px;fill:#008000">cheese</tspan></text>
-    <path
-       style="fill:none;stroke:#008000;stroke-width:0.99212599;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.96850394, 3.96850394;stroke-dashoffset:0"
-       d="m 411.48892,171.45523 95.71428,0"
-       id="path3904-5"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc"
-       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
-       inkscape:export-xdpi="100.27936"
-       inkscape:export-ydpi="100.27936" />
     <text
        sodipodi:linespacing="125%"
        id="text6026-2"
@@ -1354,7 +1063,7 @@
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936" />
     <path
-       style="fill:none;stroke:#800000;stroke-width:3.54330707;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)"
+       style="fill:none;stroke:#800000;stroke-width:1.77165353;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)"
        d="m 152.21107,735.58954 37.23271,0"
        id="path6608-0-8"
        inkscape:connector-curvature="0"
@@ -1369,8 +1078,8 @@
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path8168-6"
-       d="m 151.06695,820.90283 38.19826,0"
-       style="fill:none;stroke:#008000;stroke-width:3.54330707;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)" />
+       d="m 151.06695,795.90283 38.19826,0"
+       style="fill:none;stroke:#008000;stroke-width:1.77165353;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)" />
     <path
        inkscape:export-ydpi="100.27936"
        inkscape:export-xdpi="100.27936"
@@ -1378,11 +1087,11 @@
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path8219"
-       d="m 152.21107,904.52757 37.23271,0"
-       style="fill:none;stroke:#0000ff;stroke-width:3.54330707;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)" />
+       d="m 152.21107,852.38471 37.23271,0"
+       style="fill:none;stroke:#0000ff;stroke-width:1.77165353;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)" />
     <path
-       style="fill:none;stroke:#0000ff;stroke-width:3.54330707;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)"
-       d="m 151.24552,976.26942 38.19826,0"
+       style="fill:none;stroke:#0000ff;stroke-width:1.77165353;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)"
+       d="m 151.24552,910.55513 38.19826,0"
        id="path8221"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
@@ -1390,84 +1099,513 @@
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936" />
     <rect
-       y="786.90588"
-       x="464.24829"
-       height="68.376236"
-       width="122.34182"
-       id="rect8225"
-       style="fill:none;stroke:#008000;stroke-width:1.77165353;stroke-miterlimit:4;stroke-dasharray:none" />
-    <text
-       xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#008000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="523.97247"
-       y="808.42249"
-       id="text8227"
-       sodipodi:linespacing="125%"><tspan
-         style="font-size:14px;fill:#008000"
-         sodipodi:role="line"
-         x="523.97247"
-         y="808.42249"
-         id="tspan8229">imaginary unit</tspan><tspan
-         style="font-size:14px;fill:#008000"
-         id="tspan8231"
-         sodipodi:role="line"
-         x="523.97247"
-         y="825.92249" /><tspan
-         style="font-size:14px;fill:#008000"
-         id="tspan8233"
-         sodipodi:role="line"
-         x="523.97247"
-         y="843.42249">x² = -1</tspan></text>
-    <path
-       sodipodi:nodetypes="cc"
-       inkscape:connector-curvature="0"
-       id="path8235"
-       d="m 478.27636,822.3511 95.71427,0"
-       style="fill:none;stroke:#008000;stroke-width:0.99212599;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.96850394, 3.96850394;stroke-dashoffset:0" />
-    <text
-       xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="198.57143"
-       y="748.78943"
-       id="text8245"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan8247"
-         x="198.57143"
-         y="748.78943"
-         style="font-size:36px;fill:#ff0000">X</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="198.57143"
-       y="917.36084"
-       id="text8253"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan8255"
-         x="198.57143"
-         y="917.36084"
-         style="font-size:36px;fill:#ff0000">X</tspan></text>
-    <text
-       sodipodi:linespacing="125%"
-       id="text8257"
-       y="988.07513"
-       x="198.57143"
-       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       xml:space="preserve"><tspan
-         style="font-size:36px;fill:#ff0000"
-         y="988.07513"
-         x="198.57143"
-         id="tspan8259"
-         sodipodi:role="line">X</tspan></text>
-    <path
-       style="fill:none;stroke:#008000;stroke-width:3.54330709;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:0.19786096000000000;stroke-dasharray:14.17322835,14.17322835;marker-end:none;stroke-dashoffset:0"
-       d="m 205.53123,820.53086 217.48398,0"
-       id="path8261"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc"
+       y="78.226852"
+       x="400.71429"
+       height="49.696617"
+       width="109.99999"
+       id="rect3882-12"
+       style="fill:none;stroke:#800000;stroke-width:1.43218291;stroke-miterlimit:4;stroke-dasharray:none"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936" />
+    <text
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#800000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="453.55328"
+       y="96.183517"
+       id="text3884-4"
+       sodipodi:linespacing="80.000001%"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-ydpi="100.27936"><tspan
+         style="font-size:14px;line-height:80.00000119%;fill:#800000"
+         sodipodi:role="line"
+         x="453.55328"
+         y="96.183517"
+         id="tspan3886-2">liberté</tspan><tspan
+         style="font-size:14px;line-height:80.00000119%;fill:#800000"
+         id="tspan3888-5"
+         sodipodi:role="line"
+         x="453.55328"
+         y="107.38351" /><tspan
+         style="font-size:14px;line-height:80.00000119%;fill:#800000"
+         id="tspan3890-8"
+         sodipodi:role="line"
+         x="453.55328"
+         y="118.58352">freedom</tspan></text>
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3892-6"
+       d="m 407.14286,104.11206 95.71428,0"
+       style="fill:none;stroke:#800000;stroke-width:0.99212599;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.96850394, 3.96850394;stroke-dashoffset:0"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-ydpi="100.27936" />
+    <rect
+       inkscape:export-ydpi="100.27936"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       style="fill:none;stroke:#008000;stroke-width:1.43218291;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect8823"
+       width="109.99999"
+       height="49.696617"
+       x="400.71429"
+       y="138.94113" />
+    <text
+       inkscape:export-ydpi="100.27936"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       sodipodi:linespacing="80.000001%"
+       id="text8825"
+       y="156.8978"
+       x="453.55328"
+       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#008000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         id="tspan8827"
+         y="156.8978"
+         x="453.55328"
+         sodipodi:role="line"
+         style="font-size:14px;line-height:80.00000119%;fill:#008000">liberté</tspan><tspan
+         y="168.09779"
+         x="453.55328"
+         sodipodi:role="line"
+         id="tspan8829"
+         style="font-size:14px;line-height:80.00000119%;fill:#008000" /><tspan
+         y="179.29779"
+         x="453.55328"
+         sodipodi:role="line"
+         id="tspan8831"
+         style="font-size:14px;line-height:80.00000119%;fill:#008000">freedom</tspan></text>
+    <path
+       inkscape:export-ydpi="100.27936"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       style="fill:none;stroke:#008000;stroke-width:0.99212599;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.96850394, 3.96850394;stroke-dashoffset:0"
+       d="m 407.14286,164.82635 95.71428,0"
+       id="path8833"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <rect
+       inkscape:export-ydpi="100.27936"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       y="769.46198"
+       x="383.57141"
+       height="49.020966"
+       width="109.99999"
+       id="rect8835"
+       style="fill:none;stroke:#008000;stroke-width:1.42241395;stroke-miterlimit:4;stroke-dasharray:none" />
+    <text
+       inkscape:export-ydpi="100.27936"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#008000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="437.12469"
+       y="787.41864"
+       id="text8837"
+       sodipodi:linespacing="80.000001%"><tspan
+         style="font-size:14px;line-height:80.00000119%;fill:#008000"
+         sodipodi:role="line"
+         x="437.12469"
+         y="787.41864"
+         id="tspan8839">imaginary unit</tspan><tspan
+         style="font-size:14px;line-height:80.00000119%;fill:#008000"
+         id="tspan8841"
+         sodipodi:role="line"
+         x="437.12469"
+         y="798.61865" /><tspan
+         style="font-size:14px;line-height:80.00000119%;fill:#008000"
+         id="tspan8843"
+         sodipodi:role="line"
+         x="437.12469"
+         y="809.81866">x² = -1</tspan></text>
+    <path
+       inkscape:export-ydpi="100.27936"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path8845"
+       d="m 390.71429,795.34717 95.71428,0"
+       style="fill:none;stroke:#008000;stroke-width:0.99212599;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.96850394, 3.96850394;stroke-dashoffset:0" />
+    <rect
+       inkscape:export-ydpi="100.27936"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       y="883.84723"
+       x="25.714296"
+       height="51.187016"
+       width="109.99999"
+       id="rect8847"
+       style="fill:none;stroke:#0000ff;stroke-width:1.45349967;stroke-miterlimit:4;stroke-dasharray:none" />
+    <text
+       inkscape:export-ydpi="100.27936"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Sans"
+       x="79.981873"
+       y="901.80383"
+       id="text8849"
+       sodipodi:linespacing="80.000001%"><tspan
+         style="font-size:14px;line-height:80.00000119%;fill:#0000ff"
+         sodipodi:role="line"
+         x="79.981873"
+         y="901.80383"
+         id="tspan8851">Apple</tspan><tspan
+         style="font-size:14px;fill:#0000ff"
+         id="tspan8853"
+         sodipodi:role="line"
+         x="79.981873"
+         y="913.00385" /><tspan
+         style="font-size:14px;fill:#0000ff"
+         id="tspan8855"
+         sodipodi:role="line"
+         x="79.981873"
+         y="924.20386">Manzana</tspan></text>
+    <path
+       inkscape:export-ydpi="100.27936"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path8857"
+       d="m 33.571439,909.73238 95.714281,0"
+       style="fill:none;stroke:#0000ff;stroke-width:0.99212599;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.96850394, 3.96850394;stroke-dashoffset:0" />
+    <rect
+       inkscape:export-ydpi="100.27936"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       style="fill:none;stroke:#800000;stroke-width:1.43218291;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect8859"
+       width="109.99999"
+       height="49.696617"
+       x="25.714296"
+       y="708.03339" />
+    <text
+       inkscape:export-ydpi="100.27936"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       sodipodi:linespacing="80.000001%"
+       id="text8861"
+       y="725.99005"
+       x="78.553284"
+       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#800000;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         id="tspan8863"
+         y="725.99005"
+         x="78.553284"
+         sodipodi:role="line"
+         style="font-size:14px;line-height:80.00000119%;fill:#800000">liberté</tspan><tspan
+         y="737.19006"
+         x="78.553284"
+         sodipodi:role="line"
+         id="tspan8865"
+         style="font-size:14px;line-height:80.00000119%;fill:#800000" /><tspan
+         y="748.39008"
+         x="78.553284"
+         sodipodi:role="line"
+         id="tspan8867"
+         style="font-size:14px;line-height:80.00000119%;fill:#800000">freedom</tspan></text>
+    <path
+       inkscape:export-ydpi="100.27936"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       style="fill:none;stroke:#800000;stroke-width:0.99212599;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.96850394, 3.96850394;stroke-dashoffset:0"
+       d="m 32.142859,733.91859 95.714281,0"
+       id="path8869"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <rect
+       inkscape:export-ydpi="100.27936"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       y="766.60486"
+       x="25.714296"
+       height="49.020966"
+       width="109.99999"
+       id="rect8871"
+       style="fill:none;stroke:#008000;stroke-width:1.42241395;stroke-miterlimit:4;stroke-dasharray:none" />
+    <text
+       inkscape:export-ydpi="100.27936"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#008000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="79.267578"
+       y="784.56152"
+       id="text8873"
+       sodipodi:linespacing="80.000001%"><tspan
+         style="font-size:14px;line-height:80.00000119%;fill:#008000"
+         sodipodi:role="line"
+         x="79.267578"
+         y="784.56152"
+         id="tspan8875">imaginary unit</tspan><tspan
+         style="font-size:14px;line-height:80.00000119%;fill:#008000"
+         id="tspan8877"
+         sodipodi:role="line"
+         x="79.267578"
+         y="795.76154" /><tspan
+         style="font-size:14px;line-height:80.00000119%;fill:#008000"
+         id="tspan8879"
+         sodipodi:role="line"
+         x="79.267578"
+         y="806.96155">x² = -1</tspan></text>
+    <path
+       inkscape:export-ydpi="100.27936"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path8881"
+       d="m 32.857149,792.49002 95.714281,0"
+       style="fill:none;stroke:#008000;stroke-width:0.99212599;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.96850394, 3.96850394;stroke-dashoffset:0" />
+    <rect
+       inkscape:export-ydpi="100.27936"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       style="fill:none;stroke:#0000ff;stroke-width:1.44397664;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect8883"
+       width="109.99999"
+       height="50.518475"
+       x="25.714296"
+       y="823.13287" />
+    <text
+       inkscape:export-ydpi="100.27936"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       sodipodi:linespacing="80.000001%"
+       id="text8885"
+       y="841.08954"
+       x="80.696136"
+       style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:80.00000119%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Sans"
+       xml:space="preserve"><tspan
+         id="tspan8887"
+         y="841.08954"
+         x="80.696136"
+         sodipodi:role="line"
+         style="font-size:14px;line-height:80.00000119%;fill:#0000ff">la manzana</tspan><tspan
+         y="852.28955"
+         x="80.696136"
+         sodipodi:role="line"
+         id="tspan8889"
+         style="font-size:14px;line-height:80.00000119%;fill:#0000ff" /><tspan
+         y="863.48956"
+         x="80.696136"
+         sodipodi:role="line"
+         id="tspan8891"
+         style="font-size:14px;line-height:80.00000119%;fill:#0000ff">apple</tspan></text>
+    <path
+       inkscape:export-ydpi="100.27936"
+       inkscape:export-xdpi="100.27936"
+       inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
+       style="fill:none;stroke:#0000ff;stroke-width:0.99212599;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:3.96850394, 3.96850394;stroke-dashoffset:0"
+       d="m 34.285719,849.0181 95.714281,0"
+       id="path8893"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path10101"
+       d="m 127.85542,385.30729 7.5562,0 c 24.75753,0 22.46309,-50.44642 46.29391,-50.44642 l 11.23361,0"
+       style="fill:none;stroke:#800000;stroke-width:1.77165353;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#marker8196)" />
+    <path
+       style="fill:none;stroke:#008000;stroke-width:1.77165353;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#marker8196)"
+       d="m 127.85542,436.37872 7.5562,0 c 24.75753,0 22.46309,-54.44642 46.29391,-54.44642 l 11.23361,0"
+       id="path10105"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <path
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path10109"
+       d="m 127.85542,493.52158 7.5562,0 c 24.75753,0 22.46309,-65.61538 46.29391,-65.61538 l 11.23361,0"
+       style="fill:none;stroke:#0000ff;stroke-width:1.77165353;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#marker8196)" />
+    <path
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path10345"
+       d="m 127.85542,393.87872 7.5562,0 c 24.75753,0 22.46309,74.03363 46.29391,74.03363 l 11.23361,0"
+       style="fill:none;stroke:#ffffff;stroke-width:7.08661413;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:none" />
+    <path
+       style="fill:none;stroke:#800000;stroke-width:1.77165353;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#marker8196)"
+       d="m 127.85542,393.87872 7.5562,0 c 24.75753,0 22.46309,74.03363 46.29391,74.03363 l 11.23361,0"
+       id="path9631"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:7.08661413;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:none"
+       d="m 127.85542,444.95015 7.5562,0 c 24.75753,0 22.46309,55.81935 46.29391,55.81935 l 11.23361,0"
+       id="path10579"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <path
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path10103"
+       d="m 127.85542,444.95015 7.5562,0 c 24.75753,0 22.46309,55.81935 46.29391,55.81935 l 11.23361,0"
+       style="fill:none;stroke:#008000;stroke-width:1.77165353;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#marker8196)" />
+    <path
+       style="fill:none;stroke:#0000ff;stroke-width:1.77165353;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#marker8196)"
+       d="m 127.85542,502.09301 7.5562,0 c 24.75753,0 22.46309,31.69643 46.29391,31.69643 l 11.23361,0.008"
+       id="path10107"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
+    <g
+       transform="matrix(0.60212673,0,0,0.60212673,81.787878,24.695086)"
+       id="g10813">
+      <path
+         style="fill:none;stroke:#ff0000;stroke-width:4.53543329;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m 205.06097,750.32657 27.52665,-27.52666"
+         id="path10815"
+         inkscape:connector-curvature="0"
+         transform="translate(0,-0.00130762)" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path10817"
+         d="M 232.58762,750.32526 205.06097,722.7986"
+         style="fill:none;stroke:#ff0000;stroke-width:4.53543329;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    </g>
+    <g
+       id="g10819"
+       transform="matrix(0.60212673,0,0,0.60212673,81.787878,56.123657)">
+      <path
+         transform="translate(0,-0.00130762)"
+         inkscape:connector-curvature="0"
+         id="path10821"
+         d="m 205.06097,750.32657 27.52665,-27.52666"
+         style="fill:none;stroke:#ff0000;stroke-width:4.53543329;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         style="fill:none;stroke:#ff0000;stroke-width:4.53543329;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="M 232.58762,750.32526 205.06097,722.7986"
+         id="path10823"
+         inkscape:connector-curvature="0" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 226.42857,450.93361 0,107.5"
+       id="path10825"
+       inkscape:connector-curvature="0"
+       transform="translate(0,-0.00130762)" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path10829"
+       d="m 226.42857,316.64659 0,125"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#00ff00;stroke-width:2.72834635;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 204.85206,538.27516 7.64794,8.72988 8.92857,-25.71429"
+       id="path10833"
+       inkscape:connector-curvature="0"
+       transform="translate(0,-0.00130762)"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="fill:none;stroke:#0000ff;stroke-width:1.77165353;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#marker8196)"
+       d="m 335.37064,533.79788 30.30457,0"
+       id="path10845"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path11083"
+       d="m 335.37064,427.9062 30.30457,0"
+       style="fill:none;stroke:#0000ff;stroke-width:1.77165353;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#marker8196)" />
+    <path
+       style="fill:none;stroke:#008000;stroke-width:1.77165353;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#marker8196)"
+       d="m 335.37064,381.9323 30.30457,0"
+       id="path11085"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path11087"
+       d="m 335.37064,334.86087 30.30457,0"
+       style="fill:none;stroke:#800000;stroke-width:1.77165353;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#marker8196)" />
+    <path
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       id="path11089"
+       d="m 204.85206,340.78903 7.64794,8.72988 8.92857,-25.71429"
+       style="fill:none;stroke:#00ff00;stroke-width:2.72834635;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <path
+       style="fill:none;stroke:#00ff00;stroke-width:2.72834635;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 204.85206,383.72051 7.64794,8.72988 8.92857,-25.71429"
+       id="path11091"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       id="path11093"
+       d="m 204.85206,425.64184 7.64794,8.72988 8.92857,-25.71429"
+       style="fill:none;stroke:#00ff00;stroke-width:2.72834635;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path11095"
+       d="m 226.42857,700.69252 0,239.57745"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       sodipodi:nodetypes="cc" />
+    <g
+       id="g11097"
+       transform="matrix(0.60212673,0,0,0.60212673,81.787878,291.37536)">
+      <path
+         transform="translate(0,-0.00130762)"
+         inkscape:connector-curvature="0"
+         id="path11099"
+         d="m 205.06097,750.32657 27.52665,-27.52666"
+         style="fill:none;stroke:#ff0000;stroke-width:4.53543329;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         style="fill:none;stroke:#ff0000;stroke-width:4.53543329;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="M 232.58762,750.32526 205.06097,722.7986"
+         id="path11101"
+         inkscape:connector-curvature="0" />
+    </g>
+    <path
+       inkscape:connector-curvature="0"
+       id="path11109"
+       d="m 226.42857,709.53135 0,107.5"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       sodipodi:nodetypes="ccc"
+       inkscape:connector-curvature="0"
+       id="path11111"
+       d="m 204.85206,796.8729 7.64794,8.72988 8.92857,-25.71429"
+       style="fill:none;stroke:#00ff00;stroke-width:2.72834635;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <g
+       transform="matrix(0.60212673,0,0,0.60212673,81.787878,406.53275)"
+       id="g11113">
+      <path
+         style="fill:none;stroke:#ff0000;stroke-width:4.53543329;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m 205.06097,750.32657 27.52665,-27.52666"
+         id="path11115"
+         inkscape:connector-curvature="0"
+         transform="translate(0,-0.00130762)" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path11117"
+         d="M 232.58762,750.32526 205.06097,722.7986"
+         style="fill:none;stroke:#ff0000;stroke-width:4.53543329;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    </g>
+    <g
+       id="g11119"
+       transform="matrix(0.60212673,0,0,0.60212673,81.787878,465.62667)">
+      <path
+         transform="translate(0,-0.00130762)"
+         inkscape:connector-curvature="0"
+         id="path11121"
+         d="m 205.06097,750.32657 27.52665,-27.52666"
+         style="fill:none;stroke:#ff0000;stroke-width:4.53543329;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         style="fill:none;stroke:#ff0000;stroke-width:4.53543329;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="M 232.58762,750.32526 205.06097,722.7986"
+         id="path11123"
+         inkscape:connector-curvature="0" />
+    </g>
   </g>
 </svg>
