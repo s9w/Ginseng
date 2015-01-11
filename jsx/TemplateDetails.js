@@ -8,12 +8,18 @@ var TemplateDetails = React.createClass({
 
     },
     render(){
-        return(
+        var isTemplateLegal = _(this.props.template).pick("front", "back").mapValues(
+                value=>value.match(/{(\w*)}/g).every(
+                    entryName => _(this.props.entryNames).contains(entryName.slice(1, -1))
+                )
+            ).value();
+        return (
             <div>
                 <section>
                     <h3>Front</h3>
                     <Textarea
-                        value={this.props.view.front}
+                        legal={isTemplateLegal.front}
+                        value={this.props.template.front}
                         placeholder="Front template"
                         onEntryEdit={this.onViewChange.bind(this, "front")}
                     />
@@ -22,14 +28,15 @@ var TemplateDetails = React.createClass({
                 <section>
                     <h3>Back</h3>
                     <Textarea
-                        value={this.props.view.back}
+                        legal={isTemplateLegal.back}
+                        value={this.props.template.back}
                         placeholder="Front template"
                         onEntryEdit={this.onViewChange.bind(this, "back")}
                     />
                 </section>
 
                 <Editor
-                    path={this.props.view}
+                    path={this.props.template}
                     objects={[
                         {
                             displayName: "Filter",

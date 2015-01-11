@@ -125,7 +125,8 @@ var InfoTypes = React.createClass({
         if (this.state.mode !== "main") {
             mainSection =
                 <TemplateDetails
-                    view={selectedType.templates[this.state.mode]}
+                    template={selectedType.templates[this.state.mode]}
+                    entryNames={selectedType.entryNames}
                     onViewChange={this.onViewChange}
                     delete={this.onDeleteTemplate}
                 />

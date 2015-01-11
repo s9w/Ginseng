@@ -183,6 +183,7 @@ var Textarea = React.createClass({
     render() {
         return (
             <textarea
+                className={this.props.legal?"":"illegalForm"}
                 {..._(this.props).pick(["value", "placeholder"]).value() }
                 onChange={this.onEntryEdit}
             />

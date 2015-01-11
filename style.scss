@@ -348,6 +348,10 @@ textarea, select{
   overflow: hidden;
 }
 
+.illegalForm{
+  background-color: rgb(255, 200, 200);
+}
+
 .unselectable {
   -moz-user-select: none;
   -webkit-user-select: none;

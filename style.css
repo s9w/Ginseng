@@ -276,6 +276,9 @@ input, select, textarea {
 textarea, select {
   overflow: hidden; }
 
+.illegalForm {
+  background-color: #ffc8c8; }
+
 .unselectable {
   -moz-user-select: none;
   -webkit-user-select: none;
