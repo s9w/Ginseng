@@ -101,8 +101,8 @@ var InfoTypes = React.createClass({
         var newTypes = JSON.parse( JSON.stringify( this.state.types ));
         var nextTemplateID =  _.parseInt(_.max( _.keys(newTypes[this.state.selectedTypeID].templates) ))+1;
         newTypes[this.state.selectedTypeID].templates[nextTemplateID] = {
-            "front": "{front}",
-            "back": "{back}",
+            "front": "",
+            "back": "",
             "condition": ""
         };
         this.setState({

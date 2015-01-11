@@ -9,7 +9,7 @@ var TemplateDetails = React.createClass({
     },
     render(){
         var isTemplateLegal = _(this.props.template).pick("front", "back").mapValues(
-                value=>value.match(/{(\w*)}/g).every(
+                value=>(value.match(/{(\w*)}/g)||[]).every(
                     entryName => _(this.props.entryNames).contains(entryName.slice(1, -1))
                 )
             ).value();
@@ -30,7 +30,7 @@ var TemplateDetails = React.createClass({
                     <Textarea
                         isLegal={isTemplateLegal.back}
                         value={this.props.template.back}
-                        placeholder="Front template"
+                        placeholder="Back template"
                         onEntryEdit={this.onViewChange.bind(this, "back")}
                     />
                 </section>
