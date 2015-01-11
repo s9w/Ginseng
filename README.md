@@ -9,8 +9,9 @@ Ginseng is a web app for learning things with flashcards and spaced repetition. 
 - Native Markdown formatting and LaTeX support for content and templates
 
 ## Introduction
-In Ginseng, the thing you want to learn/memorize is called an **info**. An info can contain two or more **entries** and any number of tags. If you learn Spanish, the entries would be the Spanish word and the english translation. Infos have a type which defines the number of entries as well as the **templates** which are used to display the info in the review mode.
+In Ginseng, the thing you want to learn/memorize is called an **info**. An info can contain two or more **entries** and any number of tags. If you learn Spanish, the entries could be the Spanish and spanish expression. Infos have a **type** which defines the number of entries as well as the **templates** which are used to display the info in the review mode.
 
+### Templates
 A template maps an info to a front and back side of a virtual flashcard. In the example case, the front could show the english word and the back could show the spanish word. The templates (as well as the info entries) are written in [Markdown](http://en.wikipedia.org/wiki/Markdown). The info entries can be used with curly braces, like `{front}`. The templates as well as the entries can contain [LaTeX](http://en.wikipedia.org/wiki/LaTeX) code between single dollar signs.
 
 ![](https://github.com/s9w/Ginseng/raw/master/doc/pipeline1.png)
@@ -19,6 +20,7 @@ There can be more than one template for a type, for example if you also want to 
 
 ![](https://github.com/s9w/Ginseng/raw/master/doc/pipeline2.png)
 
+### Review
 During review, you have the choice between *setting* an interval, or *changing* the previous. For example setting "5h" would mean that in 5 hours, that review would become due again. Most of the time you'll probably want to change the previous interval. There are relative increases in percent or fixed time amounts.
 
 Clicking an interval selection will "select" it and mark it green. The new interval and the date and time when it'll become due again are previewed below. Click the same selection again to confirm. That way you can quickly apply a new interval with a double click.
@@ -27,6 +29,7 @@ Note that the last interval is calculated as the actual time between the last re
 
 Each generated flashcard has a "**dueness**" based on the selected interval and the time since the last review. Right after reviewing, the dueness is 0. It increases linearly with time, reaching 1.0 at the time of it's designated interval. By default, that's when reviews are "due" and are displayed. It will continue to increase though if it's not reviewed. Most due cards are reviewed first.
 
+### Profiles
 With a growing collection of infos, more control over the reviews is helpful - that's what **profile**s are for. They group/filter the generated flashcards, either by their tag or creation date as described below or their dueness. A "due threshold" of less than 1.0 will show cards that are not due yet. That can be used as a "cramming mode" if you will.
 
 ![](https://github.com/s9w/Ginseng/raw/master/doc/pipeline3.png)
