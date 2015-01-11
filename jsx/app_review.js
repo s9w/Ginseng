@@ -3,9 +3,17 @@ function filterInfo(filterStr, info){
         return true
     }
 
-    return eval(filterStr.replace(/tag: ?(\w+)/g, function (match, p1) {
-        return "(_(info.tags).contains(\"" + p1 + "\"))";
-    }));
+    return eval(
+        filterStr.replace(
+            /tag: ?(\w+)/g, function (match, p1) {
+                return "(_(info.tags).contains(\"" + p1 + "\"))";
+            }
+        ).replace(
+            /createdBefore: ?([\w\-:\.\+\-]+)/g, function (match, p1) {
+                return "moment(info.creationDate).isBefore(moment(\""+p1+"\"))";
+            }
+        )
+    );
 }
 
 var Review = React.createClass({

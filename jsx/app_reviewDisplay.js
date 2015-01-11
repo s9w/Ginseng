@@ -12,7 +12,7 @@ var ReviewDisplay = React.createClass({
             return '$$';
         });
         // convert rest markdown to html
-        marked.setOptions({breaks: true});
+        marked.setOptions({breaks: true, smartLists: true});
         return marked(backStrNew).replace(/\$\$/g, function(){
             // and replace the placeholders with transformed math
             try {
