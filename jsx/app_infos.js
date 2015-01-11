@@ -6,6 +6,11 @@ var InfoEdit = React.createClass({
             newTagValue: ""
         };
     },
+    componentDidMount(){
+        if( _(this.state.info.entries).every(entry=>entry==="") ){
+            this.refs["firstEntry"].getDOMNode().focus()
+        }
+    },
     onTypeChange(newTypeID){
         var newInfo = _.cloneDeep( this.state.info );
         newInfo.typeID = newTypeID;
@@ -76,6 +81,7 @@ var InfoEdit = React.createClass({
                     <h3>Entries</h3>
                     {this.state.info.entries.map((entry, entryIdx) =>
                         <Textarea
+                            ref={entryIdx===0?"firstEntry":false}
                             key={entryIdx}
                             value={entry}
                             placeholder={this.props.types[this.state.info.typeID].entryNames[entryIdx]}
