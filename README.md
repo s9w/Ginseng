@@ -21,6 +21,9 @@ Note that there are no static groups (or "decks" as in Anki) for infos. Instead 
 - only newly created
 - generate even if not due (aka "cram mode")
 
+![](https://raw.githubusercontent.com/s9w/Ginseng/master/docs/pipeline1.png)
+![](https://raw.githubusercontent.com/s9w/Ginseng/master/docs/pipeline2.png)
+
 ## Review / Intervals
 During review, you have the choice between *setting* an interval, or *changing* the previous. For example setting "5h" would mean that in 5 hours, that review would become due again.
 
