@@ -2,7 +2,9 @@ var InfoEdit = React.createClass({
     getInitialState() {
         return {
             info: _.cloneDeep( this.props.info ),
-            previewID: false,
+            previewID: _(this.props.types[this.props.info.typeID].templates).keys().value().length >= 1?
+                _(this.props.types[this.props.info.typeID].templates).keys().min().toString():
+                false,
             newTagValue: ""
         };
     },
