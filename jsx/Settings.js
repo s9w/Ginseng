@@ -14,7 +14,7 @@ var Settings = React.createClass({
     },
     onChange(event){
         var newSettings = JSON.parse( JSON.stringify( this.state.settings ));
-        if(event.target.name === "useCompression"){
+        if( _(["useCompression", "useGuess"]).contains(event.target.name) ){
             newSettings[event.target.name] = event.target.checked;
         }else{
             newSettings[event.target.name] = event.target.value;
@@ -26,6 +26,19 @@ var Settings = React.createClass({
         var isChanged = JSON.stringify(this.props.settings)!==JSON.stringify(this.state.settings);
         return (
             <div className="Component">
+                <section>
+                    <h3>Guess Field</h3>
+                    <div>
+                        <span>During review, show a text field where you can enter a "guess" that will be compared to the solution.</span>
+                        <input
+                            onChange={this.onChange}
+                            name="useGuess"
+                            type="checkbox"
+                            checked={this.state.settings.useGuess}
+                        />
+                    </div>
+                </section>
+
                 <section>
                     <h3>Compression</h3>
                     <div>

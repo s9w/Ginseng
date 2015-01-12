@@ -20,31 +20,42 @@ var Review = React.createClass({
     getInitialState() {
         return {
             progressState: "frontSide",
-            activeProfileKey: false
+            activeProfileKey: false,
+            guess: ""
         };
     },
     componentWillMount(){
-        // Skip Profile if there's only one
+        // Skip Profile choice if there's only one
         if(_.keys(this.props.profiles).length === 1){
             this.setState({
                 activeProfileKey: _.keys(this.props.profiles)[0]
             });
         }
     },
+    focusInput(){
+        if(this.state.progressState === "frontSide" && "flipButton" in this.refs){
+            if(this.props.useGuess){
+                this.refs.guess.getDOMNode().focus();
+            }else{
+                this.refs.flipButton.getDOMNode().focus();
+            }
+        }
+    },
     componentDidMount(){
-        if("flipButton" in this.refs)
-            this.refs.flipButton.getDOMNode().focus();
+        this.focusInput();
     },
     componentDidUpdate : function(){
-        if(this.state.progressState === "frontSide" && "flipButton" in this.refs)
-            this.refs.flipButton.getDOMNode().focus();
+        this.focusInput();
     },
     flip(){
         this.setState({progressState: "backSide"});
     },
     applyInterval(infoIndex, reviewKey, newInterval){
         this.props.applyInterval(infoIndex, reviewKey, newInterval);
-        this.setState({progressState: "frontSide"});
+        this.setState({
+            progressState: "frontSide",
+            guess: ""
+        });
     },
 
     selectProfile(profileKey){
@@ -60,6 +71,14 @@ var Review = React.createClass({
             return realInterval / plannedInterval;
         }else {
             return 1.1;
+        }
+    },
+    guessChange(event){
+        this.setState({guess: event.target.value});
+    },
+    handleGuessKeyDown(evt) {
+        if (evt.keyCode == 13 ) {
+            this.flip()
         }
     },
     getDueCounts(){
@@ -176,32 +195,45 @@ var Review = React.createClass({
                     </button>
                     <span>{"Due count: " + nextReview.dueCount}</span>
 
-                    {nextReview.dueCount >=1 && <div>
-                        <ReviewDisplay
-                            template={this.props.types[nextReview.info.typeID].templates[nextReview.templateID]}
-                            templateData={_.zipObject(this.props.types[nextReview.info.typeID].entryNames, nextReview.info.entries)}
-                            progressState={this.state.progressState}
-                        />
+                    {nextReview.dueCount >=1 &&
+                        <div>
+                            <ReviewDisplay
+                                template={this.props.types[nextReview.info.typeID].templates[nextReview.templateID]}
+                                templateData={_.zipObject(this.props.types[nextReview.info.typeID].entryNames, nextReview.info.entries)}
+                                progressState={this.state.progressState}
+                                guess={this.state.guess}
+                            />
 
-                        {this.state.progressState === "frontSide" &&
-                            <div style={{textAlign: "center"}}>
-                                <button
-                                    tabIndex="1"
-                                    ref="flipButton"
-                                    className="buttonGood"
-                                    onClick={this.flip}>
-                                    Show backside
-                                </button>
-                            </div>
-                        }
+                            {this.state.progressState === "frontSide" &&
+                                <div style={{textAlign: "center"}}>
+                                    {this.props.useGuess &&
+                                        <div>
+                                            <input
+                                                ref="guess"
+                                                value={this.state.guess}
+                                                onKeyDown={this.handleGuessKeyDown}
+                                                onChange={this.guessChange}
+                                            />
+                                        </div>
+                                    }
+                                    <button
+                                        tabIndex="1"
+                                        ref="flipButton"
+                                        className="buttonGood"
+                                        onClick={this.flip}>
+                                        Show backside
+                                    </button>
+                                </div>
+                            }
 
-                        <Intervaller
-                            show={this.state.progressState === "backSide"}
-                            lastInterval={nextReview.realInterval}
-                            applyInterval={this.applyInterval.bind(this, nextReview.infoIndex, nextReview.templateID)}
-                            timeIntervalChoices={this.props.timeIntervalChoices}
-                        />
-                    </div>}
+                            <Intervaller
+                                show={this.state.progressState === "backSide"}
+                                lastInterval={nextReview.realInterval}
+                                applyInterval={this.applyInterval.bind(this, nextReview.infoIndex, nextReview.templateID)}
+                                timeIntervalChoices={this.props.timeIntervalChoices}
+                            />
+                        </div>
+                    }
                 </div>
             );
         }

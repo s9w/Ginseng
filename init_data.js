@@ -177,7 +177,8 @@ var init_data = {
                 ]
             },
             "reviewHistoryLength": 2,
-            "useCompression": false
+            "useCompression": false,
+            "useGuess": true
         },
         "meta": {
             "lastSaved": "2015-01-11T22:12:35+01:00"

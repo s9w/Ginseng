@@ -255,6 +255,7 @@ var Ginseng = React.createClass({
                         timeIntervalChoices={this.state.settings.timeIntervalChoices}
                         gotoEdit={this.gotoEdit}
                         profiles={this.state.reviewProfiles}
+                        useGuess={this.state.settings.useGuess}
                     />
                 }
 

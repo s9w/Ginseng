@@ -4,6 +4,14 @@ var ReviewDisplay = React.createClass({
             progressState: 'backSide'
         };
     },
+    shouldComponentUpdate(nextProps, nextState){
+        return nextProps.progressState !== this.props.progressState;
+    },
+    //componentWillReceiveProps(nextProps){
+    //    if(nextProps.progressState === "frontSide"){
+    //
+    //    }
+    //},
     renderMarkdown(str){
         var latexStringBuffer = [];
         // replace math with $$
@@ -35,6 +43,7 @@ var ReviewDisplay = React.createClass({
             /{(\w*)}/g, function (match, p1) {
                 return thisOuter.props.templateData[p1];
             });
+
         return(
             <div id="reviewStage">
                 <div
@@ -44,6 +53,18 @@ var ReviewDisplay = React.createClass({
                 {this.props.progressState === "backSide" &&
                     <hr className={this.props.progressState === "backSide" ? "" : "invisible"} />
                 }
+
+                {this.props.progressState === "backSide" && this.props.guess &&
+                    <div>
+                        {JsDiff.diffChars(backStr, this.props.guess).map((part)=>
+                            <span
+                                className={(part.added || part.removed) ? 'guessWrong' : 'guessCorrect'}>
+                                {part.value}
+                            </span>
+                        )}
+                    </div>
+                }
+
                 {this.props.progressState === "backSide" &&
                     <div
                         className={"markdowned"}

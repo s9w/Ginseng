@@ -296,4 +296,12 @@ hr {
   border-bottom: 2px dashed #D0D0D0;
   width: 100%; }
 
+.guessCorrect {
+  color: #366e2f;
+  background: #cbff9b; }
+
+.guessWrong {
+  color: #89170a;
+  background: #ffcebf; }
+
 /*# sourceMappingURL=style.css.map */
