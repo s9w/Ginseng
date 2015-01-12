@@ -149,7 +149,7 @@ var InfoEdit = React.createClass({
                     }
                 </section>
 
-                <div className="flexContHoriz">
+                <div className="flexRowDistribute">
                     <button
                         disabled={JSON.stringify(this.props.info) === JSON.stringify(this.state.info)}
                         className="buttonGood"

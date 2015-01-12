@@ -74,7 +74,7 @@ var Profiles = React.createClass({
                     onUpdate={this.updateprofiles}
                 />
 
-                <div className="flexContHoriz">
+                <div className="flexRowDistribute">
                     <button
                         disabled={!isChanged}
                         className="buttonGood"

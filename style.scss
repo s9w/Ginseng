@@ -1,46 +1,16 @@
-.browseControls{
-  margin-bottom: 5px;
-}
-
-.browseControls > input{
-  margin-right: 10px;
-}
-
-a{
-  text-decoration: none;
-  &:hover{
-    text-decoration: underline;
-  }
-}
-
-
 html {
   font-family: proxima-nova,"Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
 }
 
 section{
   flex: 0 1 auto;
-  /*margin: 5px 10px;*/
   margin-bottom: 10px;
-//  white-space: pre;
   display: flex;
   flex-direction: column;
   > *:not(:first-child){
-    margin-left: 10px;
-//    display: flex;
-//    flex-direction: row;
-    margin-bottom: 1px;
+	margin-left: 10px;
+	margin-bottom: 1px;
   }
-}
-
-.flexRow{
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-}
-.flexCol{
-  display: flex;
-  flex-direction: column;
 }
 
 h3{
@@ -55,25 +25,13 @@ p{
   margin-bottom: 0.5em;
 }
 
-.wrap{
-  flex-wrap: wrap;
-}
-
-.sectionContentEl{
-  flex: 1 1 auto;
-}
-
-.sectionContentElFixed{
-  flex: 0 0  auto;
-}
-
 .Component{
   margin-top: 5px;
   max-width: 500px;
   margin-left: auto;
   margin-right: auto;
   &.InfoBrowser{
-    max-width: 800px;
+	max-width: 800px;
   }
 }
 
@@ -81,69 +39,29 @@ p{
   visibility: hidden;
 }
 
-.iTypeSwitcher{
-  align-items: flex-start;
-}
-
 .markdowned{
   font-size: 1.2em;
 }
 
-.nav>li>a{
-  padding: 0 0;
-}
-
-
-
-.flexContVert{
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-}
-
-.flexContHoriz{
+.flexRowDistribute{
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
 }
 
-.flexElemContHoriz{
-  flex: 0 1 auto;
-  display: flex;
-}
-
-.flexElemContVert{
-  flex: 0 1 auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.flexElemContVert Button{
-  text-align: right;
-}
-
-.flexElemContVert span{
-  align-self: center;
-}
-
-#reviewModeSwitches{
-  display: flex;
-  justify-content: center;
-  max-width: 320px;
-}
-
-.intervalButtonCont{
+.flexRowStacked{
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
-  align-items: flex-end;
+//  align-items: flex-end;
 }
 
-.intervalButtonCont > span {
+.flexContentVariable {
   flex: 1 1 auto;
-  max-width: 70px;
-//  display: flex;
-//  flex-direction: column;
+}
+
+.flexContentFixed{
+  flex: 0 0  auto;
 }
 
 $base-green: scale-color(#5cb83c, $lightness: 10%);
@@ -152,66 +70,73 @@ $base-veryDark: scale_color($base-green, $lightness: -60%);
 $tr-highlight-darken: -10%;
 table{
   border-collapse: collapse;
+  @media (max-device-width: 400px) {
+    tr{
+      height: 2em;
+    }
+  }
 }
 
-.infoTable{
+.infoTable {
   width: 100%;
-  //  table-layout: fixed;
-  thead{
+  table-layout: fixed;
+  thead {
     text-align: left;
     background: $base-green;
-    &>tr>th{
-      cursor: pointer;
-      -moz-user-select: none;
-      -webkit-user-select: none;
-      -ms-user-select: none;
-      @media (max-device-width: 400px)  {
-        height: 40px;
-      }
+    & > tr > th {
+      @extend .unselectable;
     }
   }
 
   tbody>tr {
-    cursor: pointer;
-    &:nth-child(odd) {
-      background: $base-veryBright;
-      &:hover{
-        background: scale-color($base-veryBright, $lightness: $tr-highlight-darken);
-      }
-    }
-    &:hover {
-      background: scale-color(#ffffff, $lightness: $tr-highlight-darken);
-    }
+	cursor: pointer;
+	&:nth-child(odd) {
+	  background: $base-veryBright;
+	  &:hover{
+		background: scale-color($base-veryBright, $lightness: $tr-highlight-darken);
+	  }
+	}
+	&:hover {
+	  background: scale-color(#ffffff, $lightness: $tr-highlight-darken);
+	}
   }
 
   tbody>tr>td{
-    padding-right: 10px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    @media (max-device-width: 400px)  {
-      height: 30px;
-    }
+	padding-right: 10px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	@media (max-device-width: 400px)  {
+	  height: 30px;
+	}
   }
+}
+
+.clickable{
+  cursor: pointer;
 }
 
 .profileTable{
   margin: 0 auto;
+  td, th{
+    height: 1.5em;
+  }
   >thead{
-    text-align: left;
+	text-align: left;
+    background: $base-green;
   }
   >tbody > tr {
-      cursor: pointer;
-      &:hover {
-        background: scale-color(#ffffff, $lightness: $tr-highlight-darken);
-      }
-      > td {
-        height: 1.5em;
-        padding-right: 10px;
-      }
-      > td:nth-child(2){
-        text-align: center;
-      }
+	  cursor: pointer;
+	  &:hover {
+		background: scale-color(#ffffff, $lightness: $tr-highlight-darken);
+	  }
+	  > td {
+//		height: 1.5em;
+		padding-right: 10px;
+	  }
+	  > td:nth-child(2){
+		text-align: center;
+	  }
   }
 }
 
@@ -224,34 +149,30 @@ table{
   margin-right: auto ;
   border-bottom: thick solid #000000;
   & > div{
-    cursor: pointer;
-    padding-left: 3px;
-    padding-right: 3px;
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 2em;
-    @media (min-width: 450px) {
-      font-size: 18px;
-    }
+	cursor: pointer;
+	padding-left: 3px;
+	padding-right: 3px;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 2em;
+	@media (min-width: 450px) {
+	  font-size: 18px;
+	}
 
-    //  text-rendering: optimizeLegibility;
-    &:hover{
-      background-color: lighten($base-green, 30%);
-    }
-    &.active{
-      background-color: $base-green;
-    }
+	//  text-rendering: optimizeLegibility;
+	&:hover{
+	  background-color: lighten($base-green, 30%);
+	}
+	&.active{
+	  background-color: $base-green;
+	}
   }
-}
-
-.flexElem{
-  flex: 0 1 auto;
 }
 
 @mixin hoverDark($col) {
   background: $col;
   &:hover {
-    outline: 2px solid scale-color($col, $lightness: -30%);
+	outline: 2px solid scale-color($col, $lightness: -30%);
   }
 }
 
@@ -267,13 +188,42 @@ button{
   font-size: inherit;
   text-align: center;
   @media (max-device-width: 400px) {
-    min-width: 50px;
-    min-height: 30px;
-    margin-bottom: 5px;
+	min-width: 50px;
+	min-height: 30px;
+	margin-bottom: 5px;
   }
 }
+
 .buttonGood{
   @include hoverDark($base-green);
+}
+
+.buttonDanger{
+  @include hoverDark($danger-red);
+}
+
+button:disabled{
+  color: graytext;
+  background: scale-color(lightgray, $lightness: +50%);
+  cursor: default;
+  outline: 0 !important;
+}
+
+.buttonSelected{
+  outline: 2px solid #000000;
+  &:hover{
+    background: $base-green;
+  }
+}
+
+.microbutton{
+  width: 2em;
+  padding: 0;
+  margin-bottom: 0;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 $intervalRed: rgba(255, 35, 15, 0.60);
@@ -294,31 +244,6 @@ $intervalYellow: #5f95d0;
   @include hoverDark(mix($intervalRed, $intervalYellow, 0%));
 }
 
-.buttonPlain{
-  background: #FFF;
-  &:hover{
-    color: red;
-    outline: none;
-  }
-}
-.buttonDanger{
-  @include hoverDark($danger-red);
-}
-
-button:disabled{
-  color: graytext;
-  background: scale-color(lightgray, $lightness: +50%);
-  cursor: default;
-  outline: 0 !important;
-}
-.buttonSelected{
-  outline: 2px solid #000000;
-  &:hover{
-    background: $base-green;
-  }
-}
-
-
 .popup{
   background: lightgray;
   padding: 10px;
@@ -326,19 +251,7 @@ button:disabled{
   left: 10%;
   right: 10%;
   top: 10%;
-//  transform: translate(-50%, 0); //translate3d lead to blurry text sometimes
-//  width: 40%;
   text-align: center;
-}
-
-.microbutton{
-  width: 2em;
-  padding: 0;
-  margin-bottom: 0;
-  margin-top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 #reviewStage {
@@ -356,7 +269,7 @@ input, select, textarea{
 
 @media (max-device-width: 400px)  {
   input, textarea{
-    line-height: 1.7;
+	line-height: 1.7;
   }
 }
 
@@ -372,12 +285,6 @@ textarea, select{
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-}
-
-.tabContainer{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
 }
 
 form{

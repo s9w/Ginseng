@@ -1,35 +1,14 @@
-.browseControls {
-  margin-bottom: 5px; }
-
-.browseControls > input {
-  margin-right: 10px; }
-
-a {
-  text-decoration: none; }
-  a:hover {
-    text-decoration: underline; }
-
 html {
   font-family: proxima-nova,"Helvetica Neue",Helvetica,Roboto,Arial,sans-serif; }
 
 section {
   flex: 0 1 auto;
-  /*margin: 5px 10px;*/
   margin-bottom: 10px;
   display: flex;
   flex-direction: column; }
   section > *:not(:first-child) {
     margin-left: 10px;
     margin-bottom: 1px; }
-
-.flexRow {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start; }
-
-.flexCol {
-  display: flex;
-  flex-direction: column; }
 
 h3 {
   font-size: 18px;
@@ -40,15 +19,6 @@ h3 {
 p {
   margin-top: 0.5em;
   margin-bottom: 0.5em; }
-
-.wrap {
-  flex-wrap: wrap; }
-
-.sectionContentEl {
-  flex: 1 1 auto; }
-
-.sectionContentElFixed {
-  flex: 0 0  auto; }
 
 .Component {
   margin-top: 5px;
@@ -61,71 +31,37 @@ p {
 .invisible {
   visibility: hidden; }
 
-.iTypeSwitcher {
-  align-items: flex-start; }
-
 .markdowned {
   font-size: 1.2em; }
 
-.nav > li > a {
-  padding: 0 0; }
-
-.flexContVert {
-  display: flex;
-  flex-direction: column;
-  align-content: center; }
-
-.flexContHoriz {
+.flexRowDistribute {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap; }
 
-.flexElemContHoriz {
-  flex: 0 1 auto;
-  display: flex; }
-
-.flexElemContVert {
-  flex: 0 1 auto;
-  display: flex;
-  flex-direction: column; }
-
-.flexElemContVert Button {
-  text-align: right; }
-
-.flexElemContVert span {
-  align-self: center; }
-
-#reviewModeSwitches {
-  display: flex;
-  justify-content: center;
-  max-width: 320px; }
-
-.intervalButtonCont {
+.flexRowStacked {
   display: flex;
   justify-content: flex-start;
-  flex-wrap: wrap;
-  align-items: flex-end; }
+  flex-wrap: wrap; }
 
-.intervalButtonCont > span {
-  flex: 1 1 auto;
-  max-width: 70px; }
+.flexContentVariable {
+  flex: 1 1 auto; }
+
+.flexContentFixed {
+  flex: 0 0  auto; }
 
 table {
   border-collapse: collapse; }
+  @media (max-device-width: 400px) {
+    table tr {
+      height: 2em; } }
 
 .infoTable {
-  width: 100%; }
+  width: 100%;
+  table-layout: fixed; }
   .infoTable thead {
     text-align: left;
     background: #6ac44a; }
-    .infoTable thead > tr > th {
-      cursor: pointer;
-      -moz-user-select: none;
-      -webkit-user-select: none;
-      -ms-user-select: none; }
-      @media (max-device-width: 400px) {
-        .infoTable thead > tr > th {
-          height: 40px; } }
   .infoTable tbody > tr {
     cursor: pointer; }
     .infoTable tbody > tr:nth-child(odd) {
@@ -143,16 +79,21 @@ table {
       .infoTable tbody > tr > td {
         height: 30px; } }
 
+.clickable {
+  cursor: pointer; }
+
 .profileTable {
   margin: 0 auto; }
+  .profileTable td, .profileTable th {
+    height: 1.5em; }
   .profileTable > thead {
-    text-align: left; }
+    text-align: left;
+    background: #6ac44a; }
   .profileTable > tbody > tr {
     cursor: pointer; }
     .profileTable > tbody > tr:hover {
       background: #e6e6e6; }
     .profileTable > tbody > tr > td {
-      height: 1.5em;
       padding-right: 10px; }
     .profileTable > tbody > tr > td:nth-child(2) {
       text-align: center; }
@@ -180,9 +121,6 @@ table {
     .navBar > div.active {
       background-color: #6ac44a; }
 
-.flexElem {
-  flex: 0 1 auto; }
-
 button {
   background: lightgray;
   border: 0;
@@ -204,6 +142,31 @@ button {
   background: #6ac44a; }
   .buttonGood:hover {
     outline: 2px solid #478f2f; }
+
+.buttonDanger {
+  background: #d9534f; }
+  .buttonDanger:hover {
+    outline: 2px solid #aa2925; }
+
+button:disabled {
+  color: graytext;
+  background: #e9e9e9;
+  cursor: default;
+  outline: 0 !important; }
+
+.buttonSelected {
+  outline: 2px solid #000000; }
+  .buttonSelected:hover {
+    background: #6ac44a; }
+
+.microbutton {
+  width: 2em;
+  padding: 0;
+  margin-bottom: 0;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
 
 .intervalMinutes {
   background: rgba(255, 35, 15, 0.6); }
@@ -230,28 +193,6 @@ button {
   .intervalMonths:hover {
     outline: 2px solid #3067a4; }
 
-.buttonPlain {
-  background: #FFF; }
-  .buttonPlain:hover {
-    color: red;
-    outline: none; }
-
-.buttonDanger {
-  background: #d9534f; }
-  .buttonDanger:hover {
-    outline: 2px solid #aa2925; }
-
-button:disabled {
-  color: graytext;
-  background: #e9e9e9;
-  cursor: default;
-  outline: 0 !important; }
-
-.buttonSelected {
-  outline: 2px solid #000000; }
-  .buttonSelected:hover {
-    background: #6ac44a; }
-
 .popup {
   background: lightgray;
   padding: 10px;
@@ -260,15 +201,6 @@ button:disabled {
   right: 10%;
   top: 10%;
   text-align: center; }
-
-.microbutton {
-  width: 2em;
-  padding: 0;
-  margin-bottom: 0;
-  margin-top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center; }
 
 #reviewStage {
   display: flex;
@@ -290,15 +222,10 @@ textarea, select {
 .illegalForm {
   background-color: #ffc8c8; }
 
-.unselectable {
+.unselectable, .infoTable thead > tr > th {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none; }
-
-.tabContainer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start; }
 
 form {
   display: flex;

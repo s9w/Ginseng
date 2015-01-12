@@ -146,14 +146,14 @@ var InfoTypes = React.createClass({
                 <section key={1}>
                     <h3>Entries</h3>
                     {selectedType.entryNames.map((entryName, i) =>
-                        <div className="flexRow" key={i}>
+                        <div className="flexRowStacked" key={i}>
                             <input
-                                className="sectionContentEl"
+                                className="flexContentVariable"
                                 value={entryName}
                                 onChange={this.onFieldNameEdit.bind(this, i)}
                             />
                             <button
-                                className={"buttonDanger microbutton sectionContentElFixed" + (selectedType.entryNames.length <= 2 ? " invisible" : "")}
+                                className={"buttonDanger microbutton flexContentFixed" + (selectedType.entryNames.length <= 2 ? " invisible" : "")}
                                 onClick={this.onFieldsResize.bind(this, i)}>
                                 ✖
                             </button>
@@ -185,17 +185,19 @@ var InfoTypes = React.createClass({
                     />
                 </section>
 
-                <div className="sectionContent tabContainer">
+                <div className="flexRowStacked flexRowDistribute">
                     <button
                         className={this.state.mode==="main"?"buttonGood":""}
-                        onClick={this.setMode.bind(this, "main")}>Properties
+                        onClick={this.setMode.bind(this, "main")}>
+                        Properties
                     </button>
 
                     {Object.keys(selectedType.templates).map(templateID =>
                         <button
                             key={templateID}
-                            className={"flexElemContHoriz"+(this.state.mode===templateID?" buttonGood":"")}
-                            onClick={this.setMode.bind(this, templateID)}>{"Template "+templateID}
+                            className={this.state.mode===templateID?"buttonGood":""}
+                            onClick={this.setMode.bind(this, templateID)}>
+                            {"Template "+templateID}
                         </button>
                     )}
 
@@ -207,7 +209,7 @@ var InfoTypes = React.createClass({
 
                 {mainSection}
 
-                <div className="flexContHoriz">
+                <div className="flexRowDistribute">
                     <button
                         disabled={!isChanged}
                         className="buttonGood"

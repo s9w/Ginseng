@@ -313,7 +313,7 @@ var Status = React.createClass({
         var popupOverwrite = false;
         if(this.state.showOverwriteWarning) {
             var buttonContainer =
-                <div className="flexContHoriz" >
+                <div className="flexRowDistribute" >
                     <button
                         onClick={this.props.onDbSave}
                         className="button buttonGood">Yes</button>

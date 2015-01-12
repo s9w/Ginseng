@@ -72,7 +72,7 @@ var Intervaller = React.createClass({
                 <button
                     className={" "+ (this.state.modifyType==="set"?"buttonGood":"")}
                     onClick={this.onModeChange.bind(this, "set")}>set</button>
-                <div className="intervalButtonCont">
+                <div className="flexRowStacked">
                     {intervals}
                 </div>
                 <div>Last interval: {getPreciseIntervalStr( this.props.lastInterval )}</div>

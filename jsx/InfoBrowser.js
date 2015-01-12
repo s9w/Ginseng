@@ -92,14 +92,10 @@ var InfoBrowser = React.createClass({
                     getShortPreciseIntervalStr(moment().diff(moment(sortedInfos[i].creationDate)))
                 ];
                 for (let j = 0; j < thData.length; ++j) {
-                    var content;
-                    var shortenLen = (j===2?5:15);
-                    if(thData[j].length > shortenLen){
-                        content= thData[j].slice(0,shortenLen)+"...";
-                    }else{
-                        content= thData[j];
-                    }
-                    ds.push(<td key={j}>{content}</td>);
+                    var content = thData[j];
+                    ds.push(
+                        <td key={j}>{content}</td>
+                    );
                 }
                 tableRows.push(
                     <tr key={i} onClick={this.props.onRowSelect.bind(null, i)}>
@@ -136,25 +132,35 @@ var InfoBrowser = React.createClass({
 
         return (
             <div className="InfoBrowser Component">
+                <section>
+                    <h3>Info Browser</h3>
                 <div className="browseControls">
                     <input type="text" placeholder="Quick filter..." value={this.state.filterText}
                         onChange={this.onFilterChange}/>
                     <button className="button buttonGood" onClick={this.props.onNew}>New info</button>
                 </div>
                 <table className="infoTable">
+                    <colgroup>
+                        <col width="20%" />
+                        <col width="20%" />
+                        <col width="20%" />
+                        <col width="20%" />
+                        <col width="10%" />
+                    </colgroup>
                     <thead>
                         <tr>
-                            <th onClick={this.changeSortOrder.bind(this, "1")}>{th_1}</th>
-                            <th onClick={this.changeSortOrder.bind(this, "2")}>{th_2}</th>
+                            <th className="clickable" onClick={this.changeSortOrder.bind(this, "1")}>{th_1}</th>
+                            <th className="clickable" onClick={this.changeSortOrder.bind(this, "2")}>{th_2}</th>
                             <th>Type</th>
                             <th>Tags</th>
-                            <th onClick={this.changeSortOrder.bind(this, "age")}>{th_age}</th>
+                            <th className="clickable" onClick={this.changeSortOrder.bind(this, "age")}>{th_age}</th>
                         </tr>
                     </thead>
                     <tbody>
                         {tableRows }
                     </tbody>
                 </table>
+                    </section>
             </div>
         );
     }

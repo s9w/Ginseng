@@ -4,7 +4,7 @@ var DictSelector = React.createClass({
     },
     render() {
         return (
-            <div className="flexRow">
+            <div className="flexRowStacked">
                 <select
                     size={_.max([_.keys(this.props.dict).length, 2])}
                     onChange={this.onSelectionChange}
