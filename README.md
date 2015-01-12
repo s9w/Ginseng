@@ -8,15 +8,15 @@ Ginseng is a web app for learning things with flashcards and spaced repetition. 
 - No fixed "deck" structure. Manage and filter by tags and profiles
 - Native Markdown formatting and LaTeX support for content and templates
 
-## Introduction
-In Ginseng, the thing you want to learn/memorize is called an **info**. An info can contain two or more **entries** and any number of tags. If you learn Spanish, the entries could be the Spanish and spanish expression. Infos have a **type** which defines the number of entries as well as the **templates** which are used to display the info in the review mode.
+## How it works
+The thing you want to learn/memorize is called an **info**. An info can contain two or more **entries** and any number of tags. If you learn Spanish, the entries could be the Spanish and spanish expression. Infos have a **type** which defines the number of entries as well as the **templates** which are used to display the info in the review mode.
 
 ### Templates
 A template maps an info to a front and back side of a virtual flashcard. In the example case, the front could show the english word and the back could show the spanish word. The templates (as well as the info entries) are written in [Markdown](http://en.wikipedia.org/wiki/Markdown). The info entries can be used with curly braces, like `{front}`. The templates as well as the entries can contain [LaTeX](http://en.wikipedia.org/wiki/LaTeX) code between single dollar signs.
 
 ![](https://github.com/s9w/Ginseng/raw/master/doc/simple_example.png)
 
-There can be more than one template for a type, for example if you also want to test the reverse relation. Or you might want to include a note entry that gets displayed alongside. Templates can have to a condition so they only generate a flashcard when that condition is matched. An example could be a reverse template that will only be generated if an info has a "reverse" tag. The syntax is described [below](#filter).
+There can be more than one template for a type, for example if you also want to test the reverse relation. Or you might want to include a note entry that gets displayed alongside. Templates can have to a condition so they only generate a flashcard when that condition is matched. An example could be a reverse template that will only be generated if an info has a "reverse" tag. The syntax is described [below](#filter-syntax).
 
 ![](https://github.com/s9w/Ginseng/raw/master/doc/conditional_templates.png)
 
@@ -45,17 +45,17 @@ Ginseng is designed around some solid findings from cognitive psychology.
 
 It's much more efficient to try to recall an information without access to the solution than trying to memorize it while staring at it - that's called the [testing effect](http://en.wikipedia.org/wiki/Testing_effect). The hidden back side is what makes flashcard practice so efficient.
 
-The learning can also vastly be improved by distributing the learning over many separate session rather than doing it all in one - that's called the [spacing effect](http://en.wikipedia.org/wiki/Spacing_effect). This effect is especially big when the intervals increase each time. The exact timings of the intervals are tricky though, and the conditions of the studies are rarely met in practice. That's why there's such a fine grained control over the review interval: Just set the interval you feel is right.
+The learning can also vastly be improved by distributing it over many separate session rather than doing it all in one - that's called the [spacing effect](http://en.wikipedia.org/wiki/Spacing_effect). This effect is especially big when the intervals increase each time. The exact timings of the intervals are tricky though, and the conditions of the studies are rarely met in practice. That's why there's such a fine grained control over the review interval: Just set the interval you feel is right.
 
 The brain also likes to [link](http://gocognitive.net/interviews/effect-context-memory) information to location and other contextual factors. So things you know in the library might be "gone" during an exam. The page is therefore a web app, designed to work well on mobile devices and with dropbox sync to be accessable everywhere and from every computer with a web browser.
 
 ## Philosophy / Goals
 Ginseng and the underlying data format are designed to be as open and robust as possible
 - All data is saved in a straightforward human-readable (and therefore hackable) JSON file.
-- The formatting of the info entries and the templates is done Markdown with optional LaTeX. Currently [marked](https://github.com/chjj/marked) is used for Markdown and [KaTeX](https://github.com/Khan/KaTeX) for LaTeX converting as they seem to be the fastest choice.
+- The formatting of the info entries and the templates is done Markdown with optional LaTeX. Currently [marked](https://github.com/chjj/marked) is used for Markdown and [KaTeX](https://github.com/Khan/KaTeX) for LaTeX rendering as they seem to be the fastest choice.
 - Dates/times are saved in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).
 
-## Roadmap / issues
+## Plans / issues
 - KaTeX is very fast but currently doesn't even support `\mathbb` fonts or basic Math operators, let alone other packages etc. Add Mathjax as an option?
 - Use browsers local storage to provide offline access? But that'll open Pandoras box of conflicting versions.
-- Write an Anki converter?
+- Write an Anki importer?
