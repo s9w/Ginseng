@@ -2,6 +2,13 @@ html {
   font-family: proxima-nova,"Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
 }
 
+a {
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 section{
   flex: 0 1 auto;
   margin-bottom: 10px;

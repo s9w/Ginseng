@@ -393,8 +393,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="217.18005"
-     inkscape:cy="606.27008"
+     inkscape:cx="214.32291"
+     inkscape:cy="169.12722"
      inkscape:document-units="cm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -432,7 +432,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -875,14 +875,14 @@
    style="font-weight:bold;text-align:start;text-anchor:start;-inkscape-font-specification:Sans Bold"
    id="tspan8782">Condition</tspan>:<tspan
    style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;font-family:Consolas;-inkscape-font-specification:Consolas"
-   id="tspan8786"></tspan></tspan><tspan
+   id="tspan8786" /></tspan><tspan
          sodipodi:role="line"
          x="233.04677"
          y="840.05023"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;font-family:Sans;-inkscape-font-specification:Sans"
          id="tspan11125"><tspan
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;text-anchor:start;font-family:Consolas;-inkscape-font-specification:Consolas"
-           id="tspan11127">tag: physics</tspan></tspan></text>
+           id="tspan11127">tag: math</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-size:18px;font-style:normal;font-weight:bold;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
