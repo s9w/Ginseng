@@ -31,7 +31,7 @@ var InfoEdit = React.createClass({
             var newPreviewID = this.state.previewID;
             if(_.contains(newInfo.tags, toggledTag)){
                 newInfo.tags.splice(newInfo.tags.indexOf(toggledTag), 1);
-                if(this.state.previewID && !filterInfo(this.props.types[this.state.info.typeID].templates[this.state.previewID].condition, newInfo)){
+                if(this.state.previewID && !filterInfo(this.props.types[newInfo.typeID].templates[this.state.previewID].condition, newInfo, this.props.types[newInfo.typeID].name)){
                     newPreviewID = false;
                 }
             }else{
@@ -127,7 +127,7 @@ var InfoEdit = React.createClass({
                             {"None"}
                         </button>
                         {_(this.props.types[this.state.info.typeID].templates).keys().value().map( templateID =>
-                            filterInfo(this.props.types[this.state.info.typeID].templates[templateID].condition, this.state.info) &&
+                            filterInfo(this.props.types[this.state.info.typeID].templates[templateID].condition, this.state.info, this.props.types[this.state.info.typeID].name) &&
                             <button
                                 key={templateID}
                                 className={(this.state.previewID === templateID ? "buttonGood" : "")}
@@ -143,6 +143,7 @@ var InfoEdit = React.createClass({
                             <ReviewDisplay
                                 template={this.props.types[this.state.info.typeID].templates[this.state.previewID]}
                                 templateData={_.zipObject(this.props.types[this.state.info.typeID].entryNames, this.state.info.entries)}
+                                preview={true}
                             />
                         </div>
                     }

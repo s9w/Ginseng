@@ -11,7 +11,7 @@ var Profiles = React.createClass({
         newProfiles[nextProfileID] = {
             "name": "New Profile",
             "condition": "",
-            "urgencyThreshold": 1.0
+            "dueThreshold": 1.0
         };
 
         this.setState({

@@ -1,11 +1,12 @@
 var ReviewDisplay = React.createClass({
     getDefaultProps: function() {
         return {
-            progressState: 'backSide'
+            progressState: 'backSide',
+            preview: false
         };
     },
     shouldComponentUpdate(nextProps, nextState){
-        return nextProps.progressState !== this.props.progressState;
+        return this.props.preview || nextProps.progressState !== this.props.progressState;
     },
     //componentWillReceiveProps(nextProps){
     //    if(nextProps.progressState === "frontSide"){

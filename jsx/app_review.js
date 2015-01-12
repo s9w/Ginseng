@@ -1,8 +1,7 @@
-function filterInfo(filterStr, info){
+function filterInfo(filterStr, info, typename){
     if(filterStr===""){
         return true
     }
-
     return eval(
         filterStr.replace(
             /tag: ?(\w+)/g, function (match, p1) {
@@ -11,6 +10,10 @@ function filterInfo(filterStr, info){
         ).replace(
             /createdBefore: ?([\w\-:\.\+\-]+)/g, function (match, p1) {
                 return "moment(info.creationDate).isBefore(moment(\""+p1+"\"))";
+            }
+        ).replace(
+            /type: ?"([\w ]+)"/g, function (match, p1) {
+                return "typename === \""+p1+"\"";
             }
         )
     );
@@ -97,8 +100,8 @@ var Review = React.createClass({
             _(this.props.profiles).mapValues((profile, profileKey) =>
                 _(this.props.infos).map((info, infoIndex) =>
                     _(info.reviews).filter((review, reviewKey) =>
-                        filterInfo(this.props.types[info.typeID].templates[reviewKey].condition, info) &&
-                        filterInfo(this.props.profiles[profileKey].condition, info) &&
+                        filterInfo(this.props.types[info.typeID].templates[reviewKey].condition, info, this.props.types[info.typeID].name) &&
+                        filterInfo(this.props.profiles[profileKey].condition, info, this.props.types[info.typeID].name) &&
                         (
                             review.length > 0 ?
                             moment().diff(moment(_.last(review).reviewTime)) / moment(_.last(review).dueTime).diff(moment(_.last(review).reviewTime)) :
@@ -147,8 +150,8 @@ var Review = React.createClass({
                     dueness = 1.1;
                     realInterval = 0;
                 }
-                if( filterInfo(this.props.types[info.typeID].templates[templateID].condition, info) &&
-                    filterInfo(this.props.profiles[profileKey].condition, info) &&
+                if( filterInfo(this.props.types[info.typeID].templates[templateID].condition, info, this.props.types[info.typeID].name) &&
+                    filterInfo(this.props.profiles[profileKey].condition, info, this.props.types[info.typeID].name) &&
                     dueness >= this.props.profiles[profileKey].dueThreshold
                 ){
                     nextReview.dueCount++;

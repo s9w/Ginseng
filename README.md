@@ -37,6 +37,7 @@ With a growing collection of infos, more control over the reviews is helpful - t
 ### Filter syntax
 - Infos can be filtered by their tags. `tag: math` matches all infos that have a `math` tag. This is case-sensitive and a precise match, so it will neither match a `Math` nor a `mathematics` tag.
 - Filtering by the creation date of the info is also possible: `createdBefore: 2015-01-01` matches infos that are created before 2015. The format should be something [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601). See [here](http://momentjs.com/docs/#/parsing/string/) for technical details.
+- Types can also be filtered. `type: "Languages"` matches infos with of type "Language". Note that this requires quotes around the type as whitespace is probably common in type names.
 - Filter queries can be logically combined with Javascript Syntax. So `||` means "or", `&&` means and. Negations can be done with `!` and feel free to go wild with brackets. For example, `tag: math || tag: physics` matches all infos with either a math or a physics tag. And `!(tag: french) || tag: important` matches everything but french... unless it's important (tag-wise).
 - These filters can be applied to the templates as well as review profiles!
 

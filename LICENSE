@@ -1,10 +1,11 @@
-I don't know anything about software licenses. This software uses
+I don't know anything about software licenses. Ginseng uses
 
 - React
 - moment.js
 - dropbox.js
 - KaTeX
 - marked
+- lodash
 - jsdiff
 
 All of those are under MIT or BSD linceses, so I think their use is OK. Please don't sue me.
