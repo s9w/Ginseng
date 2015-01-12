@@ -141,7 +141,7 @@ var InfoBrowser = React.createClass({
                         onChange={this.onFilterChange}/>
                     <button className="button buttonGood" onClick={this.props.onNew}>New info</button>
                 </div>
-                <table>
+                <table className="infoTable">
                     <thead>
                         <tr>
                             <th onClick={this.changeSortOrder.bind(this, "1")}>{th_1}</th>

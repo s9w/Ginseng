@@ -147,50 +147,71 @@ p{
 }
 
 $base-green: scale-color(#5cb83c, $lightness: 10%);
-table{
-  border-collapse: collapse;
-  width: 100%;
-  //  table-layout: fixed;
-}
-
-thead{
-  text-align: left;
-  background: $base-green;
-  &>tr>th{
-    cursor: pointer;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    @media (max-device-width: 400px)  {
-      height: 40px;
-    }
-  }
-
-}
-
 $base-veryBright: scale_color($base-green, $lightness: 80%);
 $base-veryDark: scale_color($base-green, $lightness: -60%);
 $tr-highlight-darken: -10%;
-tbody>tr {
-  cursor: pointer;
-  &:nth-child(odd) {
-    background: $base-veryBright;
-    &:hover{
-      background: scale-color($base-veryBright, $lightness: $tr-highlight-darken);
+table{
+  border-collapse: collapse;
+}
+
+.infoTable{
+  width: 100%;
+  //  table-layout: fixed;
+  thead{
+    text-align: left;
+    background: $base-green;
+    &>tr>th{
+      cursor: pointer;
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      @media (max-device-width: 400px)  {
+        height: 40px;
+      }
     }
   }
-  &:hover {
-    background: scale-color(#ffffff, $lightness: $tr-highlight-darken);
+
+  tbody>tr {
+    cursor: pointer;
+    &:nth-child(odd) {
+      background: $base-veryBright;
+      &:hover{
+        background: scale-color($base-veryBright, $lightness: $tr-highlight-darken);
+      }
+    }
+    &:hover {
+      background: scale-color(#ffffff, $lightness: $tr-highlight-darken);
+    }
+  }
+
+  tbody>tr>td{
+    padding-right: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    @media (max-device-width: 400px)  {
+      height: 30px;
+    }
   }
 }
 
-tbody>tr>td{
-  padding-right: 10px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  @media (max-device-width: 400px)  {
-    height: 30px;
+.profileTable{
+  margin: 0 auto;
+  >thead{
+    text-align: left;
+  }
+  >tbody > tr {
+      cursor: pointer;
+      &:hover {
+        background: scale-color(#ffffff, $lightness: $tr-highlight-darken);
+      }
+      > td {
+        height: 1.5em;
+        padding-right: 10px;
+      }
+      > td:nth-child(2){
+        text-align: center;
+      }
   }
 }
 

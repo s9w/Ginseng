@@ -172,18 +172,27 @@ var Review = React.createClass({
 
         if(!this.state.activeProfileKey){
             return(
-                <section className="Component">
-                    <h3>Select review profile</h3>
-                    {_(this.props.profiles).map((profile, key) =>
-                        <div>
-                            <button
-                                onClick={this.selectProfile.bind(null, key)}>
-                                {profile.name}
-                            </button>
-                            <span>Due: {nextReviews[key].dueCount}</span>
-                        </div>
-                    )}
-                </section>
+                <div className="Component">
+                    <section className="Component">
+                        <h3>Select review profile</h3>
+                    </section>
+                    <table className = "profileTable" >
+                        <thead>
+                            <tr>
+                                <th>Profile</th>
+                                <th>Due Count</th>
+                            </tr>
+                        </thead>
+                        < tbody >
+                            {_(this.props.profiles).map((profile, key) =>
+                                <tr onClick={this.selectProfile.bind(null, key)}>
+                                    <td>{profile.name}</td>
+                                    <td>{nextReviews[key].dueCount}</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             );
         }
 

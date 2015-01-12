@@ -111,38 +111,51 @@ p {
   max-width: 70px; }
 
 table {
-  border-collapse: collapse;
+  border-collapse: collapse; }
+
+.infoTable {
   width: 100%; }
-
-thead {
-  text-align: left;
-  background: #6ac44a; }
-  thead > tr > th {
-    cursor: pointer;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none; }
+  .infoTable thead {
+    text-align: left;
+    background: #6ac44a; }
+    .infoTable thead > tr > th {
+      cursor: pointer;
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none; }
+      @media (max-device-width: 400px) {
+        .infoTable thead > tr > th {
+          height: 40px; } }
+  .infoTable tbody > tr {
+    cursor: pointer; }
+    .infoTable tbody > tr:nth-child(odd) {
+      background: #e1f3db; }
+      .infoTable tbody > tr:nth-child(odd):hover {
+        background: #c4e8b8; }
+    .infoTable tbody > tr:hover {
+      background: #e6e6e6; }
+  .infoTable tbody > tr > td {
+    padding-right: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; }
     @media (max-device-width: 400px) {
-      thead > tr > th {
-        height: 40px; } }
+      .infoTable tbody > tr > td {
+        height: 30px; } }
 
-tbody > tr {
-  cursor: pointer; }
-  tbody > tr:nth-child(odd) {
-    background: #e1f3db; }
-    tbody > tr:nth-child(odd):hover {
-      background: #c4e8b8; }
-  tbody > tr:hover {
-    background: #e6e6e6; }
-
-tbody > tr > td {
-  padding-right: 10px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden; }
-  @media (max-device-width: 400px) {
-    tbody > tr > td {
-      height: 30px; } }
+.profileTable {
+  margin: 0 auto; }
+  .profileTable > thead {
+    text-align: left; }
+  .profileTable > tbody > tr {
+    cursor: pointer; }
+    .profileTable > tbody > tr:hover {
+      background: #e6e6e6; }
+    .profileTable > tbody > tr > td {
+      height: 1.5em;
+      padding-right: 10px; }
+    .profileTable > tbody > tr > td:nth-child(2) {
+      text-align: center; }
 
 .navBar {
   display: flex;
