@@ -30,7 +30,7 @@ Note that the last interval is calculated as the actual time between the last re
 Each generated flashcard has a "**dueness**" based on the selected interval and the time since the last review. Right after reviewing, the dueness is 0. It increases linearly with time, reaching 1.0 at the time of it's designated interval. By default, that's when reviews are "due" and are displayed. It will continue to increase if it's not reviewed (and become "overdue" if you want to call it that). The reviews are sorted from most to least due cards.
 
 ### Profiles
-With a growing collection of infos, more control over the reviews is helpful - that's what review **profile**s are for. They filter the generated flashcards, either by their tags or creation date with the syntax described below or their dueness. A "due threshold" of less than 1.0 will show cards that are not due yet. That can be used as a "cramming mode" if you will.
+With a growing collection of infos, more control over the reviews is helpful - that's what review **profile**s are for. They filter the generated flashcards by tags, creation date or type of their infos with the syntax described below. Profiles can also filter by dueness: A profile with a "due threshold" of less than 1.0 will show cards that are not due yet. That can be used as a "cramming mode" if you want, or .
 
 ![](https://github.com/s9w/Ginseng/raw/master/doc/profiles.png)
 

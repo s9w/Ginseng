@@ -268,6 +268,14 @@ $intervalYellow: #5f95d0;
   min-height: 50px;
 }
 
+.reviewStatusElement{
+  align-self: center;
+}
+
+.reviewStatusHeading{
+  font-weight: bolder;
+}
+
 input, select, textarea{
   font-size: inherit;
   border: 1px solid #ccc;

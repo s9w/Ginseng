@@ -1,0 +1,57 @@
+var Guessing = React.createClass({
+    getInitialState() {
+        return {
+            guessString: ""
+        };
+    },
+    componentWillReceiveProps(nextProps){
+        // When switching to new card
+        if(this.props.backStr && !nextProps.backStr){
+            this.setState({guessString: ""});
+        }
+    },
+    focusInput(){
+        this.refs.guessInput.getDOMNode().focus();
+    },
+    componentDidMount(){
+        this.focusInput();
+    },
+    componentDidUpdate : function(){
+        if("guessInput" in this.refs){
+            this.focusInput();
+        }
+    },
+    guessChange(event){
+        this.setState({guessString: event.target.value});
+    },
+    handleGuessKeyDown(evt) {
+        if (evt.keyCode == 13 ) {
+            this.props.onFlip();
+        }
+    },
+    render(){
+        if(!this.props.backStr){
+            return(
+                <div>
+                    <input
+                        ref="guessInput"
+                        value={this.state.guessString}
+                        onKeyDown={this.handleGuessKeyDown}
+                        onChange={this.guessChange}
+                    />
+                </div>
+            );
+        }else{
+            return(
+                <div>
+                    {JsDiff.diffChars(this.props.backStr.toLowerCase(), this.state.guessString.toLowerCase()).map((part)=>
+                        <span
+                            className={(part.added || part.removed) ? 'guessWrong' : 'guessCorrect'}>
+                        {part.value}
+                        </span>
+                    )}
+                </div>
+            );
+        }
+    }
+});

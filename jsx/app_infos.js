@@ -1,10 +1,16 @@
 var InfoEdit = React.createClass({
     getInitialState() {
+        var newPreviewID;
+        if("previewID" in this.props){
+            newPreviewID = this.props.previewID;
+        }else{
+            newPreviewID = _(this.props.types[this.props.info.typeID].templates).keys().value().length >= 1?
+                _(this.props.types[this.props.info.typeID].templates).keys().min().toString():
+                false
+        }
         return {
             info: _.cloneDeep( this.props.info ),
-            previewID: _(this.props.types[this.props.info.typeID].templates).keys().value().length >= 1?
-                _(this.props.types[this.props.info.typeID].templates).keys().min().toString():
-                false,
+            previewID: newPreviewID,
             newTagValue: ""
         };
     },
@@ -140,7 +146,7 @@ var InfoEdit = React.createClass({
                     {this.state.previewID &&
                         <div>
                             <span>Due {templateDueTime}</span>
-                            <ReviewDisplay
+                            <ReviewContent
                                 template={this.props.types[this.state.info.typeID].templates[this.state.previewID]}
                                 templateData={_.zipObject(this.props.types[this.state.info.typeID].entryNames, this.state.info.entries)}
                                 preview={true}

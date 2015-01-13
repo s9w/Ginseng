@@ -44,22 +44,23 @@ var Intervaller = React.createClass({
         var keyIndex = 0;
         for (let timeframeKey in this.props.timeIntervalChoices) {
             for (let i = 0; i < this.props.timeIntervalChoices[timeframeKey].length; ++i) {
-                var bc = [
-                    "unselectable",
-                    (keyIndex === this.state.activeKeyIndex)?"buttonGood":("interval"+timeframeKey),
-                    (timeframeKey==="Percent" && this.state.modifyType==="set")?"invisible":""
-                ];
-                var plusEL = <span className={this.state.modifyType==="change"?"":"invisible"}>+</span>;
-                var amount = this.props.timeIntervalChoices[timeframeKey][i];
-                var buttonStr = amount + (timeframeKey === "Percent"?"%":timeframeKey.slice(0,1).toLowerCase());
-                intervals.push(
-                    <button
-                        key={keyIndex}
-                        className={bc.join(" ")}
-                        onClick={this.onIntervalChoice.bind(this, amount, keyIndex, timeframeKey.toLowerCase())}>{plusEL} {buttonStr}
-                    </button>
-                );
-                keyIndex += 1;
+                if(!(timeframeKey === "Percent" && this.state.modifyType === "set")) {
+                    var bc = [
+                        "unselectable",
+                        (keyIndex === this.state.activeKeyIndex) ? "buttonGood" : ("interval" + timeframeKey)
+                    ];
+                    var plusEL = <span className={this.state.modifyType === "change" ? "" : "invisible"}>+</span>;
+                    var amount = this.props.timeIntervalChoices[timeframeKey][i];
+                    var buttonStr = amount + (timeframeKey === "Percent" ? "%" : timeframeKey.slice(0, 1).toLowerCase());
+                    intervals.push(
+                        <button
+                            key={keyIndex}
+                            className={bc.join(" ")}
+                            onClick={this.onIntervalChoice.bind(this, amount, keyIndex, timeframeKey.toLowerCase())}>{plusEL} {buttonStr}
+                        </button>
+                    );
+                    keyIndex += 1;
+                }
             }
         }
 

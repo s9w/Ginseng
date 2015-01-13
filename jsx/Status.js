@@ -80,15 +80,29 @@ var Status = React.createClass({
                     <div>{"Last save: " + lastSavedStr}</div>
                     <div>{"Last load: " + lastLoadedStr}</div>
                     <div>
-                        {this.props.dropBoxStatus === "initial" && <button
-                            className="buttonGood"
-                            onClick={this.props.onDBAuth}>Login</button>}
-                        {this.props.dropBoxStatus !== "initial" && <button
-                            disabled={this.props.dropBoxStatus !== "loggedIn"}
-                            onClick={this.props.onDbLoad}>Load</button>}
-                        {this.props.dropBoxStatus !== "initial" && <button
-                            disabled={!this.props.isChanged || this.props.dropBoxStatus !== "loggedIn"}
-                            onClick={this.onSaveClick}>Save</button>}
+                        {this.props.dropBoxStatus === "initial" &&
+                            <button
+                                className="buttonGood"
+                                onClick={this.props.onDBAuth}>
+                                Login
+                            </button>
+                        }
+                        {this.props.dropBoxStatus !== "initial" &&
+                            <button
+                                className="buttonGood"
+                                disabled={this.props.dropBoxStatus !== "loggedIn"}
+                                onClick={this.props.onDbLoad}>
+                                Load
+                            </button>
+                        }
+                        {this.props.dropBoxStatus !== "initial" &&
+                            <button
+                                className="buttonGood"
+                                disabled={!this.props.isChanged || this.props.dropBoxStatus !== "loggedIn"}
+                                onClick={this.onSaveClick}>
+                                Save
+                            </button>
+                        }
                     </div>
                 </section>
             </div>

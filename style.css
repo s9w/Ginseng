@@ -213,6 +213,12 @@ button:disabled {
   align-items: center;
   min-height: 50px; }
 
+.reviewStatusElement {
+  align-self: center; }
+
+.reviewStatusHeading {
+  font-weight: bolder; }
+
 input, select, textarea {
   font-size: inherit;
   border: 1px solid #ccc;

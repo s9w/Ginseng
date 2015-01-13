@@ -19,12 +19,11 @@ function filterInfo(filterStr, info, typename){
     );
 }
 
-var Review = React.createClass({
+var ReviewInterface = React.createClass({
     getInitialState() {
         return {
-            progressState: "frontSide",
-            activeProfileKey: false,
-            guess: ""
+            progressState: "profileChoice",
+            activeProfileKey: false
         };
     },
     componentWillMount(){
@@ -36,12 +35,8 @@ var Review = React.createClass({
         }
     },
     focusInput(){
-        if(this.state.progressState === "frontSide" && "flipButton" in this.refs){
-            if(this.props.useGuess){
-                this.refs.guess.getDOMNode().focus();
-            }else{
-                this.refs.flipButton.getDOMNode().focus();
-            }
+        if(this.state.progressState === "frontSide" && !this.props.useGuess){
+            this.refs.flipButton.getDOMNode().focus();
         }
     },
     componentDidMount(){
@@ -56,14 +51,14 @@ var Review = React.createClass({
     applyInterval(infoIndex, reviewKey, newInterval){
         this.props.applyInterval(infoIndex, reviewKey, newInterval);
         this.setState({
-            progressState: "frontSide",
-            guess: ""
+            progressState: "frontSide"
         });
     },
 
     selectProfile(profileKey){
         this.setState({
-            activeProfileKey: profileKey
+            activeProfileKey: profileKey,
+            progressState: "frontSide"
         })
     },
     getUrgency(templateReviews){
@@ -200,34 +195,34 @@ var Review = React.createClass({
             let nextReview = nextReviews[this.state.activeProfileKey];
             return (
                 <div className="Component">
-                    <button
-                        tabIndex="2"
-                        onClick={this.props.gotoEdit.bind(null, nextReview.infoIndex)}>
-                        Edit Info
-                    </button>
-                    <span>{"Due count: " + nextReview.dueCount}</span>
+                    <div className="flexRowDistribute">
+                        <button
+                            tabIndex="2"
+                            onClick={this.props.gotoEdit.bind(null, nextReview.infoIndex, nextReview.templateID)}>
+                            Edit Info
+                        </button>
+                        <div className="reviewStatusElement">
+                            <span className="reviewStatusHeading">Due count: </span>
+                            <span>{nextReview.dueCount}</span>
+                        </div>
+                        <div className="reviewStatusElement">
+                            <span className="reviewStatusHeading">Profile: </span>
+                            <span>{this.props.profiles[this.state.activeProfileKey].name}</span>
+                        </div>
+                    </div>
 
                     {nextReview.dueCount >=1 &&
                         <div>
-                            <ReviewDisplay
+                            <ReviewContent
                                 template={this.props.types[nextReview.info.typeID].templates[nextReview.templateID]}
                                 templateData={_.zipObject(this.props.types[nextReview.info.typeID].entryNames, nextReview.info.entries)}
                                 progressState={this.state.progressState}
-                                guess={this.state.guess}
+                                useGuess={this.props.useGuess}
+                                onFlip={this.flip}
                             />
 
                             {this.state.progressState === "frontSide" &&
                                 <div style={{textAlign: "center"}}>
-                                    {this.props.useGuess &&
-                                        <div>
-                                            <input
-                                                ref="guess"
-                                                value={this.state.guess}
-                                                onKeyDown={this.handleGuessKeyDown}
-                                                onChange={this.guessChange}
-                                            />
-                                        </div>
-                                    }
                                     <button
                                         tabIndex="1"
                                         ref="flipButton"

@@ -1,7 +1,5 @@
 var client = new Dropbox.Client({ key: "ob9346e5yc509q2" });
 client.authDriver(new Dropbox.AuthDriver.Popup({receiverUrl: "https://s9w.github.io/dropbox_receiver.html"}));
-//client.authDriver(new Dropbox.AuthDriver.Popup({receiverUrl: "https://leastaction.org/ginseng/dropbox_receiver.html"}));
-
 
 var Ginseng = React.createClass({
     getInitialState() {
@@ -10,6 +8,7 @@ var Ginseng = React.createClass({
             infoTypes: init_data.infoTypes,
             settings: init_data.settings,
             meta: init_data.meta,
+
             activeMode: "status",
             selectedInfoIndex: false,
             reviewProfiles: init_data.reviewProfiles,
@@ -248,7 +247,7 @@ var Ginseng = React.createClass({
                 }
 
                 { this.state.activeMode === "review" &&
-                    <Review
+                    <ReviewInterface
                         infos={this.state.infos}
                         types={this.state.infoTypes}
                         applyInterval={this.applyInterval}
