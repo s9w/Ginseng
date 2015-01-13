@@ -5,20 +5,16 @@ var InfoTypes = React.createClass({
             selectedTypeID: chosenTypeID.toString(),
             types: this.props.types,
             changes: {
-                "renames": "",
-                "typeResizes": []
+                "entryNameResizes": []
             },
             mode: "main"
         };
     },
-    onFieldNameEdit(fieldNameIndex, event) {
+    onFieldNameEdit(entryNameIndex, event) {
         var newTypes = JSON.parse( JSON.stringify( this.state.types ));
-        newTypes[this.state.selectedTypeID].entryNames[fieldNameIndex] = event.target.value;
-        var newchanges = JSON.parse( JSON.stringify( this.state.changes ));
-        newchanges.renames = "renamed";
+        newTypes[this.state.selectedTypeID].entryNames[entryNameIndex] = event.target.value;
         this.setState({
-            types: newTypes,
-            changes: newchanges
+            types: newTypes
         });
     },
     selectType(newID){
@@ -30,25 +26,22 @@ var InfoTypes = React.createClass({
     onNameEdit(event) {
         var newTypes = JSON.parse( JSON.stringify( this.state.types ));
         newTypes[this.state.selectedTypeID].name = event.target.value;
-        var newchanges = JSON.parse( JSON.stringify( this.state.changes ));
-        newchanges.renames = "renamed";
         this.setState({
-            types: newTypes,
-            changes: newchanges
+            types: newTypes
         });
     },
-    onFieldsResize(fieldNameIndex){
+    onFieldsResize(entryIndex){
         // resize the type
         var newTypes = JSON.parse( JSON.stringify( this.state.types ));
-        if(fieldNameIndex === "add"){
+        if(entryIndex === "add"){
             newTypes[this.state.selectedTypeID].entryNames.push("");
         }else{
-            newTypes[this.state.selectedTypeID].entryNames.splice(fieldNameIndex, 1);
+            newTypes[this.state.selectedTypeID].entryNames.splice(entryIndex, 1);
         }
 
         // set changes
         var newchanges = JSON.parse( JSON.stringify( this.state.changes ));
-        newchanges.typeResizes.push( {id: this.state.selectedTypeID, fieldNameIndex: fieldNameIndex} );
+        newchanges.entryNameResizes.push( {typeID: this.state.selectedTypeID, entryNameIndex: entryIndex} );
 
         this.setState({
             types: newTypes,
@@ -118,8 +111,25 @@ var InfoTypes = React.createClass({
             mode: _(newTypes[this.state.selectedTypeID].templates).keys().max().toString()
         });
     },
+    onSave(){
+        var typeChanges = _(this.props.types).mapValues(x => new Object()).value();
+        for(let oldTypeID in this.props.types){
+            var entryNamesLengthDiff = this.state.types[oldTypeID].entryNames.length - this.props.types[oldTypeID].entryNames.length;
+            if(entryNamesLengthDiff !== 0){
+                typeChanges[oldTypeID]["entryLengthDiff"] = entryNamesLengthDiff;
+            }
+            var templateCountDiff = _.keys(this.state.types[oldTypeID].templates).length - _.keys(this.props.types[oldTypeID].templates).length;
+            if(templateCountDiff !== 0){
+                typeChanges[oldTypeID]["reviewDiff"] = templateCountDiff;
+            }
+        }
+        typeChanges = _.omit(typeChanges, val => _.keys(val).length===0);
+        //console.log("types onSave. typeChanges: " + JSON.stringify(typeChanges));
+        this.props.onSave(this.state.types, typeChanges);
+    },
     render() {
         var selectedType = this.state.types[this.state.selectedTypeID];
+        var infosPerType = _(this.state.types).mapValues(type => 0).extend(this.props.infosPerType).value();
 
         var mainSection;
         if (this.state.mode !== "main") {
@@ -128,7 +138,7 @@ var InfoTypes = React.createClass({
                     template={selectedType.templates[this.state.mode]}
                     entryNames={selectedType.entryNames}
                     onViewChange={this.onViewChange}
-                    delete={this.onDeleteTemplate}
+                    delete={(_(selectedType.templates).keys().value().length > 1)?this.onDeleteTemplate: false}
                 />
         } else {
             mainSection=[
@@ -183,6 +193,7 @@ var InfoTypes = React.createClass({
                         onAddElement={this.onAddType}
                         onDeleteElement={_.keys(this.state.types).length<=1?false:this.onDeleteType}
                     />
+                    <span>Infos with this type: {infosPerType[this.state.selectedTypeID]} ({(100.0*infosPerType[this.state.selectedTypeID]/this.props.infoCount).toFixed()}%)</span>
                 </section>
 
                 <div className="flexRowStacked flexRowDistribute">
@@ -213,7 +224,7 @@ var InfoTypes = React.createClass({
                     <button
                         disabled={!isChanged}
                         className="buttonGood"
-                        onClick={this.props.onSave.bind(null, this.state.types, this.state.changes)}>
+                        onClick={this.onSave}>
                         Save
                     </button>
                     <button onClick={this.props.cancelEdit}>Cancel</button>

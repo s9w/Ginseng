@@ -1,5 +1,21 @@
-var init_data = {
+var init_data =
+    {
         "infos": [
+            {
+                "typeID": "1",
+                "entries": [
+                    "France",
+                    "Paris",
+                    "French"
+                ],
+                "reviews": {
+                    "0": [],
+                    "1": [],
+                    "2": []
+                },
+                "tags": [],
+                "creationDate": "2015-01-13T12:30:50+01:00"
+            },
             {
                 "typeID": "0",
                 "entries": [
@@ -111,18 +127,18 @@ var init_data = {
                 ],
                 "templates": {
                     "0": {
-                        "front": "Country: {Country}",
-                        "back": "Capital: {Capital}",
+                        "front": "What's the capital of {Country}?",
+                        "back": "{Capital}",
                         "condition": ""
                     },
                     "1": {
-                        "front": "Capital: {Capital}",
-                        "back": "Country: {Country}",
+                        "front": "{Capital} is the capital of...?",
+                        "back": "{Country}",
                         "condition": ""
                     },
                     "2": {
-                        "front": "Country: {Country}",
-                        "back": "Language: {Language}",
+                        "front": "What language is spoken in {Country}?",
+                        "back": "{Language}",
                         "condition": ""
                     }
                 }
@@ -144,6 +160,11 @@ var init_data = {
                 "condition": "tag: math || tag: physics",
                 "urgencyThreshold": 1,
                 "dueThreshold": "1.0"
+            },
+            "3": {
+                "name": "Countries",
+                "condition": "type: \"Countries\"",
+                "dueThreshold": 1
             }
         },
         "settings": {
@@ -181,7 +202,7 @@ var init_data = {
             "useGuess": true
         },
         "meta": {
-            "lastSaved": "2015-01-11T22:12:35+01:00"
+            "lastSaved": "2015-01-13T12:35:20+01:00"
         }
     }
     ;

@@ -3,13 +3,14 @@ var TemplateDetails = React.createClass({
         if(type === "condition"){
             this.props.onViewChange(type, value["condition"]);
         }else{
+            var newString = value.replace(/{\w*[A-Z]\w*}/, match => match.toLowerCase() );
             this.props.onViewChange(type, value);
         }
 
     },
     render(){
         var isTemplateLegal = _(this.props.template).pick("front", "back").mapValues(
-                value=>(value.match(/{(\w*)}/g)||[]).every(
+                templateStr=>(templateStr.match(/{(\w*)}/g)||[]).every(
                     entryName => _(this.props.entryNames).contains(entryName.slice(1, -1))
                 )
             ).value();
@@ -48,16 +49,18 @@ var TemplateDetails = React.createClass({
                     onUpdate={this.onViewChange.bind(null, "condition")}
                 />
 
-                <section>
-                    <h3>Delete</h3>
-                    <div>
-                        <button
-                            className="buttonDanger"
-                            onClick={this.props.delete}>
-                            Delete this Template
-                        </button>
-                    </div>
-                </section>
+                {this.props.delete &&
+                    <section>
+                        <h3>Delete</h3>
+                        <div>
+                            <button
+                                className="buttonDanger"
+                                onClick={this.props.delete}>
+                                Delete this Template
+                            </button>
+                        </div>
+                    </section>
+                }
 
             </div>
         );

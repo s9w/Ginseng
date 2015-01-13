@@ -2,21 +2,27 @@ function filterInfo(filterStr, info, typename){
     if(filterStr===""){
         return true
     }
-    return eval(
-        filterStr.replace(
-            /tag: ?(\w+)/g, function (match, p1) {
-                return "(_(info.tags).contains(\"" + p1 + "\"))";
-            }
-        ).replace(
-            /createdBefore: ?([\w\-:\.\+\-]+)/g, function (match, p1) {
-                return "moment(info.creationDate).isBefore(moment(\""+p1+"\"))";
-            }
-        ).replace(
-            /type: ?"([\w ]+)"/g, function (match, p1) {
-                return "typename === \""+p1+"\"";
-            }
-        )
-    );
+    try {
+        return eval(
+            filterStr.replace(
+                /tag: ?(\w+)/g, function (match, p1) {
+                    return "(_(info.tags).contains(\"" + p1 + "\"))";
+                }
+            ).replace(
+                /createdBefore: ?([\w\-:\.\+\-]+)/g, function (match, p1) {
+                    return "moment(info.creationDate).isBefore(moment(\"" + p1 + "\"))";
+                }
+            ).replace(
+                /type: ?"([\w ]+)"/g, function (match, p1) {
+                    return "typename === \"" + p1 + "\"";
+                }
+            )
+        );
+    }
+    catch (e) {
+        console.log("Filter malformed! Filter was: " + filterStr);
+        return false;
+    }
 }
 
 var ReviewInterface = React.createClass({

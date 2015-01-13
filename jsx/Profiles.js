@@ -35,6 +35,12 @@ var Profiles = React.createClass({
     selectProfile(ID){
         this.setState({selectedProfileID: ID})
     },
+    changeDueThreshold(event){
+        var newDueThreshold = event.target.value.replace(",", ".");
+        var newProfiles = _.cloneDeep( this.state.reviewProfiles) ;
+        newProfiles[this.state.selectedProfileID].dueThreshold = newDueThreshold;
+        this.setState({reviewProfiles: newProfiles});
+    },
     render() {
         var isChanged = JSON.stringify(this.props.reviewProfiles)!==JSON.stringify(this.state.reviewProfiles);
 
@@ -64,21 +70,27 @@ var Profiles = React.createClass({
                             key: "condition",
                             displayType: "input",
                             placeholder: "Empty condition matches all"
-                        },
-                        {
-                            displayName: "Due threshold",
-                            key: "dueThreshold",
-                            displayType: "input"
                         }
                     ]}
                     onUpdate={this.updateprofiles}
                 />
 
+                <section>
+                    <h3>Due threshold</h3>
+                    <input
+                        type="text"
+                        onChange={this.changeDueThreshold}
+                        className={/^(\d*[.])?\d+$/.test(this.state.reviewProfiles[this.state.selectedProfileID].dueThreshold)?"":"illegalForm"}
+                        value={this.state.reviewProfiles[this.state.selectedProfileID].dueThreshold}
+                    />
+                </section>
+
                 <div className="flexRowDistribute">
                     <button
                         disabled={!isChanged}
                         className="buttonGood"
-                        onClick={this.props.updateProfiles.bind(null, this.state.reviewProfiles)}>Save
+                        onClick={this.props.updateProfiles.bind(null, this.state.reviewProfiles)}>
+                        Save
                     </button>
                     <button onClick={this.props.onCancel}>Cancel</button>
                 </div>

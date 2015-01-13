@@ -42,12 +42,20 @@ var Guessing = React.createClass({
                 </div>
             );
         }else{
+            // diff the lowercased guess and solution + replace with their correct original case
+            var diff = JsDiff.diffChars(this.props.backStr.toLowerCase(), this.state.guessString.toLowerCase());
+            var replaceIndex = 0;
+            for(let i=0; i<diff.length; i++){
+                diff[i].value = this.props.backStr.substr(replaceIndex, diff[i].value.length);
+                replaceIndex += diff[i].value.length;
+            }
+
             return(
                 <div>
-                    {JsDiff.diffChars(this.props.backStr.toLowerCase(), this.state.guessString.toLowerCase()).map((part)=>
+                    {diff.map((part)=>
                         <span
                             className={(part.added || part.removed) ? 'guessWrong' : 'guessCorrect'}>
-                        {part.value}
+                            {part.value}
                         </span>
                     )}
                 </div>

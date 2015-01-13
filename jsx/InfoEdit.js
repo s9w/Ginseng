@@ -22,13 +22,16 @@ var InfoEdit = React.createClass({
     onTypeChange(newTypeID){
         var newInfo = _.cloneDeep( this.state.info );
         newInfo.typeID = newTypeID;
+
         var newEntriesLength = this.props.types[newTypeID].entryNames.length;
-        var sizeDiff = newEntriesLength - this.state.info.entries.length;
-        if( sizeDiff > 0 ){
-            newInfo.entries = newInfo.entries.concat(_.times(sizeDiff, x => ""));
-        } else if(sizeDiff < 0){
+        var entriesLengthDiff = newEntriesLength - this.state.info.entries.length;
+        if( entriesLengthDiff > 0 ){
+            newInfo.entries = newInfo.entries.concat(_.times(entriesLengthDiff, x => ""));
+        } else if(entriesLengthDiff < 0){
             newInfo.entries = newInfo.entries.slice(0, newEntriesLength);
         }
+
+        newInfo.reviews = _(this.props.types[newTypeID].templates).mapValues(template => []).value();
         this.setState({info: newInfo});
     },
     toggleTag(toggledTag){

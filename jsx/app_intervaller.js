@@ -64,6 +64,7 @@ var Intervaller = React.createClass({
             }
         }
 
+        var lastInterval = getPreciseIntervalStr( this.props.lastInterval);
         return(
             <div className={this.props.show?"":"invisible"}>
                 <button
@@ -76,7 +77,11 @@ var Intervaller = React.createClass({
                 <div className="flexRowStacked">
                     {intervals}
                 </div>
-                <div>Last interval: {getPreciseIntervalStr( this.props.lastInterval )}</div>
+                {lastInterval === "<1 min"?
+                    <span>First review!</span>:
+                    <span>Last interval: {lastInterval}</span>
+                }
+
                 <div className={this.state.activeKeyIndex?"":"invisible"}>New interval: {getPreciseIntervalStr( this.getNewInterval() )}</div>
                 <div className={this.state.activeKeyIndex?"":"invisible"}>Due on: {moment().add(moment.duration(this.getNewInterval())).format("dddd, YYYY-MM-DD, HH:mm") }</div>
             </div>

@@ -125,26 +125,36 @@ var Ginseng = React.createClass({
             activeMode: "browse"
         } );
     },
-    onTypesEdit(newTypes, changes){
-        var newTypes_copy = JSON.parse( JSON.stringify( newTypes ));
-        var new_infos = JSON.parse( JSON.stringify( this.state.infos ));
+    onTypesEdit(types, typeChanges){
+        var newTypes = _.cloneDeep( types );
+        var newInfos = _.cloneDeep( this.state.infos );
 
-        for (var infoIdx = 0; infoIdx < new_infos.length; ++infoIdx) {
-            for (var resizeIdx = 0; resizeIdx < changes.typeResizes.length; ++resizeIdx) {
-                if(new_infos[infoIdx].typeID === changes.typeResizes[resizeIdx].id){
-                    var fieldNameIndex = changes.typeResizes[resizeIdx].fieldNameIndex;
-                    if(fieldNameIndex === "add"){
-                        new_infos[infoIdx].entries.push("");
-                    }else{
-                        new_infos[infoIdx].entries.splice(fieldNameIndex, 1);
+        if(_.keys(typeChanges).length >= 0){
+            for (var infoIdx = 0; infoIdx < newInfos.length; ++infoIdx) {
+                var typeID = newInfos[infoIdx].typeID;
+                if(typeID in typeChanges){
+                    if("entryLengthDiff" in typeChanges[typeID]){
+                        if(typeChanges[typeID].entryLengthDiff > 0){
+                            newInfos[infoIdx].entries = newInfos[infoIdx].entries.concat(_.times(typeChanges[typeID].entryLengthDiff, x=>""));
+                        }else{
+                            newInfos[infoIdx].entries.splice(newInfos[infoIdx].entries.length - Math.abs(typeChanges[typeID].entryLengthDiff), Math.abs(typeChanges[typeID].entryLengthDiff));
+                        }
+                    }
+                    if("reviewDiff" in typeChanges[typeID]){
+                        if(typeChanges[typeID].reviewDiff > 0){
+                            newInfos[infoIdx].reviews = _(newTypes[typeID].templates).mapValues(x=> []).extend(newInfos[infoIdx].reviews).value();
+                        }
+                        else{
+                            newInfos[infoIdx].reviews = _.pick(newInfos[infoIdx].reviews, _.intersection(_.keys(newInfos[infoIdx].reviews), _.keys(newTypes[typeID].templates)));
+                        }
                     }
                 }
             }
         }
 
         this.setState({
-            infoTypes: newTypes_copy,
-            infos: new_infos,
+            infoTypes: newTypes,
+            infos: newInfos,
             isChanged: true
         });
     },
@@ -161,15 +171,10 @@ var Ginseng = React.createClass({
     },
     getNewInfo(){
         var firstTypeID = _.min(_.keys(this.state.infoTypes));
-        var entries = _.times(this.state.infoTypes[firstTypeID].entryNames.length, function(){return ""});
-        var reviews = {};
-        for (let i = 0; i < this.state.infoTypes[firstTypeID].entryNames.length; ++i) {
-            reviews[i] = [];
-        }
         return {
             typeID: firstTypeID,
-            entries: entries,
-            reviews: reviews,
+            entries: _.times(this.state.infoTypes[firstTypeID].entryNames.length, function(){return ""}),
+            reviews: _(this.state.infoTypes[firstTypeID].templates).mapValues(template => []).value(),
             tags: [],
             creationDate: moment().format()
         }
@@ -182,6 +187,11 @@ var Ginseng = React.createClass({
         this.setState(newState);
     },
     render: function () {
+        var infosPerType = _(this.state.infoTypes).mapValues(type => 0).value();
+        for(let i=0; i<this.state.infos.length; i++){
+            infosPerType[this.state.infos[i].typeID] += 1;
+        }
+
         return (
             <div className="app">
                 <NavBar
@@ -235,6 +245,8 @@ var Ginseng = React.createClass({
                         types={this.state.infoTypes}
                         cancelEdit={this.clickNav.bind(this, "browse")}
                         onSave={this.onTypesEdit}
+                        infosPerType={infosPerType}
+                        infoCount={this.state.infos.length}
                     />
                 }
 

@@ -29,7 +29,7 @@ var Settings = React.createClass({
                 <section>
                     <h3>Guess Field</h3>
                     <div>
-                        <span>During review, show a text field where you can enter a "guess" that will be compared to the solution. Guessing is skipped if the back side has LaTeX code.</span>
+                        <span>During review, show a text field where you can enter a "guess" that will be compared to the solution. Guessing is skipped if the back side contains LaTeX code.</span>
                         <input
                             onChange={this.onChange}
                             name="useGuess"
