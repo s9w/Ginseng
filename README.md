@@ -12,18 +12,18 @@ Ginseng is a web app for learning things with flashcards and spaced repetition. 
 The thing you want to learn/memorize is called an **info**. An info can contain two or more **entries** and any number of tags. If you learn Spanish, the entries could be the Spanish and spanish expression. Infos have a **type** which defines the number of entries as well as the **templates** which are used to display the info in the review mode.
 
 ### Templates
-A template maps an info to a front and back side of a virtual flashcard. In the example case, the front could show the english word and the back could show the spanish word. The templates (as well as the info entries) are written in [Markdown](http://en.wikipedia.org/wiki/Markdown). The info entries can be used with curly braces, like `{front}`. The templates as well as the entries can contain [LaTeX](http://en.wikipedia.org/wiki/LaTeX) code between single dollar signs.
+A template maps an info to a front and back side of a virtual flashcard. In the example case, the front and back could show the english and spanish word. The templates as well as the info entries are written in [Markdown](http://en.wikipedia.org/wiki/Markdown). In the templates, info entries can be accessed with curly braces, like `{country}`. The templates as well as the entries can contain [LaTeX](http://en.wikipedia.org/wiki/LaTeX) code between single dollar signs.
 
 ![](https://github.com/s9w/Ginseng/raw/master/doc/simple_example.png)
 
-There can be more than one template for a type, for example if you also want to test the reverse relation. Or you might want to include a note entry that gets displayed alongside. Templates can have to a condition so they only generate a flashcard when that condition is matched. An example could be a reverse template that will only be generated if an info has a "reverse" tag. The syntax is described [below](#filter-syntax).
+There can be more than one template per type, for example if you also want to test the reverse relation. Or you might want to include a note entry that gets displayed alongside. Templates can have to a condition for generating cards. An example could be a reverse template that will only be generated if an info has a "reverse" tag. The syntax is described [below](#filter-syntax).
 
 ![](https://github.com/s9w/Ginseng/raw/master/doc/conditional_templates.png)
 
 ### Review
 During review, you have the choice between *setting* an interval, or *changing* the previous. For example setting "5h" would mean that in 5 hours, that review would become due again. Most of the time you'll probably want to change the previous interval. There are relative increases in percent or fixed time amounts.
 
-Clicking an interval selection will "select" it and mark it green. The new interval and the date and time when it'll become due again are previewed below. Click the same selection again to confirm. That way you can quickly apply an interval choice with a double click.
+Clicking an interval selection will "select" it and mark it green. Click the same selection again to confirm. That way you can quickly apply an interval choice with a double click.
 
 Note that the last interval is calculated as the actual time between the last review and now, NOT when the review would have been due. That's intentional as I feel that's what really counts.
 

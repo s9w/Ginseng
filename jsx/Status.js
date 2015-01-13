@@ -77,8 +77,12 @@ var Status = React.createClass({
 
                 <section>
                     <h3>Dropbox</h3>
-                    <div>{"Last save: " + lastSavedStr}</div>
-                    <div>{"Last load: " + lastLoadedStr}</div>
+                    {this.props.dropBoxStatus !== "initial" &&
+                        <div>{"Last save: " + lastSavedStr}</div>
+                    }
+                    {this.props.dropBoxStatus !== "initial" &&
+                        <div>{"Last load: " + lastLoadedStr}</div>
+                    }
                     <div>
                         {this.props.dropBoxStatus === "initial" &&
                             <button
