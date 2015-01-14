@@ -129,7 +129,6 @@ var ReviewInterface = React.createClass({
         //    }
         //}
 
-        console.log("dueCounts: " + JSON.stringify(dueCounts));
         return dueCounts;
     },
     getNextReview(profileKey){

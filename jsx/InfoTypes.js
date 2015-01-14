@@ -124,7 +124,6 @@ var InfoTypes = React.createClass({
             }
         }
         typeChanges = _.omit(typeChanges, val => _.keys(val).length===0);
-        //console.log("types onSave. typeChanges: " + JSON.stringify(typeChanges));
         this.props.onSave(this.state.types, typeChanges);
     },
     render() {

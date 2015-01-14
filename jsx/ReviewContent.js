@@ -24,7 +24,7 @@ var ReviewContent = React.createClass({
             try {
                 return katex.renderToString(latexStringBuffer.shift());
             }catch(e){
-                console.log("Error: " + e.message);
+                console.log("Katex Error: " + e.message);
                 return "ERROR.";
             }
         }), hasLatex: hasLatex};

@@ -63,7 +63,7 @@ var Ginseng = React.createClass({
         }
         client.writeFile("ginseng_data.txt", writeDataString, function(error) {
             if (error) {
-                console.log("error: " + error);
+                console.log("Dropbox write error: " + error);
             }
             thisApp.setState({
                 meta: newMeta,
@@ -77,7 +77,7 @@ var Ginseng = React.createClass({
         var thisApp = this;
         client.readFile("ginseng_data.txt", function (error, data) {
             if (error) {
-                console.log("ERROR: " + error);
+                console.log("Dropbox load error: " + error);
             }
             var parsedData;
             try{

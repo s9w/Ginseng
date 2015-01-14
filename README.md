@@ -1,12 +1,12 @@
 # Ginseng
 
-Ginseng is a web app for learning things with flashcards and spaced repetition. Think Anki, but different.
+Ginseng is a web app for learning things with flashcards and spaced repetition. Think Anki, but different. Hosted on [eatginseng.com](http://www.eatginseng.com/).
 
-- 100% in browser client-side Javascript
+- 100% in browser client-side Javascript, built with [React](http://facebook.github.io/react/)
 - Data stored in single JSON file, sync over Dropbox
 - Freedom over review intervals. Not bound to "difficulty"
-- No fixed "deck" structure. Manage and filter by tags and profiles
-- Native Markdown formatting and LaTeX support for content and templates
+- No fixed "deck" structure. Dynamic profiles for grouping reviews
+- Native Markdown and LaTeX support for content and templates
 
 ## How it works
 The thing you want to learn/memorize is called an **info**. An info can contain two or more **entries** and any number of tags. If you learn Spanish, the entries could be the Spanish and spanish expression. Infos have a **type** which defines the number of entries as well as the **templates** which are used to display the info in the review mode.
@@ -52,7 +52,7 @@ The brain also likes to [link](http://gocognitive.net/interviews/effect-context-
 
 ## Philosophy / Goals
 Ginseng and the underlying data format are designed to be as open and robust as possible
-- All data is saved in a straightforward human-readable (and therefore hackable) JSON file.
+- All data is saved in a straightforward human-readable (and therefore hackable) [JSOM file](https://raw.githubusercontent.com/s9w/Ginseng/master/init_data.js).
 - The formatting of the info entries and the templates is done Markdown with optional LaTeX. Currently [marked](https://github.com/chjj/marked) is used for Markdown and [KaTeX](https://github.com/Khan/KaTeX) for LaTeX rendering as they seem to be the fastest choice.
 - Dates/times are saved in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).
 
