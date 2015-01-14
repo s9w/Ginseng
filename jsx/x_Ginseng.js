@@ -33,20 +33,16 @@ var Ginseng = React.createClass({
             }
         });
     },
-    saveDB(){
-        this.setState({
-            dropBoxStatus: "saving"
-        });
-        var thisApp = this;
+    getWriteDate(){
         var newMeta = JSON.parse( JSON.stringify( this.state.meta));
         newMeta.lastSaved = moment().format();
         var writeInfos = JSON.parse( JSON.stringify( this.state.infos));
         for(var i=0; i<writeInfos.length; i++){
             var info = writeInfos[i];
             for(var reviewKey in info.reviews)
-            if(info.reviews[reviewKey].length > this.state.settings.reviewHistoryLength){
-                info.reviews[reviewKey] = info.reviews[reviewKey].slice(-2);
-            }
+                if(info.reviews[reviewKey].length > this.state.settings.reviewHistoryLength){
+                    info.reviews[reviewKey] = info.reviews[reviewKey].slice(-2);
+                }
         }
         var writeDataObj = {
             infos: writeInfos,
@@ -61,6 +57,43 @@ var Ginseng = React.createClass({
         }else{
             writeDataString = JSON.stringify(writeDataObj, null, '\t');
         }
+        return writeDataString;
+    },
+    saveLocalStorage(){
+        var writeDataString = this.getWriteDate();
+        localStorage.setItem("ginseng_data", writeDataString);
+        var newMeta = _.cloneDeep( this.state.meta);
+        newMeta.lastSaved = moment().format();
+        this.setState({
+            meta: newMeta,
+            isChanged: false
+        });
+    },
+    loadLocalStorage(){
+        var parsedData;
+        try{
+            parsedData = JSON.parse(localStorage.getItem('ginseng_data'));
+        }catch(e){
+            parsedData = JSON.parse(LZString.decompressFromUTF16(localStorage.getItem('ginseng_data')));
+        }
+        this.setState({
+            infos: parsedData.infos,
+            infoTypes: parsedData.infoTypes,
+            settings: _(this.state.settings).extend(parsedData.settings).value(),
+            reviewProfiles: parsedData.reviewProfiles || this.state.reviewProfiles,
+            meta: parsedData.meta,
+            isChanged: false
+        });
+    },
+    saveDB(){
+        this.setState({
+            dropBoxStatus: "saving"
+        });
+        var thisApp = this;
+        var writeDataString = this.getWriteDate();
+
+        var newMeta = _.cloneDeep( this.state.meta);
+        newMeta.lastSaved = moment().format();
         client.writeFile("ginseng_data.txt", writeDataString, function(error) {
             if (error) {
                 console.log("Dropbox write error: " + error);
@@ -205,6 +238,8 @@ var Ginseng = React.createClass({
                         dropBoxStatus={this.state.dropBoxStatus}
                         onDBAuth={this.authDB}
                         onDbSave={this.saveDB}
+                        onLocalSave={this.saveLocalStorage}
+                        onLocalLoad={localStorage.getItem('ginseng_data')?this.loadLocalStorage:false}
                         meta={this.state.meta}
                         lastLoadedStr={this.state.lastLoadedStr}
                         onDbLoad={this.loadDB}

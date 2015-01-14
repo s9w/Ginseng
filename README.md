@@ -3,7 +3,7 @@
 Ginseng is a web app for learning things with flashcards and spaced repetition. Think Anki, but different. Hosted on [eatginseng.com](http://www.eatginseng.com/).
 
 - 100% in browser client-side Javascript, built with [React](http://facebook.github.io/react/)
-- Data stored in single JSON file, sync over Dropbox
+- Data stored in single JSON file. Can be synced over Dropbox or saved in browser storage
 - Freedom over review intervals. Not bound to "difficulty"
 - No fixed "deck" structure. Dynamic profiles for grouping reviews
 - Native Markdown and LaTeX support for content and templates
@@ -58,5 +58,4 @@ Ginseng and the underlying data format are designed to be as open and robust as 
 
 ## Plans / issues
 - KaTeX is very fast but currently doesn't even support `\mathbb` fonts or basic Math operators, let alone other packages etc. Add Mathjax as an option?
-- Use browsers local storage to provide offline access? But that'll open Pandoras box of conflicting versions.
 - Write an Anki importer?

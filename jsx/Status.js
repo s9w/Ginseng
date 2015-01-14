@@ -109,6 +109,23 @@ var Status = React.createClass({
                         }
                     </div>
                 </section>
+
+                <section>
+                    <h3>Browser Storage</h3>
+                    <div>
+                        <button
+                            disabled={!this.props.onLocalLoad}
+                            className="buttonGood"
+                            onClick={this.props.onLocalLoad}>
+                            Load
+                        </button>
+                        <button
+                            className="buttonGood"
+                            onClick={this.props.onLocalSave}>
+                            Save
+                        </button>
+                    </div>
+                </section>
             </div>
         )
     }
