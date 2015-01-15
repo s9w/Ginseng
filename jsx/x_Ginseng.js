@@ -27,22 +27,24 @@ var Ginseng = React.createClass({
         client.authenticate(function (error) {
             if (error) {
                 thisApp.setState({dropBoxStatus: "ERROR"});
-            }
-            else {
+            }else {
                 thisApp.setState({dropBoxStatus: "loggedIn"});
             }
         });
     },
-    getWriteDate(){
-        var newMeta = JSON.parse( JSON.stringify( this.state.meta));
+    getWriteDate(useCompression=true){
+        var newMeta = _.cloneDeep(this.state.meta);
         newMeta.lastSaved = moment().format();
-        var writeInfos = JSON.parse( JSON.stringify( this.state.infos));
+        var writeInfos = _.cloneDeep(this.state.infos);
+
+        // Cut off old review data according to settings
         for(var i=0; i<writeInfos.length; i++){
             var info = writeInfos[i];
-            for(var reviewKey in info.reviews)
-                if(info.reviews[reviewKey].length > this.state.settings.reviewHistoryLength){
+            for(var reviewKey in info.reviews) {
+                if (info.reviews[reviewKey].length > this.state.settings.reviewHistoryLength) {
                     info.reviews[reviewKey] = info.reviews[reviewKey].slice(-2);
                 }
+            }
         }
         var writeDataObj = {
             infos: writeInfos,
@@ -52,7 +54,7 @@ var Ginseng = React.createClass({
             meta: newMeta
         };
         var writeDataString;
-        if(this.state.settings.useCompression){
+        if(useCompression){
             writeDataString = LZString.compressToUTF16 (JSON.stringify(writeDataObj));
         }else{
             writeDataString = JSON.stringify(writeDataObj, null, '\t');
@@ -89,16 +91,15 @@ var Ginseng = React.createClass({
         this.setState({
             dropBoxStatus: "saving"
         });
-        var thisApp = this;
-        var writeDataString = this.getWriteDate();
+        var writeDataString = this.getWriteDate(this.state.settings.useCompression);
 
         var newMeta = _.cloneDeep( this.state.meta);
         newMeta.lastSaved = moment().format();
-        client.writeFile("ginseng_data.txt", writeDataString, function(error) {
+        client.writeFile("ginseng_data.txt", writeDataString, error => {
             if (error) {
                 console.log("Dropbox write error: " + error);
             }
-            thisApp.setState({
+            this.setState({
                 meta: newMeta,
                 dropBoxStatus: "loggedIn",
                 isChanged: false
@@ -107,8 +108,7 @@ var Ginseng = React.createClass({
     },
     loadDB() {
         this.setState({dropBoxStatus: "loading"});
-        var thisApp = this;
-        client.readFile("ginseng_data.txt", function (error, data) {
+        client.readFile("ginseng_data.txt", (error, data) => {
             if (error) {
                 console.log("Dropbox load error: " + error);
             }
@@ -119,11 +119,11 @@ var Ginseng = React.createClass({
                 parsedData = JSON.parse(LZString.decompressFromUTF16(data));
             }
 
-            thisApp.setState({
+            this.setState({
                 infos: parsedData.infos,
                 infoTypes: parsedData.infoTypes,
-                settings: _(thisApp.state.settings).extend(parsedData.settings).value(),
-                reviewProfiles: parsedData.reviewProfiles || thisApp.state.reviewProfiles,
+                settings: _(this.state.settings).extend(parsedData.settings).value(),
+                reviewProfiles: parsedData.reviewProfiles || this.state.reviewProfiles,
                 meta: parsedData.meta,
                 lastLoadedStr: moment().format(),
                 dropBoxStatus: "loggedIn",
@@ -138,7 +138,7 @@ var Ginseng = React.createClass({
         })
     },
     onInfoEdit(newInfo) {
-        var newInfos = this.state.infos.slice();
+        var newInfos = _.cloneDeep(this.state.infos);
         if(this.state.activeMode === "edit") {
             newInfos[this.state.selectedInfoIndex] = newInfo;
         }else{
@@ -151,7 +151,7 @@ var Ginseng = React.createClass({
         } );
     },
     onInfoDelete(){
-        var newInfos = JSON.parse( JSON.stringify( this.state.infos ));
+        var newInfos = _.cloneDeep(this.state.infos );
         newInfos.splice(this.state.selectedInfoIndex, 1);
         this.setState({
             infos: newInfos,
@@ -192,7 +192,7 @@ var Ginseng = React.createClass({
         });
     },
     applyInterval(infoIndex, reviewKey, newInterval){
-        var newInfos = JSON.parse( JSON.stringify( this.state.infos ));
+        var newInfos = _.cloneDeep(this.state.infos );
         newInfos[infoIndex].reviews[reviewKey].push({
             "reviewTime": moment().format(),
             "dueTime": moment().add(moment.duration(newInterval)).format()

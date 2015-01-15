@@ -11,7 +11,7 @@ var InfoTypes = React.createClass({
         };
     },
     onFieldNameEdit(entryNameIndex, event) {
-        var newTypes = JSON.parse( JSON.stringify( this.state.types ));
+        var newTypes = _.cloneDeep(this.state.types );
         newTypes[this.state.selectedTypeID].entryNames[entryNameIndex] = event.target.value;
         this.setState({
             types: newTypes
@@ -24,7 +24,7 @@ var InfoTypes = React.createClass({
         });
     },
     onNameEdit(event) {
-        var newTypes = JSON.parse( JSON.stringify( this.state.types ));
+        var newTypes = _.cloneDeep(this.state.types );
         newTypes[this.state.selectedTypeID].name = event.target.value;
         this.setState({
             types: newTypes
@@ -32,7 +32,7 @@ var InfoTypes = React.createClass({
     },
     onFieldsResize(entryIndex){
         // resize the type
-        var newTypes = JSON.parse( JSON.stringify( this.state.types ));
+        var newTypes = _.cloneDeep(this.state.types );
         if(entryIndex === "add"){
             newTypes[this.state.selectedTypeID].entryNames.push("");
         }else{
@@ -40,7 +40,7 @@ var InfoTypes = React.createClass({
         }
 
         // set changes
-        var newchanges = JSON.parse( JSON.stringify( this.state.changes ));
+        var newchanges = _.cloneDeep(this.state.changes );
         newchanges.entryNameResizes.push( {typeID: this.state.selectedTypeID, entryNameIndex: entryIndex} );
 
         this.setState({
@@ -49,7 +49,7 @@ var InfoTypes = React.createClass({
         });
     },
     onAddType(){
-        var newTypes = JSON.parse( JSON.stringify( this.state.types ));
+        var newTypes = _.cloneDeep(this.state.types );
         var nextTypeID =  _.parseInt(_.max(_.keys(this.state.types)))+1;
 
         newTypes[nextTypeID] = {
@@ -75,7 +75,7 @@ var InfoTypes = React.createClass({
         });
     },
     onDeleteType(){
-        var newTypes = JSON.parse( JSON.stringify( this.state.types ));
+        var newTypes = _.cloneDeep(this.state.types );
         delete newTypes[this.state.selectedTypeID];
         this.setState({
             types: newTypes,
@@ -86,12 +86,12 @@ var InfoTypes = React.createClass({
         this.setState({mode: modeStr});
     },
     onViewChange(type, newContent){
-        var newTypes = JSON.parse( JSON.stringify( this.state.types ));
+        var newTypes = _.cloneDeep(this.state.types );
         newTypes[this.state.selectedTypeID].templates[this.state.mode][type] = newContent;
         this.setState({types: newTypes});
     },
     onAddTemplate(){
-        var newTypes = JSON.parse( JSON.stringify( this.state.types ));
+        var newTypes = _.cloneDeep(this.state.types );
         var nextTemplateID =  _.parseInt(_.max( _.keys(newTypes[this.state.selectedTypeID].templates) ))+1;
         newTypes[this.state.selectedTypeID].templates[nextTemplateID] = {
             "front": "",
@@ -104,7 +104,7 @@ var InfoTypes = React.createClass({
         });
     },
     onDeleteTemplate(){
-        var newTypes = JSON.parse( JSON.stringify( this.state.types ));
+        var newTypes = _.cloneDeep(this.state.types );
         delete newTypes[this.state.selectedTypeID].templates[this.state.mode];
         this.setState({
             types: newTypes,

@@ -6,14 +6,14 @@ var Settings = React.createClass({
     },
     onSave(){
         var newReviewHistoryLength = _.parseInt(this.state.settings.reviewHistoryLength);
-        var newSettings = JSON.parse( JSON.stringify( this.state.settings ));
+        var newSettings = _.cloneDeep(this.state.settings );
         newSettings.reviewHistoryLength = newReviewHistoryLength>=1?
             newReviewHistoryLength:
             this.props.settings.reviewHistoryLength;
         this.props.updateSettings(newSettings);
     },
     onChange(event){
-        var newSettings = JSON.parse( JSON.stringify( this.state.settings ));
+        var newSettings = _.cloneDeep(this.state.settings );
         if( _(["useCompression", "useGuess"]).contains(event.target.name) ){
             newSettings[event.target.name] = event.target.checked;
         }else{
