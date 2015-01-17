@@ -8,26 +8,21 @@ var ReviewContent = React.createClass({
     shouldComponentUpdate(nextProps, nextState){
         return this.props.preview || nextProps.progressState !== this.props.progressState;
     },
+    componentDidMount: function (root) {
+        this.renderMathJax();
+    },
+    componentDidUpdate: function (prevProps, state) {
+        this.renderMathJax();
+    },
+    renderMathJax(){
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub, this.refs["frontsideCanvas"].getDOMNode()]);
+        if(this.props.progressState === "backSide"){
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub, this.refs["backsideCanvas"].getDOMNode()]);
+        }
+    },
     renderMarkdown(str){
-        var latexStringBuffer = [];
-        var hasLatex = false;
-        // replace math with $$
-        var backStrNew = str.replace(/(\$.*?\$)/g, function(match, p1){
-            latexStringBuffer.push(p1.slice(1,-1));
-            hasLatex =  true;
-            return '$$';
-        });
-        // convert rest markdown to html
         marked.setOptions({breaks: true, smartLists: true});
-        return {Html: marked(backStrNew).replace(/\$\$/g, function(){
-            // and replace the placeholders with transformed math
-            try {
-                return katex.renderToString(latexStringBuffer.shift());
-            }catch(e){
-                console.log("Katex Error: " + e.message);
-                return "ERROR.";
-            }
-        }), hasLatex: hasLatex};
+        return marked(str);
     },
     onFlip(){
         this.props.onFlip();
@@ -45,15 +40,15 @@ var ReviewContent = React.createClass({
                 return thisOuter.props.templateData[p1];
             });
 
-        var renderedBack = this.renderMarkdown(backStr);
         return(
             <div id="reviewStage">
                 <div
+                    ref="frontsideCanvas"
                     className="markdowned"
-                    dangerouslySetInnerHTML={{__html: this.renderMarkdown(frontStr).Html}}>
+                    dangerouslySetInnerHTML={{__html: this.renderMarkdown(frontStr)}}>
                 </div>
 
-                {this.props.useGuess && !renderedBack.hasLatex &&
+                {this.props.useGuess &&
                     <Guessing
                         onFlip={this.onFlip}
                         backStr={(this.props.progressState === "backSide" && this.props.useGuess)?backStr:false}
@@ -66,8 +61,9 @@ var ReviewContent = React.createClass({
 
                 {this.props.progressState === "backSide" &&
                     <div
+                        ref="backsideCanvas"
                         className={"markdowned"}
-                        dangerouslySetInnerHTML={{__html: renderedBack.Html}}>
+                        dangerouslySetInnerHTML={{__html: this.renderMarkdown(backStr)}}>
                     </div>
                 }
             </div>

@@ -6,16 +6,29 @@
     <meta name="mobile-web-app-capable" content="yes">
     <title>Ginseng</title>
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.1.1/katex.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react-with-addons.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.mobile.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
     <script src="init_data.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.3/dropbox.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.1.1/katex.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
     <script src="diff.js"></script>
     <script language="javascript" src="lz-string.min.js"></script>
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX","output/HTML-CSS"],
+  extensions: ["tex2jax.js"],
+  tex2jax:{inlineMath:[['$','$'],['\\(','\\)']]},
+  showProcessingMessages: false,
+  TeX: {
+    extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]
+  },
+  showMathMenu: false
+});
+</script>
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js">
+    </script>
 
     <link rel="apple-touch-icon-precomposed" sizes="57x57" href="http://www.eatginseng.com/apple-touch-icon-57x57.png" />
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://www.eatginseng.com/apple-touch-icon-114x114.png" />

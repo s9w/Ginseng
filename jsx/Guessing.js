@@ -52,8 +52,9 @@ var Guessing = React.createClass({
 
             return(
                 <div>
-                    {diff.map((part)=>
+                    {diff.map((part, index)=>
                         <span
+                            key={index}
                             className={(part.added || part.removed) ? 'guessWrong' : 'guessCorrect'}>
                             {part.value}
                         </span>
