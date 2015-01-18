@@ -33,9 +33,9 @@ var Ginseng = React.createClass({
         });
     },
     getWriteDate(useCompression=true){
-        var newMeta = _.cloneDeep(this.state.meta);
+        var newMeta = _.clone(this.state.meta);
         newMeta.lastSaved = moment().format();
-        var writeInfos = _.cloneDeep(this.state.infos);
+        var writeInfos = this.state.infos.slice();
 
         // Cut off old review data according to settings
         for(var i=0; i<writeInfos.length; i++){
@@ -64,7 +64,7 @@ var Ginseng = React.createClass({
     saveLocalStorage(){
         var writeDataString = this.getWriteDate();
         localStorage.setItem("ginseng_data", writeDataString);
-        var newMeta = _.cloneDeep( this.state.meta);
+        var newMeta = _.clone( this.state.meta);
         newMeta.lastSaved = moment().format();
         this.setState({
             meta: newMeta,
@@ -93,7 +93,7 @@ var Ginseng = React.createClass({
         });
         var writeDataString = this.getWriteDate(this.state.settings.useCompression);
 
-        var newMeta = _.cloneDeep( this.state.meta);
+        var newMeta = _.clone( this.state.meta);
         newMeta.lastSaved = moment().format();
         client.writeFile("ginseng_data.txt", writeDataString, error => {
             if (error) {
@@ -138,7 +138,7 @@ var Ginseng = React.createClass({
         })
     },
     onInfoEdit(newInfo) {
-        var newInfos = _.cloneDeep(this.state.infos);
+        var newInfos = this.state.infos.slice();
         if(this.state.activeMode === "edit") {
             newInfos[this.state.selectedInfoIndex] = newInfo;
         }else{
@@ -151,7 +151,7 @@ var Ginseng = React.createClass({
         } );
     },
     onInfoDelete(){
-        var newInfos = _.cloneDeep(this.state.infos );
+        var newInfos = this.state.infos.slice();
         newInfos.splice(this.state.selectedInfoIndex, 1);
         this.setState({
             infos: newInfos,
@@ -159,8 +159,8 @@ var Ginseng = React.createClass({
         } );
     },
     onTypesEdit(types, typeChanges){
-        var newTypes = _.cloneDeep( types );
-        var newInfos = _.cloneDeep( this.state.infos );
+        var newTypes = _.clone( types );
+        var newInfos = this.state.infos.slice();
 
         if(_.keys(typeChanges).length >= 0){
             for (var infoIdx = 0; infoIdx < newInfos.length; ++infoIdx) {
@@ -192,7 +192,7 @@ var Ginseng = React.createClass({
         });
     },
     applyInterval(infoIndex, reviewKey, newInterval){
-        var newInfos = _.cloneDeep(this.state.infos );
+        var newInfos = this.state.infos.slice();
         newInfos[infoIndex].reviews[reviewKey].push({
             "reviewTime": moment().format(),
             "dueTime": moment().add(moment.duration(newInterval)).format()
