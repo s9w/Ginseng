@@ -1,5 +1,6 @@
 var ReviewContent = React.createClass({
     getDefaultProps: function() {
+        marked.setOptions({breaks: true});
         return {
             progressState: 'backSide',
             preview: false
@@ -21,8 +22,15 @@ var ReviewContent = React.createClass({
         }
     },
     renderMarkdown(str){
-        marked.setOptions({breaks: true, smartLists: true});
-        return marked(str);
+        var latexStringBuffer = [];
+        var backStrNew = str.replace(/(\$.*?\$)/g, function(match, p1){
+            latexStringBuffer.push(p1);
+            return '$$';
+        });
+        return marked(backStrNew).replace(/\$\$/g, function(){
+            // and replace the placeholders with transformed math
+            return latexStringBuffer.shift();
+        });
     },
     onFlip(){
         this.props.onFlip();
