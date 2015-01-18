@@ -135,13 +135,13 @@ var InfoEdit = React.createClass({
                             onClick={this.setPreview.bind(this, false)}>
                             {"None"}
                         </button>
-                        {_(this.props.types[this.state.info.typeID].templates).keys().value().map( templateID =>
+                        {_(this.props.types[this.state.info.typeID].templates).keys().value().map( (templateID, index) =>
                             filterInfo(this.props.types[this.state.info.typeID].templates[templateID].condition, this.state.info, this.props.types[this.state.info.typeID].name) &&
                             <button
                                 key={templateID}
                                 className={(this.state.previewID === templateID ? "buttonGood" : "")}
                                 onClick={this.setPreview.bind(this, templateID)}>
-                                {"Templ. " + templateID}
+                                {"Card " + (index+1)}
                             </button>
                         )}
                     </div>

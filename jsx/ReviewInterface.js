@@ -133,7 +133,7 @@ var ReviewInterface = React.createClass({
     },
     getNextReview(profileKey){
         var dueness;
-        var realInterval;
+        var realInterval, plannedInterval;
         var nextReview = {
             dueness: 0.0,
             dueCount: 0
@@ -144,7 +144,7 @@ var ReviewInterface = React.createClass({
                 if(info.reviews[templateID].length > 0) {
                     var lastReview = _.last(info.reviews[templateID]);
                     realInterval = moment().diff(moment(lastReview.reviewTime));
-                    var plannedInterval = moment(lastReview.dueTime).diff(moment(lastReview.reviewTime));
+                    plannedInterval = moment(lastReview.dueTime).diff(moment(lastReview.reviewTime));
                     dueness = realInterval / plannedInterval;
                 }else {
                     dueness = 1.1;
@@ -168,9 +168,8 @@ var ReviewInterface = React.createClass({
         return nextReview;
     },
     render() {
-        var nextReviews = _.mapValues(this.props.profiles, (val, profileKey) => this.getNextReview(profileKey));
-
         if(!this.state.activeProfileKey){
+            var nextReviews = _.mapValues(this.props.profiles, (val, profileKey) => this.getNextReview(profileKey));
             return(
                 <div className="Component">
                     <section className="Component">
@@ -197,7 +196,7 @@ var ReviewInterface = React.createClass({
         }
 
         else{
-            let nextReview = nextReviews[this.state.activeProfileKey];
+            let nextReview = this.getNextReview(this.state.activeProfileKey);
             return (
                 <div className="Component">
                     <div className="flexRowDistribute">
