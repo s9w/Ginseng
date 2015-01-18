@@ -7,6 +7,31 @@ var Intervaller = React.createClass({
             activeKeyIndex: false
         };
     },
+    componentWillMount(){
+        this.intervals = [];
+        var keyIndex = 0;
+        for (let timeframeKey in this.props.timeIntervalChoices) {
+            for (let i = 0; i < this.props.timeIntervalChoices[timeframeKey].length; ++i) {
+                if(!(timeframeKey === "Percent" && this.state.modifyType === "set")) {
+                    var bc = [
+                        "unselectable",
+                        (keyIndex === this.state.activeKeyIndex) ? "buttonGood" : ("interval" + timeframeKey)
+                    ];
+                    var plusEL = <span className={this.state.modifyType === "change" ? "" : "invisible"}>+</span>;
+                    var amount = this.props.timeIntervalChoices[timeframeKey][i];
+                    var buttonStr = amount + (timeframeKey === "Percent" ? "%" : timeframeKey.slice(0, 1).toLowerCase());
+                    this.intervals.push(
+                        <button
+                            key={keyIndex}
+                            className={bc.join(" ")}
+                            onClick={this.onIntervalChoice.bind(this, amount, keyIndex, timeframeKey.toLowerCase())}>{plusEL} {buttonStr}
+                        </button>
+                    );
+                    keyIndex += 1;
+                }
+            }
+        }
+    },
     componentWillReceiveProps(nextProps){
         this.setState({
             modifyType: nextProps.lastInterval===0?"set":"change",
@@ -40,30 +65,6 @@ var Intervaller = React.createClass({
         });
     },
     render(){
-        var intervals = [];
-        var keyIndex = 0;
-        for (let timeframeKey in this.props.timeIntervalChoices) {
-            for (let i = 0; i < this.props.timeIntervalChoices[timeframeKey].length; ++i) {
-                if(!(timeframeKey === "Percent" && this.state.modifyType === "set")) {
-                    var bc = [
-                        "unselectable",
-                        (keyIndex === this.state.activeKeyIndex) ? "buttonGood" : ("interval" + timeframeKey)
-                    ];
-                    var plusEL = <span className={this.state.modifyType === "change" ? "" : "invisible"}>+</span>;
-                    var amount = this.props.timeIntervalChoices[timeframeKey][i];
-                    var buttonStr = amount + (timeframeKey === "Percent" ? "%" : timeframeKey.slice(0, 1).toLowerCase());
-                    intervals.push(
-                        <button
-                            key={keyIndex}
-                            className={bc.join(" ")}
-                            onClick={this.onIntervalChoice.bind(this, amount, keyIndex, timeframeKey.toLowerCase())}>{plusEL} {buttonStr}
-                        </button>
-                    );
-                    keyIndex += 1;
-                }
-            }
-        }
-
         var lastInterval = getPreciseIntervalStr( this.props.lastInterval);
         return(
             <div className={this.props.show?"":"invisible"}>
@@ -75,7 +76,7 @@ var Intervaller = React.createClass({
                     className={" "+ (this.state.modifyType==="set"?"buttonGood":"")}
                     onClick={this.onModeChange.bind(this, "set")}>set</button>
                 <div className="flexRowStacked">
-                    {intervals}
+                    {this.intervals}
                 </div>
                 {lastInterval === "<1 min"?
                     <span>First review!</span>:
