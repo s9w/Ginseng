@@ -4,14 +4,14 @@ client.authDriver(new Dropbox.AuthDriver.Popup({receiverUrl: "https://s9w.github
 var Ginseng = React.createClass({
     getInitialState() {
         return {
-            infos: init_data.infos,
+            infos: this.getPrecompInfos(init_data.infos, init_data.infoTypes, init_data.reviewProfiles),
             infoTypes: init_data.infoTypes,
             settings: init_data.settings,
+            reviewProfiles: init_data.reviewProfiles,
             meta: init_data.meta,
 
             activeMode: "status",
             selectedInfoIndex: false,
-            reviewProfiles: init_data.reviewProfiles,
 
             dropBoxStatus: "initial",
             lastLoadedStr: "never",
@@ -37,14 +37,15 @@ var Ginseng = React.createClass({
         newMeta.lastSaved = moment().format();
         var writeInfos = this.state.infos.slice();
 
-        // Cut off old review data according to settings
+        // Cut off old review data + precomputed values
         for(var i=0; i<writeInfos.length; i++){
-            var info = writeInfos[i];
-            for(var reviewKey in info.reviews) {
-                if (info.reviews[reviewKey].length > this.state.settings.reviewHistoryLength) {
-                    info.reviews[reviewKey] = info.reviews[reviewKey].slice(-2);
+            var infoReviews = writeInfos[i].reviews;
+            for(var reviewKey in infoReviews) {
+                if (infoReviews[reviewKey].length > this.state.settings.reviewHistoryLength) {
+                    infoReviews[reviewKey] = infoReviews[reviewKey].slice(-2);
                 }
             }
+            writeInfos[i] = _.omit(writeInfos[i], "templateConditions", "profileConditions", "plannedIntervals");
         }
         var writeDataObj = {
             infos: writeInfos,
@@ -79,7 +80,7 @@ var Ginseng = React.createClass({
             parsedData = JSON.parse(LZString.decompressFromUTF16(localStorage.getItem('ginseng_data')));
         }
         this.setState({
-            infos: parsedData.infos,
+            infos: this.getPrecompInfos(parsedData.infos, parsedData.infoTypes, parsedData.reviewProfiles || this.state.reviewProfiles),
             infoTypes: parsedData.infoTypes,
             settings: _(this.state.settings).extend(parsedData.settings).value(),
             reviewProfiles: parsedData.reviewProfiles || this.state.reviewProfiles,
@@ -87,12 +88,40 @@ var Ginseng = React.createClass({
             isChanged: false
         });
     },
+    getPrecompInfo(info, types=this.state.infoTypes, profiles=this.state.reviewProfiles){
+        var typeName = types[info.typeID].name;
+        info["templateConditions"] = _.mapValues(types[info.typeID].templates, templ => filterInfo(templ.condition, info, typeName));
+        info["profileConditions"] = _.mapValues(profiles, profile => filterInfo(profile.condition, info, typeName));
+        info["plannedIntervals"] = _.mapValues(info.reviews, review => {
+                var lastReview = _.last(review);
+                review.length > 0 ? (moment(lastReview.dueTime).diff(moment(lastReview.reviewTime))) : 0
+            }
+        );
+        return info;
+    },
+    getPrecompInfos(infos, types=this.state.infoTypes, profiles=this.state.reviewProfiles){
+        var newInfos = infos.slice();
+        for (var infoIndex = 0; infoIndex < newInfos.length; ++infoIndex) {
+            var info = newInfos[infoIndex];
+            var typeName = types[info.typeID].name;
+            newInfos[infoIndex]["templateConditions"] = _.mapValues(types[info.typeID].templates, templ => filterInfo(templ.condition, info, typeName));
+            newInfos[infoIndex]["profileConditions"] = _.mapValues(profiles, profile => filterInfo(profile.condition, info, typeName));
+            newInfos[infoIndex]["plannedIntervals"] = _.mapValues(info.reviews,
+                review => {
+                    if(review.length > 0){
+                        var lastReview = _.last(review);
+                        return moment(lastReview.dueTime).diff(moment(lastReview.reviewTime));
+                    }
+                }
+            );
+        }
+        return newInfos;
+    },
     saveDB(){
         this.setState({
             dropBoxStatus: "saving"
         });
         var writeDataString = this.getWriteDate(this.state.settings.useCompression);
-
         var newMeta = _.clone( this.state.meta);
         newMeta.lastSaved = moment().format();
         client.writeFile("ginseng_data.txt", writeDataString, error => {
@@ -120,7 +149,7 @@ var Ginseng = React.createClass({
             }
 
             this.setState({
-                infos: parsedData.infos,
+                infos: this.getPrecompInfos(parsedData.infos, parsedData.infoTypes, parsedData.reviewProfiles || this.state.reviewProfiles),
                 infoTypes: parsedData.infoTypes,
                 settings: _(this.state.settings).extend(parsedData.settings).value(),
                 reviewProfiles: parsedData.reviewProfiles || this.state.reviewProfiles,
@@ -140,9 +169,9 @@ var Ginseng = React.createClass({
     onInfoEdit(newInfo) {
         var newInfos = this.state.infos.slice();
         if(this.state.activeMode === "edit") {
-            newInfos[this.state.selectedInfoIndex] = newInfo;
+            newInfos[this.state.selectedInfoIndex] = this.getPrecompInfo(newInfo);
         }else{
-            newInfos.push(newInfo);
+            newInfos.push(this.getPrecompInfo(newInfo));
         }
         this.setState({
             infos: newInfos,
@@ -187,7 +216,7 @@ var Ginseng = React.createClass({
 
         this.setState({
             infoTypes: newTypes,
-            infos: newInfos,
+            infos: this.getPrecompInfos(newInfos),
             isChanged: true
         });
     },
@@ -212,11 +241,14 @@ var Ginseng = React.createClass({
             creationDate: moment().format()
         }
     },
-    updateGeneric(name, value){
+    updateGeneric(stateKey, stateValue){
         var newState = {
             isChanged: true
         };
-        newState[name] = value;
+        if(stateKey==="reviewProfiles"){
+            newState["infos"] = this.getPrecompInfos(this.state.infos.slice(), this.state.infoTypes, stateValue);
+        }
+        newState[stateKey] = stateValue;
         this.setState(newState);
     },
     render: function () {

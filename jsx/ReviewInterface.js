@@ -133,7 +133,7 @@ var ReviewInterface = React.createClass({
     },
     getNextReview(profileKey){
         var dueness;
-        var realInterval, plannedInterval;
+        var realInterval;
         var nextReview = {
             dueness: 0.0,
             dueCount: 0
@@ -142,16 +142,14 @@ var ReviewInterface = React.createClass({
             var info = this.props.infos[infoIndex];
             for(var templateID in info.reviews){
                 if(info.reviews[templateID].length > 0) {
-                    var lastReview = _.last(info.reviews[templateID]);
-                    realInterval = moment().diff(moment(lastReview.reviewTime));
-                    plannedInterval = moment(lastReview.dueTime).diff(moment(lastReview.reviewTime));
-                    dueness = realInterval / plannedInterval;
+                    realInterval = moment().diff(moment(_.last(info.reviews[templateID]).reviewTime));
+                    dueness = realInterval / info.plannedIntervals[templateID];
                 }else {
                     dueness = 1.1;
                     realInterval = 0;
                 }
-                if( filterInfo(this.props.types[info.typeID].templates[templateID].condition, info, this.props.types[info.typeID].name) &&
-                    filterInfo(this.props.profiles[profileKey].condition, info, this.props.types[info.typeID].name) &&
+                if( info["templateConditions"][templateID] &&
+                    info["profileConditions"][profileKey] &&
                     dueness >= this.props.profiles[profileKey].dueThreshold
                 ){
                     nextReview.dueCount++;
