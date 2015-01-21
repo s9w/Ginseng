@@ -52,10 +52,9 @@ The brain also likes to [link](http://gocognitive.net/interviews/effect-context-
 
 ## Philosophy / Goals
 Ginseng and the underlying data format are designed to be as open and robust as possible
-- All data is saved in a straightforward human-readable (and therefore hackable) [JSOM file](https://raw.githubusercontent.com/s9w/Ginseng/master/init_data.js).
-- The formatting of the info entries and the templates is done Markdown with optional LaTeX. Currently [marked](https://github.com/chjj/marked) is used for Markdown and [KaTeX](https://github.com/Khan/KaTeX) for LaTeX rendering as they seem to be the fastest choice.
+- All data is saved in a straightforward human-readable (and therefore hackable) [JSON file](https://raw.githubusercontent.com/s9w/Ginseng/master/init_data.js).
+- The formatting of the infos and templates is done in Markdown and LaTeX. Currently [marked](https://github.com/chjj/marked) is used for Markdown and [MathJax](https://github.com/mathjax/mathjax) for LaTeX rendering as they seem to be the fastest choice.
 - Dates/times are saved in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).
 
 ## Plans / issues
-- KaTeX is very fast but currently doesn't even support `\mathbb` fonts or basic Math operators, let alone other packages etc. Add Mathjax as an option?
 - Write an Anki importer?

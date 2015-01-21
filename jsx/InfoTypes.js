@@ -202,12 +202,12 @@ var InfoTypes = React.createClass({
                         Properties
                     </button>
 
-                    {Object.keys(selectedType.templates).map(templateID =>
+                    {Object.keys(selectedType.templates).map((templateID, index) =>
                         <button
                             key={templateID}
                             className={this.state.mode===templateID?"buttonGood":""}
                             onClick={this.setMode.bind(this, templateID)}>
-                            {"Template "+templateID}
+                            {"Template "+(index+1)}
                         </button>
                     )}
 

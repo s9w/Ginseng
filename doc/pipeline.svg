@@ -16,8 +16,8 @@
    inkscape:version="0.48.5 r10040"
    sodipodi:docname="pipeline.svg"
    inkscape:export-filename="C:\code\ginseng\doc\pipeline.png"
-   inkscape:export-xdpi="150.03386"
-   inkscape:export-ydpi="150.03386">
+   inkscape:export-xdpi="444.04471"
+   inkscape:export-ydpi="444.04471">
   <defs
      id="defs4">
     <marker
@@ -392,9 +392,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="214.32291"
-     inkscape:cy="169.12722"
+     inkscape:zoom="1.979899"
+     inkscape:cx="244.37325"
+     inkscape:cy="451.17007"
      inkscape:document-units="cm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -432,7 +432,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -550,7 +550,7 @@
          x="230.25728"
          y="360.57343"><tspan
            style="font-weight:bold;-inkscape-font-specification:Sans Bold"
-           id="tspan3052">Template 0</tspan></tspan><tspan
+           id="tspan3052">Template 1</tspan></tspan><tspan
          sodipodi:role="line"
          x="230.25728"
          y="375.57343"
@@ -749,9 +749,9 @@
        y="449.97305"
        x="200"
        height="109.21594"
-       width="133.5463"
+       width="148.67018"
        id="rect6020"
-       style="fill:#ffffff;fill-opacity:0.91176471;stroke:#000000;stroke-width:1.81571937;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:#ffffff;fill-opacity:0.91176471;stroke:#000000;stroke-width:1.91577601;stroke-miterlimit:4;stroke-dasharray:none"
        inkscape:export-filename="C:\code\ginseng\doc\pileline1.png"
        inkscape:export-xdpi="100.27936"
        inkscape:export-ydpi="100.27936" />
@@ -770,25 +770,25 @@
          id="tspan3064"
          sodipodi:role="line"><tspan
            id="tspan3066"
-           style="font-weight:bold;-inkscape-font-specification:Sans Bold">Template 1</tspan></tspan><tspan
+           style="font-weight:bold;-inkscape-font-specification:Sans Bold">Template 2 (reverse)</tspan></tspan><tspan
          y="498.57565"
          x="228.44618"
          sodipodi:role="line"
          id="tspan6038"><tspan
    style="font-weight:bold;-inkscape-font-specification:Sans Bold"
-   id="tspan6040">front</tspan>: {front}</tspan><tspan
+   id="tspan6040">front</tspan>: {back}</tspan><tspan
          id="tspan3068"
          y="513.57568"
          x="228.44618"
          sodipodi:role="line"><tspan
    id="tspan3070"
-   style="font-weight:bold;-inkscape-font-specification:Sans Bold">back</tspan>: {back}</tspan><tspan
+   style="font-weight:bold;-inkscape-font-specification:Sans Bold">back</tspan>: {front}</tspan><tspan
          id="tspan3072"
          y="528.57568"
          x="228.44618"
          sodipodi:role="line"><tspan
    style="font-weight:bold;-inkscape-font-specification:Sans Bold"
-   id="tspan3074">Filter</tspan>: tag:reverse</tspan></text>
+   id="tspan3074">Filter</tspan>: tag: reverse</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:18px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
@@ -1505,7 +1505,7 @@
        sodipodi:nodetypes="ccc" />
     <path
        style="fill:none;stroke:#0000ff;stroke-width:1.77165353;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#marker8196)"
-       d="m 335.37064,533.79788 30.30457,0"
+       d="m 348.22778,533.79788 17.44743,0"
        id="path10845"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />

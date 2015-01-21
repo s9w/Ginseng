@@ -92,9 +92,12 @@ var Ginseng = React.createClass({
         var typeName = types[info.typeID].name;
         info["templateConditions"] = _.mapValues(types[info.typeID].templates, templ => filterInfo(templ.condition, info, typeName));
         info["profileConditions"] = _.mapValues(profiles, profile => filterInfo(profile.condition, info, typeName));
-        info["plannedIntervals"] = _.mapValues(info.reviews, review => {
-                var lastReview = _.last(review);
-                review.length > 0 ? (moment(lastReview.dueTime).diff(moment(lastReview.reviewTime))) : 0
+        info["plannedIntervals"] = _.mapValues(info.reviews,
+            review => {
+                if(review.length > 0){
+                    var lastReview = _.last(review);
+                    return moment(lastReview.dueTime).diff(moment(lastReview.reviewTime));
+                }
             }
         );
         return info;
