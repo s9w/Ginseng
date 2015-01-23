@@ -204,8 +204,12 @@ var ReviewInterface = React.createClass({
                             Edit Info
                         </button>
                         <div className="reviewStatusElement">
-                            <span className="reviewStatusHeading">Due count: </span>
+                            <span className="reviewStatusHeading">Due: </span>
                             <span>{nextReview.dueCount}</span>
+                        </div>
+                        <div className="reviewStatusElement">
+                            <span className="reviewStatusHeading">Dueness: </span>
+                            <span>{nextReview.dueness.toFixed(1)}</span>
                         </div>
                         <div className="reviewStatusElement">
                             <span className="reviewStatusHeading">Profile: </span>
