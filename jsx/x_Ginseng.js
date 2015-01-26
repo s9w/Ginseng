@@ -337,6 +337,7 @@ var Ginseng = React.createClass({
                         gotoEdit={this.gotoEdit}
                         profiles={this.state.reviewProfiles}
                         useGuess={this.state.settings.useGuess}
+                        rememberModType={this.state.settings.rememberModType}
                     />
                 }
 

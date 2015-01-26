@@ -52,6 +52,19 @@ var Settings = React.createClass({
                     </div>
                 </section>
 
+                <section>
+                    <h3>Modify Type</h3>
+                    <div>
+                        <span>Remember the last choice of interval modification (change/set).</span>
+                        <input
+                            onChange={this.onChange}
+                            name="rememberModType"
+                            type="checkbox"
+                            checked={this.state.settings.rememberModType}
+                        />
+                    </div>
+                </section>
+
                 <button
                     className="buttonGood"
                     disabled={!isChanged}

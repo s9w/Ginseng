@@ -11,7 +11,7 @@ var Intervaller = React.createClass({
     },
     componentWillReceiveProps(nextProps){
         this.setState({
-            modifyType: nextProps.lastInterval===0?"set":"change",
+            modifyType: (nextProps.lastInterval===0)?"set":(this.props.rememberModType?this.state.modifyType:"change"),
             activeKeyIndex: false
         });
     },

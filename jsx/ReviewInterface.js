@@ -244,6 +244,7 @@ var ReviewInterface = React.createClass({
                                 lastInterval={nextReview.realInterval}
                                 applyInterval={this.applyInterval.bind(this, nextReview.infoIndex, nextReview.templateID)}
                                 timeIntervalChoices={this.props.timeIntervalChoices}
+                                rememberModType={this.props.rememberModType}
                             />
                         </div>
                     }

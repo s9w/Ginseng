@@ -199,7 +199,8 @@ var init_data =
             },
             "reviewHistoryLength": 2,
             "useCompression": false,
-            "useGuess": true
+            "useGuess": true,
+            "rememberModType": false
         },
         "meta": {
             "lastSaved": "2015-01-13T12:35:20+01:00"
