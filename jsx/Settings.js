@@ -14,7 +14,7 @@ var Settings = React.createClass({
     },
     onChange(event){
         var newSettings = _.cloneDeep(this.state.settings );
-        if( _(["useCompression", "useGuess"]).contains(event.target.name) ){
+        if( _(["useCompression", "useGuess", "rememberModType"]).contains(event.target.name) ){
             newSettings[event.target.name] = event.target.checked;
         }else{
             newSettings[event.target.name] = event.target.value;
