@@ -64,7 +64,8 @@ p{
 }
 
 .flexContentVariable {
-  flex: 1 1 auto;
+	flex: 1 1 auto;
+	flex-basis: 80px;
 }
 
 .flexContentFixed{

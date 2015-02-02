@@ -38,11 +38,15 @@ var InfoBrowser = React.createClass({
     getInitialState() {
         return {
             filterText: "",
+            tagFilterText: "",
             sortOrder: "1"
         };
     },
     onFilterChange(event) {
         this.setState({filterText: event.target.value});
+    },
+    onTagFilterChange(event) {
+        this.setState({tagFilterText: event.target.value});
     },
     changeSortOrder(order){
         var newOrder = order;
@@ -77,12 +81,16 @@ var InfoBrowser = React.createClass({
             }
         });
 
+        var activeTags = _.filter(this.props.usedTags, s => s.indexOf( this.state.tagFilterText ) !== -1 );
+
         // generate trs
         var tableRows = [];
         var thData;
         for (let i = 0; i < sortedInfos.length; ++i) {
-            if( sortedInfos[i].entries[0].toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1 ||
-                sortedInfos[i].entries[1].toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1) {
+            var entry0InSelection = sortedInfos[i].entries[0].toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1;
+            var entry1InSelection = sortedInfos[i].entries[1].toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1;
+            var tagsInSelection = !( _.isEmpty(_.intersection(sortedInfos[i].tags, activeTags)) );
+            if( (entry0InSelection || entry1InSelection) && tagsInSelection ) {
                 var ds=[];
                 thData = [
                     sortedInfos[i].entries[0],
@@ -134,33 +142,45 @@ var InfoBrowser = React.createClass({
             <div className="InfoBrowser Component">
                 <section>
                     <h3>Info Browser</h3>
-                <div className="browseControls">
-                    <input type="text" placeholder="Quick filter..." value={this.state.filterText}
-                        onChange={this.onFilterChange}/>
-                    <button className="button buttonGood" onClick={this.props.onNew}>New info</button>
-                </div>
-                <table className="infoTable">
-                    <colgroup>
-                        <col width="20%" />
-                        <col width="20%" />
-                        <col width="20%" />
-                        <col width="20%" />
-                        <col width="10%" />
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th className="clickable" onClick={this.changeSortOrder.bind(this, "1")}>{th_1}</th>
-                            <th className="clickable" onClick={this.changeSortOrder.bind(this, "2")}>{th_2}</th>
-                            <th>Type</th>
-                            <th>Tags</th>
-                            <th className="clickable" onClick={this.changeSortOrder.bind(this, "age")}>{th_age}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {tableRows }
-                    </tbody>
-                </table>
-                    </section>
+                    <div className="flexRowDistribute">
+                        <button className="button buttonGood" onClick={this.props.onNew}>New info</button>
+                        <input
+                            className="flexContentVariable"
+                            type="text"
+                            placeholder="Entry filter"
+                            value={this.state.filterText}
+                            onChange={this.onFilterChange}
+                        />
+                        <input
+                            className="flexContentVariable"
+                            type="text"
+                            placeholder="Tag filter"
+                            value={this.state.tagFilterText}
+                            onChange={this.onTagFilterChange}
+                        />
+                    </div>
+                    <table className="infoTable">
+                        <colgroup>
+                            <col width="20%" />
+                            <col width="20%" />
+                            <col width="20%" />
+                            <col width="20%" />
+                            <col width="10%" />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th className="clickable" onClick={this.changeSortOrder.bind(this, "1")}>{th_1}</th>
+                                <th className="clickable" onClick={this.changeSortOrder.bind(this, "2")}>{th_2}</th>
+                                <th>Type</th>
+                                <th>Tags</th>
+                                <th className="clickable" onClick={this.changeSortOrder.bind(this, "age")}>{th_age}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {tableRows }
+                        </tbody>
+                    </table>
+                </section>
             </div>
         );
     }

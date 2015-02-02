@@ -307,6 +307,7 @@ var Ginseng = React.createClass({
                         onRowSelect={this.gotoEdit}
                         onNew={this.clickNav.bind(this, "new")}
                         selections={this.state.ginseng_selections}
+                        usedTags={_(this.state.infos).pluck('tags').flatten().union().value()}
                     />
                 }
 
