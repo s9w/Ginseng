@@ -89,7 +89,7 @@ var InfoBrowser = React.createClass({
         for (let i = 0; i < sortedInfos.length; ++i) {
             var entry0InSelection = sortedInfos[i].entries[0].toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1;
             var entry1InSelection = sortedInfos[i].entries[1].toLowerCase().indexOf(this.state.filterText.toLowerCase()) !== -1;
-            var tagsInSelection = !( _.isEmpty(_.intersection(sortedInfos[i].tags, activeTags)) );
+            var tagsInSelection = sortedInfos[i].tags.length===0 || !( _.isEmpty(_.intersection(sortedInfos[i].tags, activeTags)) );
             if( (entry0InSelection || entry1InSelection) && tagsInSelection ) {
                 var ds=[];
                 thData = [
