@@ -142,17 +142,17 @@ var InfoBrowser = React.createClass({
             <div className="InfoBrowser Component">
                 <section>
                     <h3>Info Browser</h3>
-                    <div className="flexRowDistribute">
-                        <button className="button buttonGood" onClick={this.props.onNew}>New info</button>
+                    <div className="flexRowStacked">
+                        <button className="buttonGood" onClick={this.props.onNew}>New info</button>
                         <input
-                            className="flexContentVariable"
+                            className="browserControls"
                             type="text"
                             placeholder="Entry filter"
                             value={this.state.filterText}
                             onChange={this.onFilterChange}
                         />
                         <input
-                            className="flexContentVariable"
+                            className="browserControls"
                             type="text"
                             placeholder="Tag filter"
                             value={this.state.tagFilterText}

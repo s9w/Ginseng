@@ -196,7 +196,7 @@ var InfoTypes = React.createClass({
                     <span>Infos with this type: {infosPerType[this.state.selectedTypeID]} ({(100.0*infosPerType[this.state.selectedTypeID]/this.props.infoCount).toFixed()}%)</span>
                 </section>
 
-                <div className="flexRowStacked flexRowDistribute">
+                <div className="flexRowStacked">
                     <button
                         className={this.state.mode==="main"?"buttonGood":""}
                         onClick={this.setMode.bind(this, "main")}>

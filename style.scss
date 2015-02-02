@@ -65,7 +65,12 @@ p{
 
 .flexContentVariable {
 	flex: 1 1 auto;
+}
+
+.browserControls {
+	flex: 1 1 auto;
 	flex-basis: 80px;
+	max-width: 200px;
 }
 
 .flexContentFixed{
