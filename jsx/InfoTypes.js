@@ -181,6 +181,7 @@ var InfoTypes = React.createClass({
         }
 
         var isChanged = JSON.stringify(this.props.types)!==JSON.stringify(this.state.types);
+        var safeToDelete = _.keys(this.state.types).length>=2 && infosPerType[this.state.selectedTypeID] === 0;
         return (
             <div className="Component">
                 <section>
@@ -190,7 +191,7 @@ var InfoTypes = React.createClass({
                         selectedID={this.state.selectedTypeID}
                         onSelectionChange={this.selectType}
                         onAddElement={this.onAddType}
-                        onDeleteElement={_.keys(this.state.types).length<=1?false:this.onDeleteType}
+                        onDeleteElement={ safeToDelete?this.onDeleteType:false}
                     />
                     <span>Infos with this type: {infosPerType[this.state.selectedTypeID]} ({(100.0*infosPerType[this.state.selectedTypeID]/this.props.infoCount).toFixed()}%)</span>
                 </section>

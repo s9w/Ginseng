@@ -55,7 +55,7 @@ var Settings = React.createClass({
                 <section>
                     <h3>Modify Type</h3>
                     <div>
-                        <span>Remember the last choice of interval modification (change/set).</span>
+                        <span>Remember the last choice of interval modification (change/set). Otherwise default to change.</span>
                         <input
                             onChange={this.onChange}
                             name="rememberModType"
