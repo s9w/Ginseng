@@ -102,7 +102,7 @@ var Status = React.createClass({
                         {this.props.dropBoxStatus !== "initial" &&
                             <button
                                 className="buttonGood"
-                                disabled={!this.props.isChanged || this.props.dropBoxStatus !== "loggedIn"}
+                                disabled={this.props.dropBoxStatus !== "loggedIn"}
                                 onClick={this.onSaveClick}>
                                 Save
                             </button>
