@@ -70,7 +70,7 @@ var ReviewContent = React.createClass({
                 {this.props.progressState === "backSide" &&
                     <div
                         ref="backsideCanvas"
-                        className={"markdowned"}
+                        className="markdowned"
                         dangerouslySetInnerHTML={{__html: this.renderMarkdown(backStr)}}>
                     </div>
                 }
