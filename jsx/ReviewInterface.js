@@ -168,6 +168,8 @@ var ReviewInterface = React.createClass({
     render() {
         if(!this.state.activeProfileKey){
             var nextReviews = _.mapValues(this.props.profiles, (val, profileKey) => this.getNextReview(profileKey));
+            var sortedProfiles = _(this.props.profiles).mapValues((n, i) => _.merge(n, {"id":i})).values().value();
+            sortedProfiles = sortedProfiles.sort((a, b) =>a.name.localeCompare(b.name));
             return(
                 <div className="Component">
                     <section className="Component">
@@ -181,10 +183,10 @@ var ReviewInterface = React.createClass({
                             </tr>
                         </thead>
                         < tbody >
-                            {_(this.props.profiles).map((profile, key) =>
-                                <tr onClick={this.selectProfile.bind(null, key)}>
+                            {_(sortedProfiles).map((profile) =>
+                                <tr onClick={this.selectProfile.bind(null, profile.id)}>
                                     <td>{profile.name}</td>
-                                    <td>{nextReviews[key].dueCount}</td>
+                                    <td>{nextReviews[profile.id].dueCount}</td>
                                 </tr>
                             )}
                         </tbody>
