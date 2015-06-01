@@ -173,7 +173,7 @@ var Ginseng = React.createClass({
         var newInfos = this.state.infos.slice();
         if(this.state.activeMode === "edit") {
             newInfos[this.state.selectedInfoIndex] = this.getPrecompInfo(newInfo);
-        }else{
+        }else{ // new
             newInfos.push(this.getPrecompInfo(newInfo));
         }
         this.setState({

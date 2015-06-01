@@ -5,7 +5,7 @@ function filterInfo(filterStr, info, typename){
     try {
         return eval(
             filterStr.replace(
-                /tag: ?([\wäÄüÜöÖß]+)/g, function (match, p1) {
+                /tag: ?([\wäÄü/ÜöÖß]+)/g, function (match, p1) {
                     return "(_(info.tags).contains(\"" + p1 + "\"))";
                 }
             ).replace(
