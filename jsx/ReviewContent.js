@@ -9,18 +9,6 @@ var ReviewContent = React.createClass({
     shouldComponentUpdate(nextProps, nextState){
         return this.props.preview || nextProps.progressState !== this.props.progressState;
     },
-    componentDidMount: function (root) {
-        this.renderMathJax();
-    },
-    componentDidUpdate: function (prevProps, state) {
-        this.renderMathJax();
-    },
-    renderMathJax(){
-        MathJax.Hub.Queue(["Typeset",MathJax.Hub, this.refs["frontsideCanvas"].getDOMNode()]);
-        if(this.props.progressState === "backSide"){
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub, this.refs["backsideCanvas"].getDOMNode()]);
-        }
-    },
     renderMarkdown(str){
         var latexStringBuffer = [];
         var backStrNew = str.replace(/(\$.*?\$)/g, function(match, p1){
@@ -35,6 +23,38 @@ var ReviewContent = React.createClass({
     onFlip(){
         this.props.onFlip();
     },
+    renderMarkdownOld(str){
+        var latexStringBuffer = [];
+        var backStrNew = str.replace(/(\$.*?\$)/g, function(match, p1){
+            latexStringBuffer.push(p1);
+            return '$$';
+        });
+        return marked(backStrNew).replace(/\$\$/g, function(){
+            // and replace the placeholders with transformed math
+            return latexStringBuffer.shift();
+        });
+    },
+    renderMarkdown(str){
+        var latexStringBuffer = [];
+        var hasLatex = false;
+        // replace math with $$
+        var backStrNew = str.replace(/(\$.*?\$)/g, function(match, p1){
+            latexStringBuffer.push(p1.slice(1,-1));
+            hasLatex =  true;
+            return '$$';
+        });
+        // convert rest markdown to html
+        marked.setOptions({breaks: true, smartLists: true});
+        return {Html: marked(backStrNew).replace(/\$\$/g, function(){
+            // and replace the placeholders with transformed math
+            try {
+                return katex.renderToString(latexStringBuffer.shift());
+            }catch(e){
+                console.log("Katex Error: " + e.message);
+                return "ERROR.";
+            }
+        }), hasLatex: hasLatex};
+    },
     render(){
         var thisOuter = this;
         var template = this.props.template;
@@ -48,12 +68,15 @@ var ReviewContent = React.createClass({
                 return thisOuter.props.templateData[p1];
             });
 
+        //var katexElement = katex.renderToString(backStr);
+        var renderedBack = this.renderMarkdown(backStr);
+
         return(
             <div id="reviewStage">
                 <div
                     ref="frontsideCanvas"
                     className="markdowned"
-                    dangerouslySetInnerHTML={{__html: this.renderMarkdown(frontStr)}}>
+                    dangerouslySetInnerHTML={{__html: this.renderMarkdown(frontStr).Html}}>
                 </div>
 
                 {this.props.useGuess &&
@@ -71,7 +94,7 @@ var ReviewContent = React.createClass({
                     <div
                         ref="backsideCanvas"
                         className="markdowned"
-                        dangerouslySetInnerHTML={{__html: this.renderMarkdown(backStr)}}>
+                        dangerouslySetInnerHTML={{__html: renderedBack.Html}}>
                     </div>
                 }
             </div>
