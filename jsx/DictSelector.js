@@ -14,7 +14,7 @@ var DictSelector = React.createClass({
                             <option
                                 key={key}
                                 value={key}>{value.name}</option>
-                    )}
+                    ).value()}
                 </select>
                 {"onDeleteElement" in this.props &&
                 <div>

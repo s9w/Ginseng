@@ -188,7 +188,7 @@ var ReviewInterface = React.createClass({
                                     <td>{profile.name}</td>
                                     <td>{nextReviews[profile.id].dueCount}</td>
                                 </tr>
-                            )}
+                            ).value()}
                         </tbody>
                     </table>
                 </div>
