@@ -1,4 +1,4 @@
-var DictSelector = React.createClass({
+module.exports = React.createClass({
     onSelectionChange(event){
         this.props.onSelectionChange(event.target.value);
     },

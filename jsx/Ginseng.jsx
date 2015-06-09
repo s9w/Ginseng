@@ -1,6 +1,22 @@
 var client = new Dropbox.Client({ key: "ob9346e5yc509q2" });
 client.authDriver(new Dropbox.AuthDriver.Popup({receiverUrl: "https://s9w.github.io/dropbox_receiver.html"}));
 
+//var React = require('react')
+var DictSelector = require('./DictSelector.jsx');
+var Guessing = require('./Guessing.jsx');
+var InfoBrowser = require('./InfoBrowser.jsx');
+var InfoEdit = require('./InfoEdit.jsx');
+var InfoTypes = require('./InfoTypes.jsx');
+var NavBar = require('./NavBar.jsx');
+var Profiles = require('./Profiles.jsx');
+var ReviewInterface = require('./ReviewInterface.jsx');
+var Status = require('./Status.jsx');
+var Settings = require('./Settings.jsx');
+
+var helpers = require('./helpers.jsx');
+var filterInfo = helpers.filterInfo;
+
+
 var Ginseng = React.createClass({
     getInitialState() {
         return {
@@ -104,12 +120,12 @@ var Ginseng = React.createClass({
     },
     getPrecompInfos(infos, types=this.state.infoTypes, profiles=this.state.reviewProfiles){
         var newInfos = infos.slice();
-        for (var infoIndex = 0; infoIndex < newInfos.length; ++infoIndex) {
-            var info = newInfos[infoIndex];
+        for (var i=0; i < newInfos.length; i++) {
+            var info = newInfos[i];
             var typeName = types[info.typeID].name;
-            newInfos[infoIndex]["templateConditions"] = _.mapValues(types[info.typeID].templates, templ => filterInfo(templ.condition, info, typeName));
-            newInfos[infoIndex]["profileConditions"] = _.mapValues(profiles, profile => filterInfo(profile.condition, info, typeName));
-            newInfos[infoIndex]["plannedIntervals"] = _.mapValues(info.reviews,
+            info["templateConditions"] = _.mapValues(types[info.typeID].templates, templ => filterInfo(templ.condition, info, typeName));
+            info["profileConditions"] = _.mapValues(profiles, profile => filterInfo(profile.condition, info, typeName));
+            info["plannedIntervals"] = _.mapValues(info.reviews,
                 review => {
                     if(review.length > 0){
                         var lastReview = _.last(review);
@@ -347,41 +363,6 @@ var Ginseng = React.createClass({
     }
 });
 
-var Editor = React.createClass({
-    onChange(event){
-        var newDict = _.pick(this.props.path, _.pluck(this.props.objects, "key"));
-        newDict[event.target.name] = event.target.value;
-        this.props.onUpdate(newDict);
-    },
-    render() {
-        var innerHtml;
-        var thisOuter = this;
-        return (
-            <div>
-                {this.props.objects.map(function (object) {
-                    if (object.displayType === "label") {
-                        innerHtml = <span>{thisOuter.props.path[object.key]}</span>;
-                    } else if (object.displayType === "input") {
-                        innerHtml = <input
-                            type="text"
-                            name={object.key}
-                            onChange={thisOuter.onChange}
-                            value={thisOuter.props.path[object.key]}
-                            placeholder={object.placeholder}
-                        />
-                    }
-                    return (
-                        <section key={object.key}>
-                            <h3>{object.displayName}</h3>
-                            {innerHtml}
-                        </section>
-                    );
-
-                })}
-            </div>
-        )
-    }
-});
 
 React.render(
     <Ginseng />, document.getElementById('content')

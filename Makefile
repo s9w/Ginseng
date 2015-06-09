@@ -1,9 +1,7 @@
-JS_FILES := $(wildcard jsx/*.js)
+all: js/ginseng.min.js
 
-all: ginseng.js
+js/ginseng.min.js: js/ginseng.js
+	uglifyjs js/ginseng.js --compress --screw-ie8 --mangle -o js/ginseng.min.js
 
-ginseng.js: $(JS_FILES) Makefile
-	6to5 jsx --out-file js/ginseng.js
-
-compress:
-	uglifyjs ginseng.js  --compress --screw-ie8 --mangle sort -o js/ginseng.min.js
+js/ginseng.js: jsx/* Makefile
+	browserify jsx/Ginseng.jsx -t babelify --outfile js/ginseng.js

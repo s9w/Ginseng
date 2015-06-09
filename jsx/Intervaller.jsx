@@ -1,4 +1,7 @@
-var Intervaller = React.createClass({
+var helpers = require('./helpers.jsx');
+var getPreciseIntervalStr = helpers.getPreciseIntervalStr;
+
+module.exports = React.createClass({
     getInitialState() {
         return {
             modifyType: "change",

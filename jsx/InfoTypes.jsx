@@ -1,4 +1,7 @@
-var InfoTypes = React.createClass({
+var DictSelector = require('./DictSelector.jsx');
+var TemplateDetails = require('./TemplateDetails.jsx');
+
+module.exports = React.createClass({
     getInitialState() {
         var chosenTypeID = this.props.selectedTypeID || _.min(_.keys(this.props.types));
         return {

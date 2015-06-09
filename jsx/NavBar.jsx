@@ -1,4 +1,4 @@
-var NavBar = React.createClass({
+module.exports = React.createClass({
     render() {
         return (
             <div className="navBar unselectable">

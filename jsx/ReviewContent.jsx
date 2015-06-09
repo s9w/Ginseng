@@ -1,4 +1,6 @@
-var ReviewContent = React.createClass({
+var Guessing = require('./Guessing.jsx');
+
+module.exports = React.createClass({
     getDefaultProps: function() {
         marked.setOptions({breaks: true});
         return {
@@ -9,17 +11,17 @@ var ReviewContent = React.createClass({
     shouldComponentUpdate(nextProps, nextState){
         return this.props.preview || nextProps.progressState !== this.props.progressState;
     },
-    renderMarkdown(str){
-        var latexStringBuffer = [];
-        var backStrNew = str.replace(/(\$.*?\$)/g, function(match, p1){
-            latexStringBuffer.push(p1);
-            return '$$';
-        });
-        return marked(backStrNew).replace(/\$\$/g, function(){
-            // and replace the placeholders with transformed math
-            return latexStringBuffer.shift();
-        });
-    },
+    //renderMarkdown(str){
+    //    var latexStringBuffer = [];
+    //    var backStrNew = str.replace(/(\$.*?\$)/g, function(match, p1){
+    //        latexStringBuffer.push(p1);
+    //        return '$$';
+    //    });
+    //    return marked(backStrNew).replace(/\$\$/g, function(){
+    //        // and replace the placeholders with transformed math
+    //        return latexStringBuffer.shift();
+    //    });
+    //},
     onFlip(){
         this.props.onFlip();
     },
@@ -68,7 +70,6 @@ var ReviewContent = React.createClass({
                 return thisOuter.props.templateData[p1];
             });
 
-        //var katexElement = katex.renderToString(backStr);
         var renderedBack = this.renderMarkdown(backStr);
 
         return(

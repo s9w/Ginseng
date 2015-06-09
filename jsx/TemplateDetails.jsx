@@ -1,4 +1,7 @@
-var TemplateDetails = React.createClass({
+var Editor = require('./Editor.jsx');
+var Textarea = require('./Textarea.jsx');
+
+module.exports = React.createClass({
     onViewChange(type, value){
         if(type === "condition"){
             this.props.onViewChange(type, value["condition"]);

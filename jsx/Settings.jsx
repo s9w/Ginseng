@@ -1,4 +1,4 @@
-var Settings = React.createClass({
+module.exports = React.createClass({
     getInitialState() {
         return {
             settings: this.props.settings

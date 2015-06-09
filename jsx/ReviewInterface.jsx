@@ -1,31 +1,7 @@
-function filterInfo(filterStr, info, typename){
-    if(filterStr===""){
-        return true
-    }
-    try {
-        return eval(
-            filterStr.replace(
-                /tag: ?([\wäÄü/ÜöÖß]+)/g, function (match, p1) {
-                    return "(_(info.tags).contains(\"" + p1 + "\"))";
-                }
-            ).replace(
-                /createdBefore: ?([\w\-:\.\+\-]+)/g, function (match, p1) {
-                    return "moment(info.creationDate).isBefore(moment(\"" + p1 + "\"))";
-                }
-            ).replace(
-                /type: ?"([\w ]+)"/g, function (match, p1) {
-                    return "typename === \"" + p1 + "\"";
-                }
-            )
-        );
-    }
-    catch (e) {
-        console.log("Filter malformed! Filter was: " + filterStr);
-        return false;
-    }
-}
+var Intervaller = require('./Intervaller.jsx');
+var ReviewContent = require('./ReviewContent.jsx');
 
-var ReviewInterface = React.createClass({
+module.exports = React.createClass({
     getInitialState() {
         return {
             progressState: "profileChoice",

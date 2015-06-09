@@ -1,4 +1,10 @@
-var InfoEdit = React.createClass({
+var DictSelector = require('./DictSelector.jsx');
+var ReviewContent = require('./ReviewContent.jsx');
+var Textarea = require('./Textarea.jsx');
+var helpers = require('./helpers.jsx');
+var filterInfo = helpers.filterInfo;
+
+module.exports = React.createClass({
     getInitialState() {
         var newPreviewID;
         if("previewID" in this.props){
@@ -177,26 +183,6 @@ var InfoEdit = React.createClass({
                     }
                 </div>
             </div>
-        );
-    }
-});
-
-var Textarea = React.createClass({
-    componentDidMount(){
-        this.getDOMNode().style.height = this.getDOMNode().scrollHeight-4+"px";
-    },
-    onEntryEdit(){
-        this.getDOMNode().style.height = 'auto';
-        this.getDOMNode().style.height = this.getDOMNode().scrollHeight-4+"px";
-        this.props.onEntryEdit(this.getDOMNode().value);
-    },
-    render() {
-        return (
-            <textarea
-                className={(_(this.props).keys().contains("isLegal") && !this.props.isLegal)?"illegalForm":""}
-                {..._(this.props).pick(["value", "placeholder"]).value() }
-                onChange={this.onEntryEdit}
-            />
         );
     }
 });

@@ -1,4 +1,7 @@
-var Profiles = React.createClass({
+var DictSelector = require('./DictSelector.jsx');
+var Editor = require('./Editor.jsx');
+
+module.exports = React.createClass({
     getInitialState() {
         return {
             reviewProfiles: this.props.reviewProfiles,
