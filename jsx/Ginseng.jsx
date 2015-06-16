@@ -58,7 +58,7 @@ var Ginseng = React.createClass({
             var infoReviews = writeInfos[i].reviews;
             for(var reviewKey in infoReviews) {
                 if (infoReviews[reviewKey].length > this.state.settings.reviewHistoryLength) {
-                    infoReviews[reviewKey] = infoReviews[reviewKey].slice(-2);
+                    infoReviews[reviewKey] = infoReviews[reviewKey].slice(-this.state.settings.reviewHistoryLength);
                 }
             }
             writeInfos[i] = _.omit(writeInfos[i], "templateConditions", "profileConditions", "plannedIntervals");
