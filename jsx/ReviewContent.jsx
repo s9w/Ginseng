@@ -11,17 +11,24 @@ module.exports = React.createClass({
     shouldComponentUpdate(nextProps, nextState){
         return this.props.preview || nextProps.progressState !== this.props.progressState;
     },
-    //renderMarkdown(str){
-    //    var latexStringBuffer = [];
-    //    var backStrNew = str.replace(/(\$.*?\$)/g, function(match, p1){
-    //        latexStringBuffer.push(p1);
-    //        return '$$';
-    //    });
-    //    return marked(backStrNew).replace(/\$\$/g, function(){
-    //        // and replace the placeholders with transformed math
-    //        return latexStringBuffer.shift();
-    //    });
-    //},
+    componentDidMount: function (root) {
+        this.renderMathJax();
+    },
+    componentDidUpdate: function (prevProps, state) {
+        //this.renderMathJax();
+        //var math = MathJax.Hub.getAllJax("frontsideCanvas");
+        //console.log("debzug math: " + JSON.stringify(math));
+        //MathJax.Hub.Queue(["Text",math,"x+1"]);
+        //MathJax.Hub.queue.Push(["Text",math,"x+1"]);
+
+        this.renderMathJax();
+    },
+    renderMathJax(){
+        MathJax.Hub.Queue(["Typeset",MathJax.Hub, this.refs["frontsideCanvas"].getDOMNode()]);
+        if(this.props.progressState === "backSide"){
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub, this.refs["backsideCanvas"].getDOMNode()]);
+        }
+    },
     onFlip(){
         this.props.onFlip();
     },
@@ -38,24 +45,14 @@ module.exports = React.createClass({
     },
     renderMarkdown(str){
         var latexStringBuffer = [];
-        var hasLatex = false;
-        // replace math with $$
         var backStrNew = str.replace(/(\$.*?\$)/g, function(match, p1){
-            latexStringBuffer.push(p1.slice(1,-1));
-            hasLatex =  true;
+            latexStringBuffer.push(p1);
             return '$$';
         });
-        // convert rest markdown to html
-        marked.setOptions({breaks: true, smartLists: true});
-        return {Html: marked(backStrNew).replace(/\$\$/g, function(){
+        return marked(backStrNew).replace(/\$\$/g, function(){
             // and replace the placeholders with transformed math
-            try {
-                return katex.renderToString(latexStringBuffer.shift());
-            }catch(e){
-                console.log("Katex Error: " + e.message);
-                return "ERROR.";
-            }
-        }), hasLatex: hasLatex};
+            return latexStringBuffer.shift();
+        });
     },
     render(){
         var thisOuter = this;
@@ -70,14 +67,13 @@ module.exports = React.createClass({
                 return thisOuter.props.templateData[p1];
             });
 
-        var renderedBack = this.renderMarkdown(backStr);
-
         return(
             <div id="reviewStage">
                 <div
                     ref="frontsideCanvas"
+                    id="frontsideCanvas"
                     className="markdowned"
-                    dangerouslySetInnerHTML={{__html: this.renderMarkdown(frontStr).Html}}>
+                    dangerouslySetInnerHTML={{__html: this.renderMarkdown(frontStr)}}>
                 </div>
 
                 {this.props.useGuess &&
@@ -95,7 +91,7 @@ module.exports = React.createClass({
                     <div
                         ref="backsideCanvas"
                         className="markdowned"
-                        dangerouslySetInnerHTML={{__html: renderedBack.Html}}>
+                        dangerouslySetInnerHTML={{__html: this.renderMarkdown(backStr)}}>
                     </div>
                 }
             </div>

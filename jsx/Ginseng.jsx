@@ -72,7 +72,7 @@ var Ginseng = React.createClass({
         };
         var writeDataString;
         if(useCompression){
-            writeDataString = LZString.compressToUTF16 (JSON.stringify(writeDataObj));
+            writeDataString = LZString.compressToUTF16(JSON.stringify(writeDataObj));
         }else{
             writeDataString = JSON.stringify(writeDataObj, null, '\t');
         }
