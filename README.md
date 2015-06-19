@@ -3,22 +3,33 @@
 Ginseng is a web app for learning things with flashcards and spaced repetition. Think Anki, but different. Hosted on [eatginseng.com](http://www.eatginseng.com/).
 
 - 100% in browser client-side Javascript, built with [React](http://facebook.github.io/react/)
-- Data stored in single JSON file. Can be synced over Dropbox or saved in browser storage
-- Freedom over review intervals. Not bound to "difficulty"
-- No fixed "deck" structure. Dynamic profiles for grouping reviews
+- Data stored in single JSON file. Can be synced over Dropbox or saved in the browser
+- Complete control over review intervals. Not bound to "difficulty"
+- Each information isn't bound to a fixed "deck" but rather can have any number of "tags"
+- Profiles create the reviews based on tags, types, due date and creation date
 - Native Markdown and LaTeX support for content and templates
 
 ## How it works
-The thing you want to learn/memorize is called an **info**. An info can contain two or more **entries** and any number of tags. If you learn Spanish, the entries could be the Spanish and spanish expression. Infos have a **type** which defines the number of entries as well as the **templates** which are used to display the info in the review mode.
+The thing you want to learn/memorize is called an **Info**. Ginseng works with virtual flashcards, which means you supply questions or cues for the "front" of the card and should remember what the answer on the back looks like.
+
+Infos are of a certain **type** that define the number of **entries** of the info as well as **templates**. A typical type would define two entries called *front* and *back*. For example an Info of that type could be made of an English word and the Spanish translation. An Info can also contain any number of tags, more on that later. Example Infos:
+
+![](https://github.com/s9w/Ginseng/raw/master/doc/infos.png)
+
+Info entries can not only be simple text but can contain [Markdown](http://en.wikipedia.org/wiki/Markdown) as well as [LaTeX](http://en.wikipedia.org/wiki/LaTeX) expressions between dollar signs. So 
 
 ### Templates
-A template maps an info to a front and back side of a virtual flashcard. In the example case, the front and back could show the english and spanish word. The templates as well as the info entries are written in [Markdown](http://en.wikipedia.org/wiki/Markdown). In the templates, info entries can be accessed with curly braces, like `{country}`. The templates as well as the entries can contain [LaTeX](http://en.wikipedia.org/wiki/LaTeX) code between single dollar signs.
+To display an info on screen you'll need to define how it's supposed to look. That's what templates are for. Templates consist of two Markdown expressions. One for the front and one for the back of the virtul flash card. In that expression, the entries of the info can be accessed with curly braces like `{front}` or `{country}` if the info type has an entry called country. Since templates use the specific structure of a an Info type, they're bound to them. So each Info type can have one or more templates. Example template:
 
-![](https://github.com/s9w/Ginseng/raw/master/doc/simple_example.png)
+![](https://github.com/s9w/Ginseng/raw/master/doc/templates.png)
 
-There can be more than one template per type, for example if you also want to test the reverse relation. Or you might want to include a note entry that gets displayed alongside. Templates can have to a condition for generating cards. An example could be a reverse template that will only be generated if an info has a "reverse" tag. The syntax is described [below](#filter-syntax).
+Templates can also contain Markdown and LaTeX expressions. 
 
-![](https://github.com/s9w/Ginseng/raw/master/doc/conditional_templates.png)
+Each templates can generate a review for one Info. A common use of flashcard software is to ask for the reverse relation of the Info. This can easily be done by creating a second template with the appropriate changes. In addition to the two expressions, templates can also have a **condition**. The associated review will only be generated when that condition is met. Typically a reverse template would have a condition that the info would have a "reverse" tag. It'll be only generated for infos with that tag then. The complete condition syntax is described [below](#filter-syntax).
+
+The general nature of the templates also make it trivial to display the contents of a `notes` entry alongside.
+
+Another more complex use case could be that you want to learn the worlds Countries and their capital city and spoken language. For that you would create an Info type with the entries `Country`, `Capital`, `Language` and whatever you desire. For that type you can create templates to ask for the capital of a given country, the country of a given capital, the language of a given country etc.
 
 ### Review
 During review, you have the choice between *setting* an interval, or *changing* the previous. For example setting "5h" would mean that in 5 hours, that review would become due again. Most of the time you'll probably want to change the previous interval. There are relative increases in percent or fixed time amounts.
