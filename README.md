@@ -16,7 +16,7 @@ Infos are of a certain **type** that define the number of **entries** of the inf
 
 ![](https://github.com/s9w/Ginseng/raw/master/doc/infos.png)
 
-Info entries can not only be simple text but can contain [Markdown](http://en.wikipedia.org/wiki/Markdown) as well as [LaTeX](http://en.wikipedia.org/wiki/LaTeX) expressions between dollar signs. So 
+Info entries can not only be simple text but can contain [Markdown](http://en.wikipedia.org/wiki/Markdown) as well as [LaTeX](http://en.wikipedia.org/wiki/LaTeX) expressions between dollar signs like in the third example.
 
 ### Templates
 To display an info on screen you'll need to define how it's supposed to look. That's what templates are for. Templates consist of two Markdown expressions. One for the front and one for the back of the virtul flash card. In that expression, the entries of the info can be accessed with curly braces like `{front}` or `{country}` if the info type has an entry called country. Since templates use the specific structure of a an Info type, they're bound to them. So each Info type can have one or more templates. Example template:
@@ -25,7 +25,11 @@ To display an info on screen you'll need to define how it's supposed to look. Th
 
 Templates can also contain Markdown and LaTeX expressions. 
 
-Each templates can generate a review for one Info. A common use of flashcard software is to ask for the reverse relation of the Info. This can easily be done by creating a second template with the appropriate changes. In addition to the two expressions, templates can also have a **condition**. The associated review will only be generated when that condition is met. Typically a reverse template would have a condition that the info would have a "reverse" tag. It'll be only generated for infos with that tag then. The complete condition syntax is described [below](#filter-syntax).
+Each templates can generate a review for one Info. Example of how a generated review might look like:
+
+![](https://github.com/s9w/Ginseng/raw/master/doc/review.gif)
+
+A common use of flashcard software is to ask for the reverse relation of the Info. This can easily be done by creating a second template with the appropriate changes. In addition to the front and back expressions, templates can also have a **condition**. The associated review will only be generated when that condition is met. Typically a reverse template would have a condition that the info would have a "reverse" tag. It'll be only generated for infos with that tag then. The complete condition syntax is described [below](#filter-syntax).
 
 The general nature of the templates also make it trivial to display the contents of a `notes` entry alongside.
 
