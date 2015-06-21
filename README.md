@@ -31,23 +31,21 @@ Each templates can generate a review for one Info. Example of how a generated re
 
 A common use of flashcard software is to ask for the reverse relation of the Info. This can easily be done by creating a second template with the appropriate changes. In addition to the front and back expressions, templates can also have a **condition**. The associated review will only be generated when that condition is met. Typically a reverse template would have a condition that the info would have a "reverse" tag. It'll be only generated for infos with that tag then. The complete condition syntax is described [below](#filter-syntax).
 
-The general nature of the templates also make it trivial to display the contents of a `notes` entry alongside.
-
-Another more complex use case could be that you want to learn the worlds Countries and their capital city and spoken language. For that you would create an Info type with the entries `Country`, `Capital`, `Language` and whatever you desire. For that type you can create templates to ask for the capital of a given country, the country of a given capital, the language of a given country etc.
+The general nature of the templates also make it trivial to display the contents of a `notes` entry alongside. Another more complex use case could be that you want to learn the worlds Countries and their capital city and spoken language. For that you would create an Info type with the entries `Country`, `Capital`, `Language` and whatever you desire. For that type you can create templates to ask for the capital of a given country, the country of a given capital, the language of a given country etc.
 
 ### Review
-During review, you have the choice between *setting* an interval, or *changing* the previous. For example setting "5h" would mean that in 5 hours, that review would become due again. Most of the time you'll probably want to change the previous interval. There are relative increases in percent or fixed time amounts.
+When reviewing a card, only the front is displayed initially. The back is revealed after the "Show backside" button press. Depending on your setting, a small form to type a guess is shown. The guess is then compared to the answer but the outcome has no effect on the review and is only for self control.
 
-Clicking an interval selection will "select" it and mark it green. Click the same selection again to confirm. That way you can quickly apply an interval choice with a double click.
+When a card is reviewed for the first time, you have to set a time when it'll be be due again. The buttons are small and abbreviated but self-explanatory and made so they are easily hit on mobile devices. "5h% means 5 hours for example. Clicking once will select a choice and mark it green. The date and time of the next review is previewed on the bottom. Click again to confirm. That way you can preview the choices but also quickly apply the intervals with a double click.
 
-Note that the last interval is calculated as the actual time between the last review and now, NOT when the review would have been due. That's intentional as I feel that's what really counts.
+If it's not the first time you review a card then you can either set an interval like above, or *change* the last interval. That change is based in the interval between your last review and the current time, NOT when the review would have been due. That's intentional as in reality you'll constantly be reviewing cards a bit after their due date and that should be what memory is based on.
 
-Each generated flashcard has a "**dueness**" based on the selected interval and the time since the last review. Right after reviewing, the dueness is 0. It increases linearly with time, reaching 1.0 at the time of it's designated interval. By default, that's when reviews are "due" and are displayed. It will continue to increase if it's not reviewed (and become "overdue" if you want to call it that). The reviews are sorted from most to least due cards.
+The buttons in the change mode are similar but additionally have percentage increases. Should be self-explanatory I hope.
+
+Each generated card has a "**dueness**" based on the selected interval and the time since the last review. Right after reviewing, the dueness is 0. It increases linearly with time, reaching 1.0 at the time of it's designated interval. That's when reviews are "due" and are displayed by default. It will continue to increase if it's not reviewed (and become "overdue" if you want to call it that). The reviews are sorted from most to least due cards.
 
 ### Profiles
-With a growing collection of infos, more control over the reviews is helpful - that's what review **profile**s are for. They filter the generated flashcards by tags, creation date or type of their infos with the syntax described below. Profiles can also filter by dueness: A profile with a "due threshold" of less than 1.0 will show cards that are not due yet. That can be used as a "cramming mode" if you want, or .
-
-![](https://github.com/s9w/Ginseng/raw/master/doc/profiles.png)
+With a growing collection of infos, more control over the reviews is helpful - that's what review **profiles** are for. They filter the generated flashcards by tags, creation date or type of their infos with the syntax described below. Profiles can also filter by dueness: A profile with a "due threshold" of less than 1.0 will show cards that are not due yet. That can be used as a "cramming mode" if you want.
 
 ### Filter syntax
 - Infos can be filtered by their tags. `tag: math` matches all infos that have a `math` tag. This is case-sensitive and a precise match, so it will neither match a `Math` nor a `mathematics` tag.
@@ -61,14 +59,14 @@ Ginseng is designed around some solid findings from cognitive psychology.
 
 It's much more efficient to try to recall an information without access to the solution than trying to memorize it while staring at it - that's called the [testing effect](http://en.wikipedia.org/wiki/Testing_effect). The hidden back side is what makes flashcard practice so efficient.
 
-The learning can also vastly be improved by distributing it over many separate session rather than doing it all in one - that's called the [spacing effect](http://en.wikipedia.org/wiki/Spacing_effect). This effect is especially big when the intervals increase each time. The exact timings of the intervals are tricky though, and the conditions of the studies are rarely met in practice. That's why there's such a fine grained control over the review interval: Just set the interval you feel is right.
+The learning can also vastly be improved by distributing it over many separate session rather than doing it all in one - that's called the [spacing effect](http://en.wikipedia.org/wiki/Spacing_effect). This effect is especially big when the intervals increase each time. That's [Spaced repetition](https://en.wikipedia.org/wiki/Spaced_repetition) which is the basis for SRS (Spaced Repetition Software) like Anki or Ginseng. The exact timings of the intervals are tricky though and the conditions of the studies are rarely met in practice. That's why Ginseng offers such a fine grained control over the review interval: Just set the interval you feel is right.
 
-The brain also likes to [link](http://gocognitive.net/interviews/effect-context-memory) information to location and other contextual factors. So things you know in the library might be "gone" during an exam. The page is therefore a web app, designed to work well on mobile devices and with dropbox sync to be accessable everywhere and from every computer with a web browser.
+The brain also likes to [link](http://gocognitive.net/interviews/effect-context-memory) information to location and other contextual factors. Things you know in the library might be "gone" during an exam. Ginseng is therefore a web app, designed to work well on mobile devices and with Dropbox sync to be accessable everywhere and from any computer with a web browser.
 
 ## Philosophy / Goals
 Ginseng and the underlying data format are designed to be as open and robust as possible
 - All data is saved in a straightforward human-readable (and therefore hackable) [JSON file](https://raw.githubusercontent.com/s9w/Ginseng/master/init_data.js).
-- The formatting of the infos and templates is done in Markdown and LaTeX. Currently [marked](https://github.com/chjj/marked) is used for Markdown and [MathJax](https://github.com/mathjax/mathjax) for LaTeX rendering as they seem to be the fastest choice.
+- The formatting of the infos and templates is done in Markdown and LaTeX. Currently [marked](https://github.com/chjj/marked) is used for Markdown and [MathJax](https://github.com/mathjax/mathjax) for LaTeX rendering.
 - Dates/times are saved in [ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601).
 
 ## Plans / issues
