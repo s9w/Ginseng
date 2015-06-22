@@ -61,6 +61,19 @@ module.exports = React.createClass({
             />
         }
 
+        var dbStatusInfos = [];
+        if(this.props.dropBoxStatus !== "initial"){
+            dbStatusInfos.push(
+                <div>{"Last save: " + lastSavedStr}</div>
+            );
+            dbStatusInfos.push(
+                <div>{"Last load: " + lastLoadedStr}</div>
+            );
+            dbStatusInfos.push(
+                <div>{"Last reported size: " + this.props.dropBoxSize}</div>
+            );
+        }
+
         return (
             <div className="Status Component">
                 {popupOverwrite}
@@ -77,12 +90,7 @@ module.exports = React.createClass({
 
                 <section>
                     <h3>Dropbox</h3>
-                    {this.props.dropBoxStatus !== "initial" &&
-                        <div>{"Last save: " + lastSavedStr}</div>
-                    }
-                    {this.props.dropBoxStatus !== "initial" &&
-                        <div>{"Last load: " + lastLoadedStr}</div>
-                    }
+                    {dbStatusInfos}
                     <div>
                         {this.props.dropBoxStatus === "initial" &&
                             <button

@@ -31,7 +31,8 @@ var Ginseng = React.createClass({
 
             dropBoxStatus: "initial",
             lastLoadedStr: "never",
-            isChanged: false
+            isChanged: false,
+            dropBoxSize: ""
         };
     },
     clickNav(mode) {
@@ -143,20 +144,21 @@ var Ginseng = React.createClass({
         var writeDataString = this.getWriteDate(this.state.settings.useCompression);
         var newMeta = _.clone( this.state.meta);
         newMeta.lastSaved = moment().format();
-        client.writeFile("ginseng_data.txt", writeDataString, error => {
+        client.writeFile("ginseng_data.txt", writeDataString, (error, metaData) => {
             if (error) {
                 console.log("Dropbox write error: " + error);
             }
             this.setState({
                 meta: newMeta,
                 dropBoxStatus: "loggedIn",
-                isChanged: false
+                isChanged: false,
+                dropBoxSize: metaData["humanSize"]
             });
         });
     },
     loadDB() {
         this.setState({dropBoxStatus: "loading"});
-        client.readFile("ginseng_data.txt", (error, data) => {
+        client.readFile("ginseng_data.txt", (error, data, metaData) => {
             if (error) {
                 console.log("Dropbox load error: " + error);
             }
@@ -175,7 +177,8 @@ var Ginseng = React.createClass({
                 meta: parsedData.meta,
                 lastLoadedStr: moment().format(),
                 dropBoxStatus: "loggedIn",
-                isChanged: false
+                isChanged: false,
+                dropBoxSize: metaData["humanSize"]
             });
         });
     },
@@ -295,6 +298,7 @@ var Ginseng = React.createClass({
                         lastLoadedStr={this.state.lastLoadedStr}
                         onDbLoad={this.loadDB}
                         isChanged={this.state.isChanged}
+                        dropBoxSize={this.state.dropBoxSize}
                     />
                 }
 

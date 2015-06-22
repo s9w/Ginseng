@@ -198,7 +198,7 @@ var init_data =
                 ]
             },
             "reviewHistoryLength": 2,
-            "useCompression": false,
+            "useCompression": true,
             "useGuess": true,
             "rememberModType": false
         },
